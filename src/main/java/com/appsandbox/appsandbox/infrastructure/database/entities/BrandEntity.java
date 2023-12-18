@@ -1,7 +1,5 @@
 package com.appsandbox.appsandbox.infrastructure.database.entities;
 
-import com.appsandbox.appsandbox.domain.entities.Factory;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -14,22 +12,14 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-@Table(name = "factories")
-public class FactoryEntity {
+@Table(name = "machines")
+public class BrandEntity {
 
     @Id
     @GeneratedValue
     private int id;
     private String name;
-    private String type;
-    private String address;
-
-    public FactoryEntity(Factory factory) {
-        this(factory.getId(), factory.getName(), factory.getType(), factory.getAddress());
-    }
-
-    public Factory toDto() {
-        return new Factory(this);
-    }
-
+    private String website;
+    private String hqAddress;
+    
 }
