@@ -1,3 +1,39 @@
+INSERT INTO brands (id, name, website, hq_address) VALUES (0, 'Hexagon', 'https://hexagon.com/fr/company', 'Lilla Bantorget 15 SE-111 23 Stockholm, Sweden');
+INSERT INTO brands (id, name, website, hq_address) VALUES (1, 'Mitutoyo', 'https://www.mitutoyo.fr/fr_fr', '20-1 Sakado 1-Chome, Takatsu-ku, Kawasaki-shi, Kanagawa 213-8533, Japan');
+INSERT INTO brands (id, name, website, hq_address) VALUES (2, 'Keyence', 'https://www.keyence.fr', '1-3-14, Higashi-Nakajima, Higashi-Yodogawa-ku, Osaka, Japan');
+INSERT INTO brands (id, name, website, hq_address) VALUES (3, 'Zeiss', 'https://www.zeiss.fr/corporate/home.html', 'Carl-Zeiss-Straße 22, Oberkochen, Germany');
+
+INSERT INTO factories (id, name, type, address) VALUES (0, 'Diginetic', 'WORKSHOP', '63 Ridge Boulevard, National, Georgia');
+INSERT INTO factories (id, name, type, address) VALUES (1, 'Infotrips', 'SITE', '3 Rock Street, Cuylerville, Yugoslavia');
+INSERT INTO factories (id, name, type, address) VALUES (2, 'Qualitern', 'WORKSHOP', '33 Fleet Street, Wacissa, Congo');
+INSERT INTO factories (id, name, type, address) VALUES (3, 'Martgo', 'SITE', '90 Rochester Avenue, Vallonia, France, Metropolitan');
+INSERT INTO factories (id, name, type, address) VALUES (4, 'Sultraxin', 'SITE', '98 Belmont Avenue, Saranap, Guatemala');
+INSERT INTO factories (id, name, type, address) VALUES (5, 'Accufarm', 'SITE', '31 Granite Street, Torboy, Honduras');
+INSERT INTO factories (id, name, type, address) VALUES (6, 'Exotechno', 'WORKSHOP', '50 Micieli Place, Rossmore, Aruba');
+INSERT INTO factories (id, name, type, address) VALUES (7, 'Eventage', 'FACTORY', '51 Congress Street, Barstow, Heard and McDonald Islands');
+INSERT INTO factories (id, name, type, address) VALUES (8, 'Shopabout', 'SITE', '6 Laurel Avenue, Fredericktown, Anguilla');
+INSERT INTO factories (id, name, type, address) VALUES (9, 'Virxo', 'SITE', '45 Church Lane, Lund, Greece');
+INSERT INTO factories (id, name, type, address) VALUES (10, 'Dognost', 'FACTORY', '29 Pine Street, Foxworth, Liechtenstein');
+INSERT INTO factories (id, name, type, address) VALUES (11, 'Oronoko', 'FACTORY', '50 Stillwell Avenue, Enoree, Belarus');
+INSERT INTO factories (id, name, type, address) VALUES (12, 'Ultrasure', 'SITE', '20 Elm Avenue, Ryderwood, Bangladesh');
+INSERT INTO factories (id, name, type, address) VALUES (13, 'Niquent', 'SITE', '99 Menahan Street, Oretta, Gabon');
+INSERT INTO factories (id, name, type, address) VALUES (14, 'Schneider', 'FACTORY', 'Mastertech à Moirans');
+
+INSERT INTO models (id, name, type, brand_id) VALUES (0, 'Quantum Vision', 'VISION', 2);
+INSERT INTO models (id, name, type, brand_id) VALUES (1, 'IM-8000', 'VISION', 2);
+INSERT INTO models (id, name, type, brand_id) VALUES (2, 'Série XM', 'CMM', 2);
+INSERT INTO models (id, name, type, brand_id) VALUES (3, 'Absolute Arm', 'CMM', 0);
+INSERT INTO models (id, name, type, brand_id) VALUES (4, 'OPTIV Reference', 'VISION', 0);
+INSERT INTO models (id, name, type, brand_id) VALUES (5, 'TIGO SF', 'CMM', 0);
+INSERT INTO models (id, name, type, brand_id) VALUES (6, 'GLOBAL', 'CMM', 0);
+INSERT INTO models (id, name, type, brand_id) VALUES (7, 'CV-Series', 'SURFACE', 1);
+INSERT INTO models (id, name, type, brand_id) VALUES (8, 'SurfTest', 'SURFACE', 1);
+INSERT INTO models (id, name, type, brand_id) VALUES (9, 'Quick Vision', 'VISION', 1);
+INSERT INTO models (id, name, type, brand_id) VALUES (10, 'Crysta-Apex V', 'CMM', 1);
+INSERT INTO models (id, name, type, brand_id) VALUES (11, 'Contura', 'CMM', 3);
+INSERT INTO models (id, name, type, brand_id) VALUES (12, 'DuraMax', 'CMM', 3);
+INSERT INTO models (id, name, type, brand_id) VALUES (13, 'O-Inspect', 'VISION', 3);
+
 INSERT INTO machines (id, model_id, serial_number, need_maintenance, factory_id, created_at, last_maintenance_date, state) VALUES (0, 5, '7fe0ae86-2e61-4264-a3d0-f456a3548872', true, 5, '2014-06-22T18:19:30.933Z', '2016-12-24T18:19:30.933Z', 'Idle');
 INSERT INTO machines (id, model_id, serial_number, need_maintenance, factory_id, created_at, last_maintenance_date, state) VALUES (1, 7, '4434049b-bbf5-4ca3-81d3-77b7ef17dad8', false, 3, '2014-11-06T05:16:41.518Z', '2017-11-20T05:16:41.518Z', 'Idle');
 INSERT INTO machines (id, model_id, serial_number, need_maintenance, factory_id, created_at, last_maintenance_date, state) VALUES (2, 1, '1ed08b0c-b795-4b8d-877d-e8823a1b878b', true, 1, '2018-04-18T04:06:24.017Z', '2019-05-29T04:06:24.017Z', 'Stop');

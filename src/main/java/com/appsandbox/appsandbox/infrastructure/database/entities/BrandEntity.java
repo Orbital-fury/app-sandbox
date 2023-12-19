@@ -1,18 +1,16 @@
 package com.appsandbox.appsandbox.infrastructure.database.entities;
 
+import java.util.List;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Entity
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
-@Table(name = "machines")
+@Table(name = "brands")
 public class BrandEntity {
 
     @Id
@@ -20,6 +18,9 @@ public class BrandEntity {
     private int id;
     private String name;
     private String website;
+    @Column(name = "hq_address")
     private String hqAddress;
-    
+    @OneToMany(mappedBy = "brand")
+    private List<ModelEntity> models;
+
 }

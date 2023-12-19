@@ -1,37 +1,38 @@
 package com.appsandbox.appsandbox.infrastructure.database.entities;
 
+import java.util.Date;
+
+import com.appsandbox.appsandbox.domain.enums.MachineState;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Entity
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
 @Table(name = "machines")
 public class MachineEntity {
 
     @Id
     @GeneratedValue
     private int id;
-    private int modelId;
+    @ManyToOne
+    @JoinColumn(name = "model_id", nullable = false)
+    private ModelEntity model;
+    @Column(name = "serial_number")
     private String sn;
+    @Column(name = "need_maintenance")
     private boolean needMaintenance;
-    private int factoryId;
-    private String createdAt;
-    private String lastMaintenanceDate;
-    private String state;
-
-    // public FactoryEntity(Factory factory) {
-    //     this(factory.getId(), factory.getName(), factory.getType(), factory.getAddress());
-    // }
-
-    // public Factory toDto() {
-    //     return new Factory(this);
-    // }
+    @ManyToOne
+    @JoinColumn(name = "factory_id", nullable = true)
+    private FactoryEntity factory;
+    @Column(name = "created_at")
+    private Date createdAt;
+    @Column(name = "last_maintenance_date")
+    private Date lastMaintenanceDate;
+    private MachineState state;
 
 }

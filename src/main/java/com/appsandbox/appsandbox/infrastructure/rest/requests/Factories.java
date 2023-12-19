@@ -4,15 +4,17 @@ import java.util.List;
 
 import com.appsandbox.appsandbox.domain.entities.Factory;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@AllArgsConstructor
-@NoArgsConstructor
 @Getter
+@Setter
 public class Factories {
 
     private List<Factory> factories;
-    
+
+    public Factories(List<Factory> factories) {
+        this.factories = factories;
+    }
+
 }

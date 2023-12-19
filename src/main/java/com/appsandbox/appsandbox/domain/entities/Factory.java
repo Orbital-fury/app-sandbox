@@ -1,27 +1,20 @@
 package com.appsandbox.appsandbox.domain.entities;
 
-import com.appsandbox.appsandbox.infrastructure.database.entities.FactoryEntity;
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @AllArgsConstructor
-@NoArgsConstructor
 @Getter
+@Setter
 public class Factory {
 
   private int id;
   private String name;
   private String type;
   private String address;
-
-  public Factory(FactoryEntity factoryEntity) {
-    this(factoryEntity.getId(), factoryEntity.getName(), factoryEntity.getType(), factoryEntity.getAddress());
-  }
-
-  public FactoryEntity toEntity(Factory factory) {
-    return new FactoryEntity(factory);
-  }
+  private List<Machine> machines;
 
 }

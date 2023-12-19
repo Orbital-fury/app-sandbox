@@ -12,16 +12,15 @@ spring:
         console:
             enabled: true
     jpa:
-        defer-datasource-initialization: true
-        properties:
-            hibernate:
-                hbm2ddl:
-                    auto: create-drop
-                    import_files: classpath:database/data/*.sql # pour Hibernate
-    # sql:
-    #     init:
-    #         data-locations: classpath:database/data/factories.sql # pour JDBC
-    #         schema-locations: classpath:database/schema/factories.sql
+        # defer-datasource-initialization: true
+        hibernate:
+                ddl-auto: none
+                # import_files: '[classpath:database/data/brands.sql]' # pour Hibernate
+    sql:
+        init:
+            mode: always
+            data-locations: classpath:database/data.sql # pour JDBC
+            schema-locations: classpath:database/schema.sql
 logging:
   level:
     org.hibernate.SQL: 'debug'

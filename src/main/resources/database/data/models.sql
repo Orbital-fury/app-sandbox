@@ -1,0 +1,14 @@
+INSERT INTO models (id, name, type, brand_id) VALUES (0, 'Quantum Vision', 'VISION', 2);
+INSERT INTO models (id, name, type, brand_id) VALUES (1, 'IM-8000', 'VISION', 2);
+INSERT INTO models (id, name, type, brand_id) VALUES (2, 'Série XM', 'CMM', 2);
+INSERT INTO models (id, name, type, brand_id) VALUES (3, 'Absolute Arm', 'CMM', 0);
+INSERT INTO models (id, name, type, brand_id) VALUES (4, 'OPTIV Reference', 'VISION', 0);
+INSERT INTO models (id, name, type, brand_id) VALUES (5, 'TIGO SF', 'CMM', 0);
+INSERT INTO models (id, name, type, brand_id) VALUES (6, 'GLOBAL', 'CMM', 0);
+INSERT INTO models (id, name, type, brand_id) VALUES (7, 'CV-Series', 'SURFACE', 1);
+INSERT INTO models (id, name, type, brand_id) VALUES (8, 'SurfTest', 'SURFACE', 1);
+INSERT INTO models (id, name, type, brand_id) VALUES (9, 'Quick Vision', 'VISION', 1);
+INSERT INTO models (id, name, type, brand_id) VALUES (10, 'Crysta-Apex V', 'CMM', 1);
+INSERT INTO models (id, name, type, brand_id) VALUES (11, 'Contura', 'CMM', 3);
+INSERT INTO models (id, name, type, brand_id) VALUES (12, 'DuraMax', 'CMM', 3);
+INSERT INTO models (id, name, type, brand_id) VALUES (13, 'O-Inspect', 'VISION', 3);

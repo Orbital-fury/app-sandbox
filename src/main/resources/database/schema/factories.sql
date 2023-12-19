@@ -1,8 +1,8 @@
-CREATE TABLE factories_ddl
+CREATE TABLE factories
 (
-    id INT,
-    name VARCHAR(128),
-    type VARCHAR(128),
-    address VARCHAR(255),
-    ddl INT
+    id INT NOT NULL AUTO_INCREMENT,
+    name VARCHAR(128) NOT NULL,
+    type VARCHAR(128) NOT NULL,
+    address VARCHAR(255) NOT NULL,
+    PRIMARY KEY (id)
 )

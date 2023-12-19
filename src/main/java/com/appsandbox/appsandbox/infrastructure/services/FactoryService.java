@@ -1,31 +1,35 @@
 package com.appsandbox.appsandbox.infrastructure.services;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.appsandbox.appsandbox.domain.entities.Factory;
-import com.appsandbox.appsandbox.infrastructure.database.entities.FactoryEntity;
 import com.appsandbox.appsandbox.infrastructure.database.repositories.FactoryRepository;
+import com.appsandbox.appsandbox.infrastructure.mapper.FactoryMapper;
 
 @Service
 public class FactoryService {
 
+    Logger log = LoggerFactory.getLogger(FactoryService.class);
+
+    @Autowired
     private FactoryRepository factoryRepository;
+    @Autowired
+    private FactoryMapper factoryMapper;
 
-    public FactoryService(FactoryRepository factoryRepository) {
-        this.factoryRepository = factoryRepository;
-    }
+    // public List<Factory> getAllFactories() {
+    // List<FactoryEntity> entityList = factoryRepository.findAll();
+    // log.info("factory list :" + entityList.toString());
+    // List<Factory> factoryList = new ArrayList<>();
+    // for (FactoryEntity factoryEntity : entityList) {
+    // Factory entityToDto = factoryMapper.entityToDto(factoryEntity);
+    // log.info("factoryEntity :" + factoryEntity.toString());
+    // log.info("factory dto created :" + entityToDto.toString());
+    // factoryList.add(entityToDto);
+    // }
 
-    public List<Factory> getAllFactories() {
-        List<FactoryEntity> entityList = factoryRepository.findAll();
-
-        List<Factory> factoryList = entityList.stream()
-                .map(FactoryEntity::toDto)
-                .collect(Collectors.toList());
-
-        return factoryList;
-    }
+    // return factoryList;
+    // }
 
 }
