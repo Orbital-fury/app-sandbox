@@ -26,7 +26,7 @@ CREATE TABLE machines (
     serial_number varchar(128) NOT NULL,
     need_maintenance boolean NOT NULL,
     factory_id int REFERENCES factories(id),
-    created_at varchar(255),
+    created_at varchar(255) NOT NULL,
     last_maintenance_date varchar(255),
-    state varchar(64)
+    state varchar(64) NOT NULL
 );

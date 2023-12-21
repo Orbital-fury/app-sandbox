@@ -1,6 +1,5 @@
 package com.appsandbox.appsandbox.domain.entities;
 
-import java.sql.Timestamp;
 import java.util.Date;
 
 import com.appsandbox.appsandbox.domain.enums.MachineState;
@@ -16,7 +15,7 @@ public class MachineWithoutFactory {
   private Model model;
   private String sn;
   private boolean needMaintenance;
-  private Timestamp createdAt;
+  private Date createdAt;
   private Date lastMaintenanceDate;
   private MachineState state;
 

@@ -18,7 +18,7 @@ spring:
                 # import_files: '[classpath:database/data/brands.sql]' # pour Hibernate
     sql:
         init:
-            mode: always
+            # mode: always
             data-locations: classpath:database/data.sql # pour JDBC
             schema-locations: classpath:database/schema.sql
 logging:

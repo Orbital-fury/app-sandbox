@@ -1,9 +1,6 @@
 package com.appsandbox.appsandbox.infrastructure.database.entities;
 
-import java.sql.Timestamp;
 import java.util.Date;
-
-import org.hibernate.annotations.CreationTimestamp;
 
 import com.appsandbox.appsandbox.domain.enums.MachineState;
 
@@ -40,9 +37,8 @@ public class MachineEntity {
     @ManyToOne
     @JoinColumn(name = "factory_id", nullable = true)
     private FactoryEntity factory;
-    @CreationTimestamp
     @Column(name = "created_at", updatable = false)
-    private Timestamp createdAt;
+    private Date createdAt;
     @Column(name = "last_maintenance_date")
     private Date lastMaintenanceDate;
     @Enumerated(EnumType.STRING)
