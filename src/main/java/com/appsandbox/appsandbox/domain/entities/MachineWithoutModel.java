@@ -10,12 +10,12 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class MachineWithoutFactory {
+public class MachineWithoutModel {
 
   private int id;
-  private Model model;
   private String sn;
   private boolean needMaintenance;
+  private Factory factory;
   private Timestamp createdAt;
   private Date lastMaintenanceDate;
   private MachineState state;

@@ -1,12 +1,15 @@
 package com.appsandbox.appsandbox.domain.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import java.sql.Timestamp;
+import java.util.Date;
 
+import com.appsandbox.appsandbox.domain.enums.MachineState;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
+@Data
 @AllArgsConstructor
-@Getter
-@Setter
 public class Machine {
 
   private int id;
@@ -14,8 +17,8 @@ public class Machine {
   private String sn;
   private boolean needMaintenance;
   private Factory factory;
-  private String createdAt;
-  private String lastMaintenanceDate;
-  private String state;
+  private Timestamp createdAt;
+  private Date lastMaintenanceDate;
+  private MachineState state;
 
 }

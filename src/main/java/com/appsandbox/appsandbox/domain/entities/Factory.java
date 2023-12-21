@@ -2,19 +2,19 @@ package com.appsandbox.appsandbox.domain.entities;
 
 import java.util.List;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import com.appsandbox.appsandbox.domain.enums.FactoryType;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
+@Data
 @AllArgsConstructor
-@Getter
-@Setter
 public class Factory {
 
   private int id;
   private String name;
-  private String type;
+  private FactoryType type;
   private String address;
-  private List<Machine> machines;
+  private List<MachineWithoutFactory> machines;
 
 }

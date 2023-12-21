@@ -23,4 +23,4 @@ spring:
             schema-locations: classpath:database/schema.sql
 logging:
   level:
-    org.hibernate.SQL: 'debug'
+    org.hibernate.SQL: '[debug]'
