@@ -15,7 +15,7 @@ public class Machine {
   private Model model;
   private String sn;
   private boolean needMaintenance;
-  private Factory factory;
+  private FactoryWithoutMachines factory;
   private Date createdAt;
   private Date lastMaintenanceDate;
   private MachineState state;

@@ -1,11 +1,11 @@
 package com.appsandbox.appsandbox.infrastructure.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
-import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -40,25 +40,25 @@ public class FactoryServiceTest {
         int factoryId = 0;
         FactoryEntity factoryEntity = new FactoryEntity(factoryId, "name", FactoryType.FACTORY, "address",
                 new ArrayList<MachineEntity>());
-        when(factoryRepository.findById(anyInt())).thenReturn(Optional.of(factoryEntity));
+        when(factoryRepository.findById(anyInt())).thenReturn(factoryEntity);
 
         // When
-        Optional<Factory> factory = factoryService.getFactory(factoryId);
+        Factory factory = factoryService.getFactory(factoryId);
 
         // Then
-        assertEquals(factory.get(), factoryMapper.entityToDto(factoryEntity));
+        assertEquals(factory, factoryMapper.entityToDto(factoryEntity));
     }
 
     @Test
     void should_retrieve_no_factory() {
         // Given
-        when(factoryRepository.findById(anyInt())).thenReturn(Optional.empty());
+        when(factoryRepository.findById(anyInt())).thenReturn(null);
 
         // When
-        Optional<Factory> factory = factoryService.getFactory(20);
+        Factory factory = factoryService.getFactory(20);
 
         // Then
-        assertEquals(factory, Optional.empty());
+        assertNull(factory);
     }
 
 }

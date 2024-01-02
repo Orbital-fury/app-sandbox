@@ -1,7 +1,6 @@
 package com.appsandbox.appsandbox.infrastructure.database.repositories;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -11,8 +10,8 @@ import com.appsandbox.appsandbox.infrastructure.database.entities.FactoryEntity;
 @Repository
 public interface FactoryRepository extends JpaRepository<FactoryEntity, Integer> {
 
-    Optional<FactoryEntity> findById(int id);
+    FactoryEntity findById(int id);
 
     List<FactoryEntity> findAll();
-    
+
 }

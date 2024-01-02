@@ -1,7 +1,5 @@
 package com.appsandbox.appsandbox.infrastructure.rest.controllers;
 
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -40,13 +38,13 @@ public class FactoryController {
 	@Operation(method = "GET", summary = "Get factory by id", description = "Return a factory by its id")
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Successfully retrieved"),
-			@ApiResponse(responseCode = "404", description = "Factory were not found")
+			@ApiResponse(responseCode = "404", description = "Factory was not found")
 	})
 	@GetMapping(path = "/{id}")
 	public ResponseEntity<Factory> getFactory(@PathVariable int id) {
-		Optional<Factory> factory = factoryService.getFactory(id);
-		if (factory.isPresent()) {
-			return new ResponseEntity<>(factory.get(), HttpStatus.OK);
+		Factory factory = factoryService.getFactory(id);
+		if (factory != null) {
+			return new ResponseEntity<>(factory, HttpStatus.OK);
 		} else {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 		}
