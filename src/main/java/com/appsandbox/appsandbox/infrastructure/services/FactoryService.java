@@ -2,9 +2,8 @@ package com.appsandbox.appsandbox.infrastructure.services;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,8 +15,6 @@ import com.appsandbox.appsandbox.infrastructure.mapper.FactoryMapper;
 @Service
 public class FactoryService {
 
-    Logger log = LoggerFactory.getLogger(FactoryService.class);
-
     @Autowired
     private FactoryRepository factoryRepository;
     @Autowired
@@ -25,16 +22,22 @@ public class FactoryService {
 
     public List<Factory> getAllFactories() {
         List<FactoryEntity> entityList = factoryRepository.findAll();
-        log.info("factory list :" + entityList.size());
         List<Factory> factoryList = new ArrayList<>();
         for (FactoryEntity factoryEntity : entityList) {
-             log.info("factory entity :" + factoryEntity.getName());
             Factory entityToDto = factoryMapper.entityToDto(factoryEntity);
-            log.info("factory dto created :" + entityToDto.getName());
             factoryList.add(entityToDto);
         }
 
         return factoryList;
+    }
+
+    public Optional<Factory> getFactory(int id) {
+        Optional<FactoryEntity> factory = factoryRepository.findById(id);
+        if (factory.isPresent()) {
+            return Optional.ofNullable(factoryMapper.entityToDto(factory.get()));
+        } else {
+            return Optional.empty();
+        }
     }
 
 }
