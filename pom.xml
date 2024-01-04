@@ -24,6 +24,7 @@
 	</properties>
 
 	<dependencies>
+		<!-- Spring -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
@@ -37,7 +38,8 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
+
+		<!-- Lombok -->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
@@ -45,17 +47,21 @@
 			<scope>provided</scope>
 		</dependency>
 
+		<!-- Database -->
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
 			<scope>runtime</scope>
 		</dependency>
-		<!-- Swagger UI -->
+
+		<!-- Swagger -->
 		<dependency>
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
 			<version>${swagger.version}</version>
 		</dependency>
+
+
 		<!-- Mapstruct -->
 		<dependency>
 			<groupId>org.mapstruct</groupId>
@@ -74,7 +80,8 @@
 			<artifactId>lombok-mapstruct-binding</artifactId>
 			<version>0.2.0</version>
 		</dependency> -->
-		<!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api -->
+
+		<!-- Test -->
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-engine</artifactId>
@@ -93,7 +100,6 @@
 			<version>5.4.0</version>
 			<scope>test</scope>
 		</dependency>
-
 	</dependencies>
 
 	<build>

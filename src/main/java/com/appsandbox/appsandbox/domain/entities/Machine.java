@@ -4,6 +4,7 @@ import java.util.Date;
 
 import com.appsandbox.appsandbox.domain.enums.MachineState;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -11,6 +12,7 @@ import lombok.Data;
 @AllArgsConstructor
 public class Machine {
 
+  @Schema(name = "Machine ID", example = "1", required = true)
   private int id;
   private Model model;
   private String sn;

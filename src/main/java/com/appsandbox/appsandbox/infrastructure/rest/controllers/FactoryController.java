@@ -46,7 +46,7 @@ public class FactoryController {
 		if (factory != null) {
 			return new ResponseEntity<>(factory, HttpStatus.OK);
 		} else {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Factory with id=" + id + " not found");
 		}
 	}
 

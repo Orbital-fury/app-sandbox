@@ -1,3 +1,9 @@
+server:
+    port: 8080 # Default value: 8080
+    error:
+        include-message: always # Add message to HTTP error
+    servlet:
+        context-path: /api/v1 # Add relative path to all endpoints
 spring:
     # data:
     #     jpa:
@@ -23,14 +29,15 @@ spring:
             schema-locations: classpath:database/schema.sql
 springdoc:
     api-docs:
-        enabled: true
-        path: '/api/v1'
+        # enabled: true
+        path: '/docs' # path we can find in search bar (and under definition)
+    # https://github.com/swagger-api/swagger-ui/blob/master/docs/usage/configuration.md
     swagger-ui:
-        path: '/swagger-ui'
-        config-url: '/api/v1/swagger-config'
-        url: '/api/v1'
-        doc-expansion: none
-        disable-swagger-default-url: true
+        # enabled: true
+        url: '/docs'
+        # doc-expansion: none # how controllers are expanded: list, full, none. Default value: list 
+        # disable-swagger-default-url: true
+
 logging:
   level:
     org.hibernate.SQL: '[debug]'
