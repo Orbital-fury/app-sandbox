@@ -1,18 +1,16 @@
 package com.appsandbox.appsandbox.domain.entities;
 
-import java.util.List;
+import com.appsandbox.appsandbox.domain.enums.MachineType;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class Brand {
+public class ModelWithoutBrand {
 
     private int id;
     private String name;
-    private String website;
-    private String hqAddress;
-    private List<ModelWithoutBrand> models;
+    private MachineType type;
 
 }
