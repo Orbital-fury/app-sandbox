@@ -5,7 +5,7 @@ import org.mapstruct.Mapper;
 import com.appsandbox.appsandbox.domain.entities.Model;
 import com.appsandbox.appsandbox.infrastructure.database.entities.ModelEntity;
 
-@Mapper
+@Mapper(uses = BrandWithoutModelsMapper.class)
 public interface ModelMapper {
 
     Model entityToDto(ModelEntity entity);

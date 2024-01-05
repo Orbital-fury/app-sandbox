@@ -12,6 +12,6 @@ public class Model {
   private int id;
   private String name;
   private MachineType type;
-  private Brand brand;
+  private BrandWithoutModels brand;
 
 }
