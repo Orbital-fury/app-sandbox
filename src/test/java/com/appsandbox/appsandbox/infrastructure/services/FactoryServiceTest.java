@@ -15,12 +15,13 @@ import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.appsandbox.appsandbox.domain.entities.Factory;
-import com.appsandbox.appsandbox.domain.enums.FactoryType;
-import com.appsandbox.appsandbox.infrastructure.database.entities.FactoryEntity;
-import com.appsandbox.appsandbox.infrastructure.database.entities.MachineEntity;
-import com.appsandbox.appsandbox.infrastructure.database.repositories.FactoryRepository;
-import com.appsandbox.appsandbox.infrastructure.mapper.FactoryMapper;
+import com.appsandbox.appsandbox.domain.mmm.entities.Factory;
+import com.appsandbox.appsandbox.domain.mmm.enums.FactoryType;
+import com.appsandbox.appsandbox.infrastructure.mmm.database.entities.FactoryEntity;
+import com.appsandbox.appsandbox.infrastructure.mmm.database.entities.MachineEntity;
+import com.appsandbox.appsandbox.infrastructure.mmm.database.repositories.FactoryRepository;
+import com.appsandbox.appsandbox.infrastructure.mmm.mapper.FactoryMapper;
+import com.appsandbox.appsandbox.infrastructure.mmm.services.FactoryService;
 
 @ExtendWith(MockitoExtension.class)
 public class FactoryServiceTest {
