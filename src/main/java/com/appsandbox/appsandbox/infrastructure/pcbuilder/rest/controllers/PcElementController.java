@@ -50,7 +50,7 @@ public class PcElementController {
         if (pcElement != null) {
             return new ResponseEntity<>(pcElement, HttpStatus.OK);
         } else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Factory with id=" + id + " not found");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "PC element with id=" + id + " not found");
         }
     }
 
