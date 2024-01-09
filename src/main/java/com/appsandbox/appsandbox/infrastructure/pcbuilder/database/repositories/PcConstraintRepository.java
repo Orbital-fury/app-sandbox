@@ -9,6 +9,4 @@ import com.appsandbox.appsandbox.infrastructure.pcbuilder.database.entities.PcCo
 @Repository
 public interface PcConstraintRepository extends JpaRepository<PcConstraintEntity, Integer> {
 
-    PcConstraintEntity findById(int id);
-    
 }

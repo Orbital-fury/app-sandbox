@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
 
 import com.appsandbox.appsandbox.domain.mmm.entities.Factory;
 import com.appsandbox.appsandbox.infrastructure.mmm.rest.requests.Factories;
@@ -29,7 +28,7 @@ public class FactoryController {
 	@Operation(method = "GET", summary = "Get all factories", description = "Return the list of all factories and there machines")
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Successfully retrieved"),
-			@ApiResponse(responseCode = "404", description = "Factories were not found")
+			@ApiResponse(responseCode = "204", description = "No factories retrieved")
 	})
 	@GetMapping()
 	public ResponseEntity<Factories> getAllFactories() {
@@ -45,11 +44,8 @@ public class FactoryController {
 	public ResponseEntity<Factory> getFactory(
 			@PathVariable @Parameter(name = "id", description = "Factory id", example = "1") int id) {
 		Factory factory = factoryService.getFactory(id);
-		if (factory != null) {
-			return new ResponseEntity<>(factory, HttpStatus.OK);
-		} else {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Factory with id=" + id + " not found");
-		}
+		return new ResponseEntity<>(factory, HttpStatus.OK);
+
 	}
 
 }

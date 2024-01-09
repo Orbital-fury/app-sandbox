@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
 
 import com.appsandbox.appsandbox.domain.pcbuilder.entities.PcElement;
 import com.appsandbox.appsandbox.infrastructure.pcbuilder.database.entities.PcElementEntity;
@@ -31,7 +30,7 @@ public class PcElementController {
     @Operation(method = "GET", summary = "Get all pc element entities", description = "Return the list of pc element entities")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved"),
-            @ApiResponse(responseCode = "404", description = "PC element entities were not found")
+            @ApiResponse(responseCode = "204", description = "No PC element entities retrieved")
     })
     @GetMapping()
     public List<PcElementEntity> getAllPcElementEntities() {
@@ -47,11 +46,7 @@ public class PcElementController {
     public ResponseEntity<PcElement> getPcElement(
             @PathVariable @Parameter(name = "id", description = "PC element id", example = "1") int id) {
         PcElement pcElement = pcElementService.getPcElement(id);
-        if (pcElement != null) {
-            return new ResponseEntity<>(pcElement, HttpStatus.OK);
-        } else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "PC element with id=" + id + " not found");
-        }
+        return new ResponseEntity<>(pcElement, HttpStatus.OK);
     }
 
 }

@@ -41,7 +41,7 @@ public class FactoryServiceTest {
         int factoryId = 0;
         FactoryEntity factoryEntity = new FactoryEntity(factoryId, "name", FactoryType.FACTORY, "address",
                 new ArrayList<MachineEntity>());
-        when(factoryRepository.findById(anyInt())).thenReturn(factoryEntity);
+        when(factoryRepository.findById(anyInt()).get()).thenReturn(factoryEntity);
 
         // When
         Factory factory = factoryService.getFactory(factoryId);

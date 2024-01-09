@@ -1,7 +1,9 @@
 package com.appsandbox.appsandbox.infrastructure.mmm.rest.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,11 +25,11 @@ public class BrandController {
     @Operation(method = "GET", summary = "Get all brands", description = "Return the list of all machine brands")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved"),
-            @ApiResponse(responseCode = "404", description = "Brands were not found")
+            @ApiResponse(responseCode = "204", description = "No brands of machine retrieved")
     })
     @GetMapping()
-    public Brands getAllBrands() {
-        return new Brands(brandService.getAllBrands());
+    public ResponseEntity<Brands> getAllBrands() {
+        return new ResponseEntity<>(new Brands(brandService.getAllBrands()), HttpStatus.OK);
     }
 
 }
