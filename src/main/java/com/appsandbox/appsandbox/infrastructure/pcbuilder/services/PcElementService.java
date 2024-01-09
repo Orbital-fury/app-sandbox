@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import com.appsandbox.appsandbox.domain.pcbuilder.entities.PcConstraint;
 import com.appsandbox.appsandbox.domain.pcbuilder.entities.PcElement;
-import com.appsandbox.appsandbox.infrastructure.exceptions.NoContentException;
 import com.appsandbox.appsandbox.infrastructure.exceptions.NoDataFoundException;
 import com.appsandbox.appsandbox.infrastructure.pcbuilder.database.entities.PcElementEntity;
 import com.appsandbox.appsandbox.infrastructure.pcbuilder.database.repositories.PcElementRepository;
@@ -22,11 +21,7 @@ public class PcElementService {
     private PcElementConstraintService pcElementConstraintService;
 
     public List<PcElementEntity> getAllPcElementEntities() {
-        List<PcElementEntity> entityList = pcElementRepository.findAll();
-        if (entityList.isEmpty()) {
-            throw new NoContentException("No PC element have been retrieved");
-        }
-        return entityList;
+        return pcElementRepository.findAll();
     }
 
     public PcElement getPcElement(int elementId) {

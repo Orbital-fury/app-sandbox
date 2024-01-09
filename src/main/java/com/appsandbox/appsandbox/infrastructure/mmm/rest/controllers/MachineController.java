@@ -1,5 +1,7 @@
 package com.appsandbox.appsandbox.infrastructure.mmm.rest.controllers;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -15,6 +17,7 @@ import com.appsandbox.appsandbox.infrastructure.mmm.services.MachineService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -24,23 +27,25 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @Tag(name = "Machine controller", description = "Interact with measuring machines and its linked data")
 public class MachineController {
 
+    Logger log = LoggerFactory.getLogger(MachineController.class);
+
     @Autowired
     private MachineService machineService;
 
     @Operation(method = "GET", summary = "Get all machines", description = "Return the list of all machines")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successfully retrieved"),
-            @ApiResponse(responseCode = "204", description = "No machines retrieved")
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved")
     })
     @GetMapping()
     public ResponseEntity<Machines> getAllFactories() {
         return new ResponseEntity<>(new Machines(machineService.getAllMachines()), HttpStatus.OK);
+
     }
 
     @Operation(method = "GET", summary = "Get machine by id", description = "Return a machine by its id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved"),
-            @ApiResponse(responseCode = "404", description = "Machine was not found")
+            @ApiResponse(responseCode = "404", description = "Machine was not found", content = @Content)
     })
     @GetMapping(path = "/{id}")
     public ResponseEntity<Machine> getFactory(

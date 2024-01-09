@@ -17,6 +17,7 @@ import com.appsandbox.appsandbox.infrastructure.pcbuilder.services.PcElementServ
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
@@ -29,8 +30,7 @@ public class PcElementController {
 
     @Operation(method = "GET", summary = "Get all pc element entities", description = "Return the list of pc element entities")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successfully retrieved"),
-            @ApiResponse(responseCode = "204", description = "No PC element entities retrieved")
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved")
     })
     @GetMapping()
     public List<PcElementEntity> getAllPcElementEntities() {
@@ -40,7 +40,7 @@ public class PcElementController {
     @Operation(method = "GET", summary = "Get PC element by id", description = "Return PC element by its id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved"),
-            @ApiResponse(responseCode = "404", description = "PC element was not found")
+            @ApiResponse(responseCode = "404", description = "PC element was not found", content = @Content)
     })
     @GetMapping(path = "/{id}")
     public ResponseEntity<PcElement> getPcElement(

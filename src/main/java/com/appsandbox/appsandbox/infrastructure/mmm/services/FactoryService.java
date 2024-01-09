@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.appsandbox.appsandbox.domain.mmm.entities.Factory;
-import com.appsandbox.appsandbox.infrastructure.exceptions.NoContentException;
 import com.appsandbox.appsandbox.infrastructure.exceptions.NoDataFoundException;
 import com.appsandbox.appsandbox.infrastructure.mmm.database.entities.FactoryEntity;
 import com.appsandbox.appsandbox.infrastructure.mmm.database.repositories.FactoryRepository;
@@ -24,9 +23,6 @@ public class FactoryService {
 
     public List<Factory> getAllFactories() {
         List<FactoryEntity> entityList = factoryRepository.findAll();
-        if (entityList.isEmpty()) {
-            throw new NoContentException("No factories have been retrieved");
-        }
         List<Factory> factoryList = new ArrayList<>();
         for (FactoryEntity factoryEntity : entityList) {
             Factory entityToDto = factoryMapper.entityToDto(factoryEntity);
@@ -42,7 +38,7 @@ public class FactoryService {
         } else {
             throw new NoDataFoundException("Factory with id=" + id + " not found!!!");
         }
-        
+
     }
 
 }
