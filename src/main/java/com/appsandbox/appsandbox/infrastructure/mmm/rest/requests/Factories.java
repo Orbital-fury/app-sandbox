@@ -4,17 +4,11 @@ import java.util.List;
 
 import com.appsandbox.appsandbox.domain.mmm.entities.Factory;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 public class Factories {
 
-    private List<Factory> factories;
-
-    public Factories(List<Factory> factories) {
-        this.factories = factories;
-    }
+    private final List<Factory> factories;
 
 }

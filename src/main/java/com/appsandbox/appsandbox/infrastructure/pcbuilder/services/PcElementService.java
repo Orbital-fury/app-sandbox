@@ -1,5 +1,6 @@
 package com.appsandbox.appsandbox.infrastructure.pcbuilder.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,21 +21,29 @@ public class PcElementService {
     @Autowired
     private PcElementConstraintService pcElementConstraintService;
 
-    public List<PcElementEntity> getAllPcElementEntities() {
-        return pcElementRepository.findAll();
+    public List<PcElement> getAllPcElement() {
+        List<PcElementEntity> pcElementEntities = pcElementRepository.findAll();
+        List<PcElement> pcElements = new ArrayList<>();
+        pcElementEntities.forEach(pcElementEntity -> pcElements.add(getPcConstraints(pcElementEntity)));
+        return pcElements;
     }
 
     public PcElement getPcElement(int elementId) {
         Optional<PcElementEntity> optPcElementEntity = pcElementRepository.findById(elementId);
         if (optPcElementEntity.isPresent()) {
             PcElementEntity pcElementEntity = optPcElementEntity.get();
-            List<PcConstraint> pcConstraints = pcElementConstraintService.getElementConstraints(elementId);
-            return new PcElement(pcElementEntity.getId(), pcElementEntity.getBrand(), pcElementEntity.getModel(),
-                    pcElementEntity.getPrice(), pcElementEntity.getImg(), pcElementEntity.getType(), pcConstraints);
+            return getPcConstraints(pcElementEntity);
         } else {
             throw new NoDataFoundException("PC element with id=" + elementId + " not found!");
         }
 
+    }
+
+    private PcElement getPcConstraints(PcElementEntity pcElementEntity) {
+        int elementId = pcElementEntity.getId();
+        List<PcConstraint> pcConstraints = pcElementConstraintService.getElementConstraints(elementId);
+        return new PcElement(pcElementEntity.getId(), pcElementEntity.getBrand(), pcElementEntity.getModel(),
+                pcElementEntity.getPrice(), pcElementEntity.getImg(), pcElementEntity.getType(), pcConstraints);
     }
 
 }

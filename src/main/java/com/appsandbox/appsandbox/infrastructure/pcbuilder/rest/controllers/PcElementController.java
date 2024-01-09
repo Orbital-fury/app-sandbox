@@ -1,7 +1,5 @@
 package com.appsandbox.appsandbox.infrastructure.pcbuilder.rest.controllers;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -12,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.appsandbox.appsandbox.domain.pcbuilder.entities.PcElement;
-import com.appsandbox.appsandbox.infrastructure.pcbuilder.database.entities.PcElementEntity;
+import com.appsandbox.appsandbox.infrastructure.pcbuilder.rest.requests.PcElements;
 import com.appsandbox.appsandbox.infrastructure.pcbuilder.services.PcElementService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -28,13 +26,13 @@ public class PcElementController {
     @Autowired
     private PcElementService pcElementService;
 
-    @Operation(method = "GET", summary = "Get all pc element entities", description = "Return the list of pc element entities")
+    @Operation(method = "GET", summary = "Get all pc elements", description = "Return the list of all pc elements")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved")
     })
     @GetMapping()
-    public List<PcElementEntity> getAllPcElementEntities() {
-        return pcElementService.getAllPcElementEntities();
+    public ResponseEntity<PcElements> getAllPcElement() {
+        return new ResponseEntity<>(new PcElements(pcElementService.getAllPcElement()), HttpStatus.OK);
     }
 
     @Operation(method = "GET", summary = "Get PC element by id", description = "Return PC element by its id")
