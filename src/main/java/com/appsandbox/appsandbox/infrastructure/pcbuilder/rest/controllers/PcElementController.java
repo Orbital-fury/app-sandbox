@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.appsandbox.appsandbox.domain.pcbuilder.entities.PcElement;
@@ -31,8 +32,18 @@ public class PcElementController {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved")
     })
     @GetMapping()
-    public ResponseEntity<PcElements> getAllPcElement() {
+    public ResponseEntity<PcElements> getAllPcElements() {
         return new ResponseEntity<>(new PcElements(pcElementService.getAllPcElement()), HttpStatus.OK);
+    }
+
+    @Operation(method = "GET", summary = "Get all pc elements", description = "Return the list of all pc elements")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved")
+    })
+    @GetMapping("/constraints/elements")
+    public ResponseEntity<PcElements> getPcElementsWithConstraints(
+            @RequestParam(name = "id", required = false) String ids) {
+        return new ResponseEntity<>(new PcElements(pcElementService.getPcElementsWithConstraints(ids)), HttpStatus.OK);
     }
 
     @Operation(method = "GET", summary = "Get PC element by id", description = "Return PC element by its id")

@@ -18,6 +18,14 @@ public class PcElement {
     private String img;
     private PcElementType type;
     private List<PcConstraint> constraints;
-    // private List<PcSpecification> specifications;
+    private List<PcSpecification> specifications;
+
+    public boolean canBeAddedRegardingConstraints(List<PcConstraint> pcConstraints) {
+        List<PcConstraint> constraintsOfPcElement = this.constraints;
+        // SAME, MAX, CAPACITY, LIMIT
+
+        return true;
+    }
+
 
 }

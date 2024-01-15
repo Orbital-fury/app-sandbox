@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +17,8 @@ import com.appsandbox.appsandbox.infrastructure.pcbuilder.database.repositories.
 
 @Service
 public class PcElementConstraintService {
+
+    Logger log = LoggerFactory.getLogger(PcElementConstraintService.class);
 
     @Autowired
     private PcConstraintRepository pcConstraintRepository;
@@ -36,12 +40,16 @@ public class PcElementConstraintService {
 
         for (Integer key : valuesByConstraints.keySet()) {
             PcConstraintEntity pcConstraint = pcConstraintRepository.findById(key).get();
-            pcConstraints.add(new PcConstraint(pcConstraint.getName(), pcConstraint.getCode(), pcConstraint.getType(),
+            pcConstraints.add(new PcConstraint(pcConstraint.getId(), pcConstraint.getName(), pcConstraint.getCode(),
+                    pcConstraint.getType(),
                     valuesByConstraints.get(pcConstraint.getId())));
         }
-
         return pcConstraints;
+    }
 
+    public List<PcConstraintEntity> getConstraintsByIds(List<Integer> ids) {
+        List<PcConstraintEntity> allByIdIn = pcConstraintRepository.findAllByIdIn(ids);
+        return allByIdIn;
     }
 
 }

@@ -1,5 +1,10 @@
 package com.appsandbox.appsandbox.infrastructure.pcbuilder.database.entities;
 
+import java.util.List;
+
+import com.appsandbox.appsandbox.domain.pcbuilder.entities.PcConstraint;
+import com.appsandbox.appsandbox.domain.pcbuilder.entities.PcElement;
+import com.appsandbox.appsandbox.domain.pcbuilder.entities.PcSpecification;
 import com.appsandbox.appsandbox.domain.pcbuilder.enums.PcElementType;
 
 import jakarta.persistence.Column;
@@ -26,5 +31,9 @@ public class PcElementEntity {
     @Column(name = "element_type")
     @Enumerated(EnumType.STRING)
     private PcElementType type;
+
+    public PcElement toDto(List<PcConstraint> pcConstraints, List<PcSpecification> pcSpecifications) {
+        return new PcElement(id, brand, model, price, img, type, pcConstraints, pcSpecifications);
+    }
 
 }
