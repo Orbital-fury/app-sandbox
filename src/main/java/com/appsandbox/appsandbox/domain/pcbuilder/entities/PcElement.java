@@ -20,12 +20,4 @@ public class PcElement {
     private List<PcConstraint> constraints;
     private List<PcSpecification> specifications;
 
-    public boolean canBeAddedRegardingConstraints(List<PcConstraint> pcConstraints) {
-        List<PcConstraint> constraintsOfPcElement = this.constraints;
-        // SAME, MAX, CAPACITY, LIMIT
-
-        return true;
-    }
-
-
 }

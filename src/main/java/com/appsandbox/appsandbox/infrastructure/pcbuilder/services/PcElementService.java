@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -55,14 +56,12 @@ public class PcElementService {
         List<PcConstraint> pcBuildConstraints = getPcConstraintsfromPcElements(selectedPcElements);
 
         List<PcElement> pcElements = new ArrayList<>();
-        log.info("************************");
         pcElementEntities.forEach(pcElementEntity -> {
             PcElement pcElement = pcElementDtoFromEntity(pcElementEntity);
-            if (pcElement.canBeAddedRegardingConstraints(pcBuildConstraints)) {
+            if (canBeAddedRegardingConstraints(pcElement, pcBuildConstraints)) {
                 pcElements.add(pcElement);
             }
         });
-        log.info("************************");
         return pcElements;
     }
 
@@ -108,5 +107,46 @@ public class PcElementService {
         return pcElementEntity.toDto(pcConstraints, pcSpecifications);
     }
 
-    
+    public boolean canBeAddedRegardingConstraints(PcElement pcElement, List<PcConstraint> pcBuildConstraints) {
+        List<PcConstraint> constraintsOfPcElement = pcElement.getConstraints();
+        Map<String, PcConstraint> buildConstraintMap = pcBuildConstraints.stream()
+                .collect(Collectors.toMap(PcConstraint::getCode, constraint -> constraint));
+        log.info("***************");
+        log.info("Test if {} {} can be added to PC build", pcElement.getBrand(), pcElement.getModel());
+        for (PcConstraint constraint : constraintsOfPcElement) {
+            PcConstraint pcBuildConstraintToManage = buildConstraintMap.get(constraint.getCode());
+
+            if (pcBuildConstraintToManage != null) {
+                switch (pcBuildConstraintToManage.getType()) {
+                    case SAME:
+                        log.info("PC build constraint '{}' is SAME type", pcBuildConstraintToManage.getName());
+                        for (String valueFromBuildToManage : pcBuildConstraintToManage.getValue()) {
+                            for (String value : constraint.getValue()) {
+                                log.info("Testing : {} = {} ?", valueFromBuildToManage, value);
+                                if (valueFromBuildToManage.equals(value)) {
+                                    log.info("++ values match so PC element will be retrieved");
+                                    return true;
+                                }
+                            }
+                        }
+                        log.info("-- values don't match so PC element is excluded");
+                        return false;
+                    case MAX:
+                        return Float.parseFloat(pcBuildConstraintToManage.getValue().get(0)) >= Float
+                                .parseFloat(constraint.getValue().get(0));
+                    case CAPACITY:
+                        // Gestion du cas CAPACITY
+                        break;
+                    case LIMIT:
+                        return Float.parseFloat(pcBuildConstraintToManage.getValue().get(0)) <= Float
+                                .parseFloat(constraint.getValue().get(0));
+                }
+            }
+        }
+        log.info("***************");
+
+        // Si aucune contrainte n'a été rencontrée, retournez false
+        return true;
+    }
+
 }

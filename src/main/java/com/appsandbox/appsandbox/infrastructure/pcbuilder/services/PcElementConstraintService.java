@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.appsandbox.appsandbox.domain.pcbuilder.entities.PcConstraint;
+import com.appsandbox.appsandbox.domain.pcbuilder.enums.PcConstraintType;
 import com.appsandbox.appsandbox.infrastructure.pcbuilder.database.entities.PcConstraintEntity;
 import com.appsandbox.appsandbox.infrastructure.pcbuilder.database.entities.PcElementConstraintEntity;
 import com.appsandbox.appsandbox.infrastructure.pcbuilder.database.repositories.PcConstraintRepository;
@@ -40,9 +41,13 @@ public class PcElementConstraintService {
 
         for (Integer key : valuesByConstraints.keySet()) {
             PcConstraintEntity pcConstraint = pcConstraintRepository.findById(key).get();
+            List<String> constraintValues = valuesByConstraints.get(pcConstraint.getId());
+            if ((pcConstraint.getType() == PcConstraintType.LIMIT || pcConstraint.getType() == PcConstraintType.MAX) && constraintValues.size() != 1) {
+                throw new RuntimeException("An error of MAX or LIMIT type has a size different from 1");
+            }
             pcConstraints.add(new PcConstraint(pcConstraint.getId(), pcConstraint.getName(), pcConstraint.getCode(),
                     pcConstraint.getType(),
-                    valuesByConstraints.get(pcConstraint.getId())));
+                    constraintValues));
         }
         return pcConstraints;
     }

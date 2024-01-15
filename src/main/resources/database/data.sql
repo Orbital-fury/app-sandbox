@@ -151,7 +151,7 @@ INSERT INTO pc_elements_constraints (element_id, constraint_id, c_value) VALUES 
 INSERT INTO pc_elements_constraints (element_id, constraint_id, c_value) VALUES (6, 11, '369');
 INSERT INTO pc_elements_constraints (element_id, constraint_id, c_value) VALUES (7, 12, '199');
 INSERT INTO pc_elements_constraints (element_id, constraint_id, c_value) VALUES (7, 13, '115');
-INSERT INTO pc_elements_constraints (element_id, constraint_id, c_value) VALUES (8, 12, '269.1');
+INSERT INTO pc_elements_constraints (element_id, constraint_id, c_value) VALUES (8, 12, '369.1');
 INSERT INTO pc_elements_constraints (element_id, constraint_id, c_value) VALUES (8, 13, '200');
 INSERT INTO pc_elements_constraints (element_id, constraint_id, c_value) VALUES (9, 6, 'ATX');
 INSERT INTO pc_elements_constraints (element_id, constraint_id, c_value) VALUES (9, 0, '1700');
