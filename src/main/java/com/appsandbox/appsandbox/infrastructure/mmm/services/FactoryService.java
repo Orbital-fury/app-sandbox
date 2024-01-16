@@ -2,7 +2,6 @@ package com.appsandbox.appsandbox.infrastructure.mmm.services;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,13 +31,19 @@ public class FactoryService {
     }
 
     public Factory getFactory(int id) {
-        Optional<FactoryEntity> optFactoryEntity = factoryRepository.findById(id);
-        if (optFactoryEntity.isPresent()) {
-            return factoryMapper.entityToDto(optFactoryEntity.get());
-        } else {
-            throw new NoDataFoundException("Factory with id=" + id + " not found!!!");
-        }
-
+        /**
+         * Old way to retrieve factory by id and map entity to dto
+         * 
+         * Optional<FactoryEntity> optFactoryEntity = factoryRepository.findById(id);
+         * if (optFactoryEntity.isPresent()) {
+         * return factoryMapper.entityToDto(optFactoryEntity.get());
+         * } else {
+         * throw new NoDataFoundException("Factory with id=" + id + " not found!!!");
+         * }
+         */
+        return factoryRepository.findById(id)
+                .map(factoryMapper::entityToDto)
+                .orElseThrow(() -> new NoDataFoundException("Factory with id=" + id + " not found!!!"));
     }
 
 }

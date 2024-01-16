@@ -3,6 +3,7 @@ package com.appsandbox.appsandbox.infrastructure.pcbuilder.services;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,32 +17,51 @@ import com.appsandbox.appsandbox.infrastructure.pcbuilder.database.repositories.
 @Service
 public class PcElementSpecificationService {
 
-    @Autowired
-    private PcSpecificationRepository pcSpecificationRepository;
-    @Autowired
-    private PcElementSpecificationRepository pcElementSpecificationRepository;
+        @Autowired
+        private PcSpecificationRepository pcSpecificationRepository;
+        @Autowired
+        private PcElementSpecificationRepository pcElementSpecificationRepository;
 
-    public List<PcSpecification> getElementSpecifications(int elementId) {
-        List<PcElementSpecificationEntity> elementSpecifications = pcElementSpecificationRepository
-                .findByElementId(elementId);
+        public List<PcSpecification> getElementSpecifications(int elementId) {
+                List<PcElementSpecificationEntity> elementSpecifications = pcElementSpecificationRepository
+                                .findByElementId(elementId);
 
-        HashMap<Integer, List<String>> valuesBySpecifications = new HashMap<>();
-        List<PcSpecification> pcSpecifications = new ArrayList<>();
+                HashMap<Integer, List<String>> valuesBySpecifications = new HashMap<>();
 
-        elementSpecifications.forEach(elementSpecification -> {
-            List<String> values = valuesBySpecifications.getOrDefault(elementSpecification.getSpecificationId(),
-                    new ArrayList<>());
-            values.add(elementSpecification.getValue());
-            valuesBySpecifications.put(elementSpecification.getSpecificationId(), values);
-        });
+                elementSpecifications.forEach(elementSpecification -> {
+                        // List<String> values = valuesBySpecifications.getOrDefault(
+                        // elementSpecification.getSpecificationId(),
+                        // new ArrayList<>());
+                        // values.add(elementSpecification.getValue());
+                        // valuesBySpecifications.put(elementSpecification.getSpecificationId(),
+                        // values);
+                        valuesBySpecifications
+                                        .computeIfAbsent(elementSpecification.getSpecificationId(),
+                                                        k -> new ArrayList<>())
+                                        .add(elementSpecification.getValue());
+                });
 
-        for (Integer key : valuesBySpecifications.keySet()) {
-            PcSpecificationEntity pcSpecification = pcSpecificationRepository.findById(key).get();
-            pcSpecifications.add(
-                    new PcSpecification(pcSpecification.getId(), pcSpecification.getName(), pcSpecification.getCode(),
-                            valuesBySpecifications.get(pcSpecification.getId())));
+                // List<PcSpecification> pcSpecifications = new ArrayList<>();
+                // for (int key : valuesBySpecifications.keySet()) {
+                //         PcSpecificationEntity pcSpecification = pcSpecificationRepository.findById(key)
+                //                         .orElseThrow(() -> new RuntimeException(
+                //                                         "PcSpecificationEntity not found for key: " + key));
+                //         pcSpecifications.add(
+                //                         new PcSpecification(pcSpecification.getId(), pcSpecification.getName(),
+                //                                         pcSpecification.getCode(),
+                //                                         valuesBySpecifications.get(pcSpecification.getId())));
+                // }
+                // return pcSpecifications;
+                return valuesBySpecifications.keySet().stream()
+                                .map(key -> {
+                                        PcSpecificationEntity pcSpecification = pcSpecificationRepository.findById(key)
+                                                        .orElseThrow(() -> new RuntimeException(
+                                                                        "PcSpecificationEntity not found for key: "
+                                                                                        + key));
+                                        return new PcSpecification(pcSpecification.getId(), pcSpecification.getName(),
+                                                        pcSpecification.getCode(), valuesBySpecifications.get(key));
+                                })
+                                .collect(Collectors.toList());
         }
-        return pcSpecifications;
-    }
 
 }

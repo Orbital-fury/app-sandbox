@@ -36,14 +36,15 @@ public class PcElementController {
         return new ResponseEntity<>(new PcElements(pcElementService.getAllPcElement()), HttpStatus.OK);
     }
 
-    @Operation(method = "GET", summary = "Get all pc elements", description = "Return the list of all pc elements")
+    @Operation(method = "GET", summary = "Get pc elements regarding constraints", description = "Return the list of all possible pc elements that can be added regarding PC elements from build")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved")
     })
     @GetMapping("/constraints/elements")
     public ResponseEntity<PcElements> getPcElementsWithConstraints(
-            @RequestParam(name = "id", required = false) String ids) {
-        return new ResponseEntity<>(new PcElements(pcElementService.getPcElementsWithConstraints(ids)), HttpStatus.OK);
+            @RequestParam(name = "ids", required = false) @Parameter(description = "Comma-separated list of PC element IDs", example = "0,9") String pcBuildElementIds) {
+        return new ResponseEntity<>(new PcElements(pcElementService.getPcElementsWithConstraints(pcBuildElementIds)),
+                HttpStatus.OK);
     }
 
     @Operation(method = "GET", summary = "Get PC element by id", description = "Return PC element by its id")

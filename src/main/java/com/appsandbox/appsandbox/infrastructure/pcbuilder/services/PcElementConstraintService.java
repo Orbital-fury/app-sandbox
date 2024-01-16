@@ -3,6 +3,7 @@ package com.appsandbox.appsandbox.infrastructure.pcbuilder.services;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,31 +31,51 @@ public class PcElementConstraintService {
         List<PcElementConstraintEntity> elementConstraints = pcElementConstraintRepository.findByElementId(elementId);
 
         HashMap<Integer, List<String>> valuesByConstraints = new HashMap<>();
-        List<PcConstraint> pcConstraints = new ArrayList<>();
 
         elementConstraints.forEach(elementConstraint -> {
-            List<String> values = valuesByConstraints.getOrDefault(elementConstraint.getConstraintId(),
-                    new ArrayList<>());
-            values.add(elementConstraint.getValue());
-            valuesByConstraints.put(elementConstraint.getConstraintId(), values);
+            // List<String> values = valuesByConstraints.getOrDefault(elementConstraint.getConstraintId(),
+            //         new ArrayList<>());
+            // values.add(elementConstraint.getValue());
+            // valuesByConstraints.put(elementConstraint.getConstraintId(), values);
+            valuesByConstraints
+                    .computeIfAbsent(elementConstraint.getConstraintId(),
+                            k -> new ArrayList<>())
+                    .add(elementConstraint.getValue());
         });
 
-        for (Integer key : valuesByConstraints.keySet()) {
-            PcConstraintEntity pcConstraint = pcConstraintRepository.findById(key).get();
-            List<String> constraintValues = valuesByConstraints.get(pcConstraint.getId());
-            if ((pcConstraint.getType() == PcConstraintType.LIMIT || pcConstraint.getType() == PcConstraintType.MAX) && constraintValues.size() != 1) {
-                throw new RuntimeException("An error of MAX or LIMIT type has a size different from 1");
-            }
-            pcConstraints.add(new PcConstraint(pcConstraint.getId(), pcConstraint.getName(), pcConstraint.getCode(),
-                    pcConstraint.getType(),
-                    constraintValues));
-        }
-        return pcConstraints;
+        // List<PcConstraint> pcConstraints = new ArrayList<>();
+        // for (int key : valuesByConstraints.keySet()) {
+        //     PcConstraintEntity pcConstraint = pcConstraintRepository.findById(key)
+        //             .orElseThrow(() -> new RuntimeException("PcConstraintEntity not found for key: " + key));
+        //     List<String> constraintValues = valuesByConstraints.get(pcConstraint.getId());
+        //     if ((pcConstraint.getType() == PcConstraintType.LIMIT || pcConstraint.getType() == PcConstraintType.MAX)
+        //             && constraintValues.size() != 1) {
+        //         throw new RuntimeException("A type's constraint: MAX or LIMIT has a size different from 1");
+        //     }
+        //     pcConstraints.add(new PcConstraint(pcConstraint.getId(), pcConstraint.getName(), pcConstraint.getCode(),
+        //             pcConstraint.getType(),
+        //             constraintValues));
+        // }
+        // return pcConstraints;
+        return valuesByConstraints.keySet().stream()
+                .map(key -> {
+                    PcConstraintEntity pcConstraint = pcConstraintRepository.findById(key)
+                            .orElseThrow(() -> new RuntimeException("PcConstraintEntity not found for key: " + key));
+                    List<String> constraintValues = valuesByConstraints.get(pcConstraint.getId());
+                    if ((pcConstraint.getType() == PcConstraintType.LIMIT
+                            || pcConstraint.getType() == PcConstraintType.MAX)
+                            && constraintValues.size() != 1) {
+                        throw new RuntimeException("A type's constraint: MAX or LIMIT has a size different from 1");
+                    }
+                    return new PcConstraint(pcConstraint.getId(), pcConstraint.getName(), pcConstraint.getCode(),
+                            pcConstraint.getType(),
+                            constraintValues);
+                })
+                .collect(Collectors.toList());
     }
 
     public List<PcConstraintEntity> getConstraintsByIds(List<Integer> ids) {
-        List<PcConstraintEntity> allByIdIn = pcConstraintRepository.findAllByIdIn(ids);
-        return allByIdIn;
+        return pcConstraintRepository.findAllByIdIn(ids);
     }
 
 }

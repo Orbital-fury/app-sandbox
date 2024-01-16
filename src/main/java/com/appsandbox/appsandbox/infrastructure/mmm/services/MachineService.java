@@ -2,7 +2,6 @@ package com.appsandbox.appsandbox.infrastructure.mmm.services;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,13 +31,17 @@ public class MachineService {
     }
 
     public Machine getMachine(int id) {
-        Optional<MachineEntity> optMachineEntity = machineRepository.findById(id);
-        if (optMachineEntity.isPresent()) {
-            return machineMapper.entityToDto(optMachineEntity.get());
-        } else {
-            throw new NoDataFoundException("Machine with id=" + id + " not found!");
-        }
-
+        /*
+         * Optional<MachineEntity> optMachineEntity = machineRepository.findById(id);
+         * if (optMachineEntity.isPresent()) {
+         * return machineMapper.entityToDto(optMachineEntity.get());
+         * } else {
+         * throw new NoDataFoundException("Machine with id=" + id + " not found!");
+         * }
+         */
+        return machineRepository.findById(id)
+                .map(machineMapper::entityToDto)
+                .orElseThrow(() -> new NoDataFoundException("Machine with id=" + id + " not found!"));
     }
 
 }

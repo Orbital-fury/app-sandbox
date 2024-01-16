@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
@@ -34,35 +32,66 @@ public class PcElementService {
 
     public List<PcElement> getAllPcElement() {
         List<PcElementEntity> pcElementEntities = pcElementRepository.findAll();
-        List<PcElement> pcElements = new ArrayList<>();
-        pcElementEntities.forEach(pcElementEntity -> pcElements.add(pcElementDtoFromEntity(pcElementEntity)));
-        return pcElements;
+        // List<PcElement> pcElements = new ArrayList<>();
+        // pcElementEntities.forEach(pcElementEntity -> pcElements.add(pcElementDtoFromEntity(pcElementEntity)));
+        // return pcElements;
+        return pcElementEntities.stream()
+                .map(this::pcElementDtoFromEntity)
+                .collect(Collectors.toList());
     }
 
     public List<PcElement> getPcElementsWithConstraints(String strSelectedPcElementIds) {
-        // Retrieve all PcElement entities
-        List<PcElementEntity> pcElementEntities = pcElementRepository.findAll();
+        if (strSelectedPcElementIds == null || strSelectedPcElementIds == "") {
+            log.info("No PC elements in current build");
+            return getAllPcElement();
+        }
 
         // Retrieve PcElement already selected in order to get constraints from selected
         List<Integer> selectedPcElementIds = Arrays.stream(strSelectedPcElementIds.trim().split(","))
                 .map(Integer::parseInt)
                 .collect(Collectors.toList());
-        List<PcElement> selectedPcElements = new ArrayList<>();
-        pcElementRepository.findAllByIdIn(selectedPcElementIds).forEach(pcElementEntity -> {
-            selectedPcElements.add(pcElementDtoFromEntity(pcElementEntity));
-        });
+
+        // List<PcElement> selectedPcElements = new ArrayList<>();
+        // pcElementRepository.findAllByIdIn(selectedPcElementIds).forEach(pcElementEntity -> {
+        //     selectedPcElements.add(pcElementDtoFromEntity(pcElementEntity));
+        // });
+        List<PcElement> selectedPcElements = pcElementRepository.findAllByIdIn(selectedPcElementIds)
+                .stream()
+                .map(this::pcElementDtoFromEntity)
+                .collect(Collectors.toList());
 
         // Retrieve PcConstraints of current PC build
         List<PcConstraint> pcBuildConstraints = getPcConstraintsfromPcElements(selectedPcElements);
 
-        List<PcElement> pcElements = new ArrayList<>();
-        pcElementEntities.forEach(pcElementEntity -> {
-            PcElement pcElement = pcElementDtoFromEntity(pcElementEntity);
-            if (canBeAddedRegardingConstraints(pcElement, pcBuildConstraints)) {
-                pcElements.add(pcElement);
-            }
-        });
-        return pcElements;
+        // Retrieve all PcElement entities
+        // List<PcElementEntity> pcElementEntities = pcElementRepository.findAll();
+        // List<PcElement> pcElements = new ArrayList<>();
+        // pcElementEntities.forEach(pcElementEntity -> {
+        //     PcElement pcElement = pcElementDtoFromEntity(pcElementEntity);
+        //     if (canBeAddedRegardingConstraints(pcElement, pcBuildConstraints)) {
+        //         pcElements.add(pcElement);
+        //     }
+        // });
+        // return pcElements;
+        return pcElementRepository.findAll().stream()
+                .map(this::pcElementDtoFromEntity)
+                .filter(pcElement -> canBeAddedRegardingConstraints(pcElement, pcBuildConstraints))
+                .collect(Collectors.toList());
+    }
+
+    public PcElement getPcElement(int elementId) {
+        
+        // Optional<PcElementEntity> optPcElementEntity = pcElementRepository.findById(elementId);
+        // if (optPcElementEntity.isPresent()) {
+        //     PcElementEntity pcElementEntity = optPcElementEntity.get();
+        //     return pcElementDtoFromEntity(pcElementEntity);
+        // } else {
+        //     throw new NoDataFoundException("PC element with id=" + elementId +
+        //             " not found!");
+        // }
+        return pcElementRepository.findById(elementId)
+                .map(this::pcElementDtoFromEntity)
+                .orElseThrow(() -> new NoDataFoundException("PC element with id=" + elementId + " not found!"));
     }
 
     private List<PcConstraint> getPcConstraintsfromPcElements(List<PcElement> selectedPcElements) {
@@ -89,17 +118,6 @@ public class PcElementService {
                 .collect(Collectors.toList());
     }
 
-    public PcElement getPcElement(int elementId) {
-        Optional<PcElementEntity> optPcElementEntity = pcElementRepository.findById(elementId);
-        if (optPcElementEntity.isPresent()) {
-            PcElementEntity pcElementEntity = optPcElementEntity.get();
-            return pcElementDtoFromEntity(pcElementEntity);
-        } else {
-            throw new NoDataFoundException("PC element with id=" + elementId + " not found!");
-        }
-
-    }
-
     private PcElement pcElementDtoFromEntity(PcElementEntity pcElementEntity) {
         int elementId = pcElementEntity.getId();
         List<PcConstraint> pcConstraints = pcElementConstraintService.getElementConstraints(elementId);
@@ -107,46 +125,105 @@ public class PcElementService {
         return pcElementEntity.toDto(pcConstraints, pcSpecifications);
     }
 
-    public boolean canBeAddedRegardingConstraints(PcElement pcElement, List<PcConstraint> pcBuildConstraints) {
-        List<PcConstraint> constraintsOfPcElement = pcElement.getConstraints();
-        Map<String, PcConstraint> buildConstraintMap = pcBuildConstraints.stream()
-                .collect(Collectors.toMap(PcConstraint::getCode, constraint -> constraint));
+    // public boolean canBeAddedRegardingConstraints(PcElement pcElement,
+    //         List<PcConstraint> pcBuildConstraints) {
+    //     boolean canBeAdded = true;
+    //     List<PcConstraint> constraintsOfPcElement = pcElement.getConstraints();
+    //     Map<String, PcConstraint> buildConstraintMap = pcBuildConstraints.stream()
+    //             .collect(Collectors.toMap(PcConstraint::getCode, constraint -> constraint));
+    //     log.info("***************");
+    //     log.info("Test if {} {} can be added to PC build", pcElement.getBrand(),
+    //             pcElement.getModel());
+    //     for (PcConstraint constraint : constraintsOfPcElement) {
+    //         PcConstraint pcBuildConstraintToManage = buildConstraintMap.get(constraint.getCode());
+
+    //         if (pcBuildConstraintToManage != null) {
+    //             boolean canBeAddedCurrentConstraint = false;
+    //             switch (pcBuildConstraintToManage.getType()) {
+    //                 case SAME:
+    //                     log.info("PC build constraint '{}' is SAME type",
+    //                             pcBuildConstraintToManage.getName());
+    //                     for (String valueFromBuildToManage : pcBuildConstraintToManage.getValue()) {
+    //                         for (String value : constraint.getValue()) {
+    //                             log.info("Testing : {} = {} ?", valueFromBuildToManage, value);
+    //                             if (valueFromBuildToManage.equals(value)) {
+    //                                 log.info("++ values match so PC element can be retrieved");
+    //                                 // return true;
+    //                                 canBeAddedCurrentConstraint = true;
+    //                             }
+    //                         }
+    //                     }
+    //                     // return false;
+    //                     break;
+    //                 case MAX:
+    //                     canBeAddedCurrentConstraint = Float
+    //                             .parseFloat(pcBuildConstraintToManage.getValue().get(0)) >= Float
+    //                                     .parseFloat(constraint.getValue().get(0));
+    //                     // return maxTest;
+    //                     break;
+    //                 case CAPACITY:
+    //                     // Gestion du cas CAPACITY
+    //                     break;
+    //                 case LIMIT:
+    //                     canBeAddedCurrentConstraint = Float
+    //                             .parseFloat(pcBuildConstraintToManage.getValue().get(0)) <= Float
+    //                                     .parseFloat(constraint.getValue().get(0));
+    //                     // return limitTest;
+    //                     break;
+    //             }
+    //             canBeAdded = canBeAdded && canBeAddedCurrentConstraint;
+    //             if (canBeAdded == false) {
+    //                 log.info("PC element is discarded because constraint doesn't match !!!");
+    //                 return false;
+    //             } else {
+    //                 log.info("PC element is potentially retrieved");
+    //             }
+    //         }
+    //     }
+    //     log.info("PC element is retrieved");
+    //     log.info("***************");
+    //     return canBeAdded; // return true;
+    // }
+
+    private boolean canBeAddedRegardingConstraints(PcElement pcElement, List<PcConstraint> pcBuildConstraints) {
         log.info("***************");
         log.info("Test if {} {} can be added to PC build", pcElement.getBrand(), pcElement.getModel());
-        for (PcConstraint constraint : constraintsOfPcElement) {
-            PcConstraint pcBuildConstraintToManage = buildConstraintMap.get(constraint.getCode());
 
-            if (pcBuildConstraintToManage != null) {
-                switch (pcBuildConstraintToManage.getType()) {
-                    case SAME:
-                        log.info("PC build constraint '{}' is SAME type", pcBuildConstraintToManage.getName());
-                        for (String valueFromBuildToManage : pcBuildConstraintToManage.getValue()) {
-                            for (String value : constraint.getValue()) {
-                                log.info("Testing : {} = {} ?", valueFromBuildToManage, value);
-                                if (valueFromBuildToManage.equals(value)) {
-                                    log.info("++ values match so PC element will be retrieved");
-                                    return true;
-                                }
-                            }
-                        }
-                        log.info("-- values don't match so PC element is excluded");
-                        return false;
-                    case MAX:
-                        return Float.parseFloat(pcBuildConstraintToManage.getValue().get(0)) >= Float
-                                .parseFloat(constraint.getValue().get(0));
-                    case CAPACITY:
-                        // Gestion du cas CAPACITY
-                        break;
-                    case LIMIT:
-                        return Float.parseFloat(pcBuildConstraintToManage.getValue().get(0)) <= Float
-                                .parseFloat(constraint.getValue().get(0));
-                }
+        boolean canBeAdded = pcElement.getConstraints().stream().allMatch(constraint -> {
+            PcConstraint pcBuildConstraintToManage = pcBuildConstraints.stream()
+                    .filter(buildConstraint -> buildConstraint.getCode().equals(constraint.getCode()))
+                    .findFirst()
+                    .orElse(null);
+
+            if (pcBuildConstraintToManage == null) {
+                return true; // Contrainte non présente, donc valide
             }
-        }
-        log.info("***************");
+            log.info("PC build constraint '{}' is {} type", pcBuildConstraintToManage.getName(),
+                    pcBuildConstraintToManage.getType());
+            switch (pcBuildConstraintToManage.getType()) {
+                case SAME:
+                    return pcBuildConstraintToManage.getValue().stream()
+                            .anyMatch(valueFromBuildToManage -> {
+                                log.info("Comparing from build: {} to {}", valueFromBuildToManage, constraint.getValue());
+                                return constraint.getValue().contains(valueFromBuildToManage);
+                            });
+                case MAX:
+                    return Float.parseFloat(pcBuildConstraintToManage.getValue().get(0)) >= Float
+                            .parseFloat(constraint.getValue().get(0));
+                case CAPACITY:
+                    // Gestion du cas CAPACITY
+                    return true;
+                case LIMIT:
+                    return Float.parseFloat(pcBuildConstraintToManage.getValue().get(0)) <= Float
+                            .parseFloat(constraint.getValue().get(0));
+            }
 
-        // Si aucune contrainte n'a été rencontrée, retournez false
-        return true;
+            return false; // Au cas où une nouvelle valeur de type serait ajoutée
+        });
+
+        log.info("PC element is {}retrieved", canBeAdded ? "" : "not ");
+        log.info("***************");
+        return canBeAdded;
     }
 
 }
