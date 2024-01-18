@@ -40,14 +40,14 @@ public class PcElementService {
                 .collect(Collectors.toList());
     }
 
-    public List<PcElement> getPcElementsWithConstraints(String strSelectedPcElementIds) {
-        if (strSelectedPcElementIds == null || strSelectedPcElementIds == "") {
+    public List<PcElement> getPcElementsWithConstraints(String strPcBuildElementIds) {
+        if (strPcBuildElementIds == null || strPcBuildElementIds == "") {
             log.info("No PC elements in current build");
             return getAllPcElement();
         }
 
         // Retrieve PcElement already selected in order to get constraints from selected
-        List<Integer> selectedPcElementIds = Arrays.stream(strSelectedPcElementIds.trim().split(","))
+        List<Integer> pcBuildElementIds = Arrays.stream(strPcBuildElementIds.trim().split(","))
                 .map(Integer::parseInt)
                 .collect(Collectors.toList());
 
@@ -55,13 +55,13 @@ public class PcElementService {
         // pcElementRepository.findAllByIdIn(selectedPcElementIds).forEach(pcElementEntity -> {
         //     selectedPcElements.add(pcElementDtoFromEntity(pcElementEntity));
         // });
-        List<PcElement> selectedPcElements = pcElementRepository.findAllByIdIn(selectedPcElementIds)
+        List<PcElement> pcBuildElements = pcElementRepository.findAllByIdIn(pcBuildElementIds)
                 .stream()
                 .map(this::pcElementDtoFromEntity)
                 .collect(Collectors.toList());
 
         // Retrieve PcConstraints of current PC build
-        List<PcConstraint> pcBuildConstraints = getPcConstraintsfromPcElements(selectedPcElements);
+        List<PcConstraint> pcBuildConstraints = getPcConstraintsfromPcElements(pcBuildElements);
 
         // Retrieve all PcElement entities
         // List<PcElementEntity> pcElementEntities = pcElementRepository.findAll();
@@ -94,11 +94,11 @@ public class PcElementService {
                 .orElseThrow(() -> new NoDataFoundException("PC element with id=" + elementId + " not found!"));
     }
 
-    private List<PcConstraint> getPcConstraintsfromPcElements(List<PcElement> selectedPcElements) {
-        return selectedPcElements.stream()
+    private List<PcConstraint> getPcConstraintsfromPcElements(List<PcElement> pcElements) {
+        return pcElements.stream()
                 // applatit le stream de liste de contraintes de liste d'éléments en une seule
                 // liste de contraintes
-                .flatMap(selectedPcElement -> selectedPcElement.getConstraints().stream())
+                .flatMap(pcElement -> pcElement.getConstraints().stream())
                 // applique un groupBy (ici le code de la PcConstraint) pour créer Map<String,
                 // List<PcConstraint>>
                 .collect(Collectors.groupingBy(PcConstraint::getCode))
