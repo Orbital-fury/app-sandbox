@@ -105,7 +105,7 @@ INSERT INTO pc_specifications (id, name, code) VALUES (3, 'Norme 80 PLUS', 'NORM
 INSERT INTO pc_specifications (id, name, code) VALUES (4, 'Number of RAM', 'NUMBER_OF_RAM');
 INSERT INTO pc_specifications (id, name, code) VALUES (5, 'RAM memory', 'RAM_MEMORY');
 
-INSERT INTO pc_elements (id, brand, model, price, img, element_type) VALUES (0, 'Intel', 'i5-12400F', 184.96, null, 'CPU');
+INSERT INTO pc_elements (id, brand, model, price, img, element_type) VALUES (0, 'Intel', 'i5-12400F', 184.96, 'https://media.ldlc.com/r374/ld/products/00/05/91/49/LD0005914928_1.jpg', 'CPU');
 INSERT INTO pc_elements (id, brand, model, price, img, element_type) VALUES (1, 'Intel', 'i7-12700KF', 379.96, null, 'CPU');
 INSERT INTO pc_elements (id, brand, model, price, img, element_type) VALUES (2, 'AMD', 'Ryzen 5 3600', 77.95, null, 'CPU');
 INSERT INTO pc_elements (id, brand, model, price, img, element_type) VALUES (3, 'AMD', 'Ryzen 5 7600X', 279.95, null, 'CPU');
