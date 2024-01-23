@@ -1,6 +1,5 @@
 package com.appsandbox.appsandbox.infrastructure.pcbuilder.database.entities;
 
-import com.appsandbox.appsandbox.domain.pcbuilder.entities.PcConstraintWithoutValue;
 import com.appsandbox.appsandbox.domain.pcbuilder.enums.PcConstraintType;
 
 import jakarta.persistence.Entity;
