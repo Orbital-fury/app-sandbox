@@ -19,8 +19,17 @@ public class PcConstraintService {
     public List<PcConstraintWithoutValue> getAllPcConstraintWithoutValue() {
         List<PcConstraintEntity> pcConstraintEntities = pcConstraintRepository.findAll();
         return pcConstraintEntities.stream()
-                .map(PcConstraintWithoutValue::fromEntity)
+                .map(entity -> entity.toDto())
                 .collect(Collectors.toList());
+    }
+
+    public PcConstraintWithoutValue save(PcConstraintWithoutValue newPcConstraint) {
+        PcConstraintEntity pcConstraintEntity = newPcConstraint.toEntity();
+        if (pcConstraintEntity != null) {
+            return pcConstraintRepository.save(pcConstraintEntity).toDto();
+        } else {
+            throw new IllegalArgumentException("The PC constraint entity is null");
+        }
     }
 
 }

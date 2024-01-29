@@ -11,12 +11,16 @@ import org.springframework.web.util.WebUtils;
 @ControllerAdvice
 public class ControllerAdvisor extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(NoDataFoundException.class)
-    public ResponseEntity<ApiError> handleNodataFoundException(Exception ex, WebRequest request) {
+    @ExceptionHandler({NoDataFoundException.class, BadRequestException.class})
+    public ResponseEntity<ApiError> handleHttpException(Exception ex, WebRequest request) {
         if (ex instanceof NoDataFoundException) {
             HttpStatus status = HttpStatus.NOT_FOUND;
             NoDataFoundException ndfe = (NoDataFoundException) ex;
             return handleNoDataFoundException(ndfe, status, request);
+        } else if (ex instanceof BadRequestException) {
+            HttpStatus status = HttpStatus.BAD_REQUEST;
+            BadRequestException bre = (BadRequestException) ex;
+            return handleBadRequestException(bre, status, request);
         } else {
             HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
             return handleExceptionInternal(ex, null, status, request);
@@ -25,6 +29,12 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
 
     // Customize the response for NoDataFoundException
     protected ResponseEntity<ApiError> handleNoDataFoundException(NoDataFoundException ex,
+            HttpStatus status, WebRequest request) {
+        return handleExceptionInternal(ex, new ApiError(status, ex.getMessage()), status, request);
+    }
+
+    // Customize the response for NoDataFoundException
+    protected ResponseEntity<ApiError> handleBadRequestException(BadRequestException ex,
             HttpStatus status, WebRequest request) {
         return handleExceptionInternal(ex, new ApiError(status, ex.getMessage()), status, request);
     }

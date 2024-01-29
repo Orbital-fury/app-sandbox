@@ -1,5 +1,7 @@
+
+
 CREATE TABLE brands (
-    id int NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    id int PRIMARY KEY AUTO_INCREMENT,
     name varchar(128) NOT NULL,
     website varchar(128) NOT NULL,
     hq_address varchar(255) NOT NULL
@@ -7,21 +9,21 @@ CREATE TABLE brands (
 
 CREATE TABLE factories
 (
-    id int NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    id int PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(128) NOT NULL,
     type VARCHAR(128) NOT NULL,
     address VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE models (
-    id int NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    id int PRIMARY KEY AUTO_INCREMENT,
     name varchar(128) NOT NULL,
     type varchar(128) NOT NULL,
     brand_id int NOT NULL REFERENCES brands(id)
 );
 
 CREATE TABLE machines (
-    id int NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    id int PRIMARY KEY AUTO_INCREMENT,
     model_id int NOT NULL REFERENCES models(id),
     serial_number varchar(128) NOT NULL,
     need_maintenance boolean NOT NULL,
@@ -32,7 +34,7 @@ CREATE TABLE machines (
 );
 
 CREATE TABLE pc_elements (
-    id int NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    id int PRIMARY KEY AUTO_INCREMENT,
     brand varchar(128) NOT NULL,
     model varchar(128) NOT NULL,
     price float NOT NULL,
@@ -41,16 +43,16 @@ CREATE TABLE pc_elements (
 );
 
 CREATE TABLE pc_constraints (
-    id int NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    id INT AUTO_INCREMENT PRIMARY KEY,
     name varchar(128) NOT NULL,
     code varchar(128) NOT NULL,
     type varchar(128) NOT NULL
 );
 
 CREATE TABLE pc_specifications (
-    id int NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    id int PRIMARY KEY AUTO_INCREMENT,
     name varchar(128) NOT NULL,
-    code varchar(128) NOT NULL
+    code varchar(128) NOT NULL UNIQUE
 );
 
 CREATE TABLE pc_elements_constraints (

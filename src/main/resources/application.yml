@@ -19,8 +19,9 @@ spring:
     jpa:
         # defer-datasource-initialization: true
         hibernate:
-                ddl-auto: none
+                ddl-auto: update
                 # import_files: '[classpath:database/data/brands.sql]' # pour Hibernate
+        show-sql: true
     sql:
         init:
             # mode: always
@@ -38,4 +39,4 @@ springdoc:
         # doc-expansion: none # how controllers are expanded: list, full, none. Default value: list 
         # disable-swagger-default-url: true
 
-# logging.level.org.hibernate.SQL: '[debug]'
+logging.level.org.hibernate.SQL: '[debug]'

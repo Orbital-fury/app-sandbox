@@ -5,11 +5,9 @@ import com.appsandbox.appsandbox.infrastructure.pcbuilder.database.entities.PcCo
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.ToString;
 
 @Data
 @AllArgsConstructor
-@ToString
 public class PcConstraintWithoutValue {
 
     private int id;
@@ -17,9 +15,8 @@ public class PcConstraintWithoutValue {
     private String code;
     private PcConstraintType type;
 
-    public static PcConstraintWithoutValue fromEntity(PcConstraintEntity pcConstraintEntity) {
-        return new PcConstraintWithoutValue(pcConstraintEntity.getId(), pcConstraintEntity.getName(),
-                pcConstraintEntity.getCode(), pcConstraintEntity.getType());
+    public PcConstraintEntity toEntity() {
+        return new PcConstraintEntity(this.id, this.name, this.code, this.type);
     }
 
 }
