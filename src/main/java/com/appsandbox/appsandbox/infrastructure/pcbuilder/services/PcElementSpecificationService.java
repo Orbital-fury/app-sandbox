@@ -43,17 +43,22 @@ public class PcElementSpecificationService {
 
                 // List<PcSpecification> pcSpecifications = new ArrayList<>();
                 // for (int key : valuesBySpecifications.keySet()) {
-                //         PcSpecificationEntity pcSpecification = pcSpecificationRepository.findById(key)
-                //                         .orElseThrow(() -> new RuntimeException(
-                //                                         "PcSpecificationEntity not found for key: " + key));
-                //         pcSpecifications.add(
-                //                         new PcSpecification(pcSpecification.getId(), pcSpecification.getName(),
-                //                                         pcSpecification.getCode(),
-                //                                         valuesBySpecifications.get(pcSpecification.getId())));
+                // PcSpecificationEntity pcSpecification =
+                // pcSpecificationRepository.findById(key)
+                // .orElseThrow(() -> new RuntimeException(
+                // "PcSpecificationEntity not found for key: " + key));
+                // pcSpecifications.add(
+                // new PcSpecification(pcSpecification.getId(), pcSpecification.getName(),
+                // pcSpecification.getCode(),
+                // valuesBySpecifications.get(pcSpecification.getId())));
                 // }
                 // return pcSpecifications;
                 return valuesBySpecifications.keySet().stream()
                                 .map(key -> {
+                                        if (key == null) {
+                                                throw new RuntimeException(
+                                                                "Error ! Not possible to retrieve specification with id=null");
+                                        }
                                         PcSpecificationEntity pcSpecification = pcSpecificationRepository.findById(key)
                                                         .orElseThrow(() -> new RuntimeException(
                                                                         "PcSpecificationEntity not found for key: "

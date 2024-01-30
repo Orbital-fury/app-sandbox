@@ -1,7 +1,5 @@
 package com.appsandbox.appsandbox.infrastructure.mmm.rest.controllers;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -26,8 +24,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RequestMapping(path = "machines", produces = MediaType.APPLICATION_JSON_VALUE)
 @Tag(name = "Machine controller", description = "Interact with measuring machines and its linked data")
 public class MachineController {
-
-    Logger log = LoggerFactory.getLogger(MachineController.class);
 
     @Autowired
     private MachineService machineService;

@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,8 +17,6 @@ import com.appsandbox.appsandbox.infrastructure.pcbuilder.database.repositories.
 
 @Service
 public class PcElementConstraintService {
-
-    Logger log = LoggerFactory.getLogger(PcElementConstraintService.class);
 
     @Autowired
     private PcConstraintRepository pcConstraintRepository;
@@ -59,6 +55,9 @@ public class PcElementConstraintService {
         // return pcConstraints;
         return valuesByConstraints.keySet().stream()
                 .map(key -> {
+                    if (key == null) {
+                        throw new RuntimeException("Error ! Not possible to retrieve constraint with id=null");
+                    }
                     PcConstraintEntity pcConstraint = pcConstraintRepository.findById(key)
                             .orElseThrow(() -> new RuntimeException("PcConstraintEntity not found for key: " + key));
                     List<String> constraintValues = valuesByConstraints.get(pcConstraint.getId());

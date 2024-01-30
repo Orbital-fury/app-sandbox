@@ -1,7 +1,5 @@
 package com.appsandbox.appsandbox.infrastructure.pcbuilder.rest.controllers;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -13,8 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.appsandbox.appsandbox.domain.pcbuilder.entities.PcConstraintWithoutValue;
-import com.appsandbox.appsandbox.domain.pcbuilder.enums.PcConstraintType;
-import com.appsandbox.appsandbox.infrastructure.exceptions.NoDataFoundException;
 import com.appsandbox.appsandbox.infrastructure.pcbuilder.rest.requests.PcConstraintsWithoutValue;
 import com.appsandbox.appsandbox.infrastructure.pcbuilder.services.PcConstraintService;
 
@@ -25,8 +21,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 @RequestMapping(path = "pc-constraints", produces = MediaType.APPLICATION_JSON_VALUE)
 @RestController
 public class PcConstraintController {
-
-    Logger log = LoggerFactory.getLogger(PcConstraintService.class);
 
     @Autowired
     private PcConstraintService pcConstraintService;
