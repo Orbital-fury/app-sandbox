@@ -1,8 +1,17 @@
 package com.appsandbox.appsandbox.infrastructure.exceptions;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
@@ -13,34 +22,28 @@ import org.springframework.web.util.WebUtils;
 public class ControllerAdvisor extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler({NoDataFoundException.class, BadRequestException.class})
-    public ResponseEntity<ApiError> handleHttpException(@NonNull Exception ex, WebRequest request) {
+    public ResponseEntity<Object> handleHttpException(RuntimeException ex, @NonNull WebRequest request) {
+        HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
+
         if (ex instanceof NoDataFoundException) {
-            HttpStatus status = HttpStatus.NOT_FOUND;
-            NoDataFoundException ndfe = (NoDataFoundException) ex;
-            return handleNoDataFoundException(ndfe, status, request);
+            status = HttpStatus.NOT_FOUND;
         } else if (ex instanceof BadRequestException) {
-            HttpStatus status = HttpStatus.BAD_REQUEST;
-            BadRequestException bre = (BadRequestException) ex;
-            return handleBadRequestException(bre, status, request);
-        } else {
-            HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
-            return handleExceptionInternal(ex, null, status, request);
+            status = HttpStatus.BAD_REQUEST;
         }
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        return handleExceptionInternal(ex, new ApiError(status, ex.getMessage()), headers, status, request);
     }
 
-    // Customize the response for NoDataFoundException
-    protected ResponseEntity<ApiError> handleNoDataFoundException(NoDataFoundException ex,
-    @NonNull HttpStatus status, WebRequest request) {
-        return handleExceptionInternal(ex, new ApiError(status, ex.getMessage()), status, request);
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<Object> handleOtherExceptions(@NonNull Exception ex, @NonNull WebRequest request) {
+        HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
+        return handleExceptionInternal(ex, new ApiError(status, "Internal Server Error"), new HttpHeaders(), status, request);
     }
 
-    // Customize the response for NoDataFoundException
-    protected ResponseEntity<ApiError> handleBadRequestException(BadRequestException ex,
-    @NonNull HttpStatus status, WebRequest request) {
-        return handleExceptionInternal(ex, new ApiError(status, ex.getMessage()), status, request);
-    }
-
-    // A single place to customize the response body of all Exception types
+    @NonNull
     protected ResponseEntity<ApiError> handleExceptionInternal(@NonNull Exception ex, ApiError body,
             @NonNull HttpStatus status, WebRequest request) {
         if (HttpStatus.INTERNAL_SERVER_ERROR.equals(status)) {

@@ -28,7 +28,7 @@ public class FactoryController {
 
 	@Operation(method = "GET", summary = "Get all factories", description = "Return the list of all factories and there machines")
 	@ApiResponses(value = {
-			@ApiResponse(responseCode = "200", description = "Successfully retrieved")
+			@ApiResponse(responseCode = "200", description = "Factories retrieved successfully")
 	})
 	@GetMapping()
 	public ResponseEntity<Factories> getAllFactories() {
@@ -37,7 +37,7 @@ public class FactoryController {
 
 	@Operation(method = "GET", summary = "Get factory by id", description = "Return a factory by its id")
 	@ApiResponses(value = {
-			@ApiResponse(responseCode = "200", description = "Successfully retrieved"),
+			@ApiResponse(responseCode = "200", description = "Factory retrieved successfully"),
 			@ApiResponse(responseCode = "404", description = "Factory was not found", content = @Content)
 	})
 	@GetMapping(path = "/{id}")

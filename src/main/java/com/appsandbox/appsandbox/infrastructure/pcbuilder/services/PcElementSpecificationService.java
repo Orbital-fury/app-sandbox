@@ -57,7 +57,7 @@ public class PcElementSpecificationService {
                                 .map(key -> {
                                         if (key == null) {
                                                 throw new RuntimeException(
-                                                                "Error ! Not possible to retrieve specification with id=null");
+                                                                "Error ! Not possible to retrieve specification for id=null");
                                         }
                                         PcSpecificationEntity pcSpecification = pcSpecificationRepository.findById(key)
                                                         .orElseThrow(() -> new RuntimeException(

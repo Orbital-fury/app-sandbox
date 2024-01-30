@@ -30,7 +30,7 @@ public class MachineController {
 
     @Operation(method = "GET", summary = "Get all machines", description = "Return the list of all machines")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successfully retrieved")
+            @ApiResponse(responseCode = "200", description = "Machines retrieved successfully")
     })
     @GetMapping()
     public ResponseEntity<Machines> getAllFactories() {
@@ -40,7 +40,7 @@ public class MachineController {
 
     @Operation(method = "GET", summary = "Get machine by id", description = "Return a machine by its id")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successfully retrieved"),
+            @ApiResponse(responseCode = "200", description = "Machine retrieved successfully"),
             @ApiResponse(responseCode = "404", description = "Machine was not found", content = @Content)
     })
     @GetMapping(path = "/{id}")

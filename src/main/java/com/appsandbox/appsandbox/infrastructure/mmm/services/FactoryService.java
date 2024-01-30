@@ -43,7 +43,7 @@ public class FactoryService {
          */
         return factoryRepository.findById(id)
                 .map(factoryMapper::entityToDto)
-                .orElseThrow(() -> new NoDataFoundException("Factory with id=" + id + " not found!!!"));
+                .orElseThrow(() -> new NoDataFoundException("Factory not found for id:" + id));
     }
 
 }

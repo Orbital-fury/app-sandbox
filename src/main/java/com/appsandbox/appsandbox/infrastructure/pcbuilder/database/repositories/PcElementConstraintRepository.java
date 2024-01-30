@@ -12,6 +12,8 @@ public interface PcElementConstraintRepository extends JpaRepository<PcElementCo
 
     List<PcElementConstraintEntity> findByElementId(int elementId);
 
+    List<PcElementConstraintEntity> findByConstraintId(int constraintId);
+
     List<PcElementConstraintEntity> findByElementIdAndConstraintId(int elementId, int constraintId);
     
 }

@@ -24,7 +24,7 @@ public class BrandController {
 
     @Operation(method = "GET", summary = "Get all brands", description = "Return the list of all machine brands")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successfully retrieved")
+            @ApiResponse(responseCode = "200", description = "Machine brands retrieved successfully")
     })
     @GetMapping()
     public ResponseEntity<Brands> getAllBrands() {

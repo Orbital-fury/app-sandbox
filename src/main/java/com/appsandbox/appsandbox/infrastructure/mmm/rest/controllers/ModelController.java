@@ -24,7 +24,7 @@ public class ModelController {
 
     @Operation(method = "GET", summary = "Get all machine models", description = "Return the list of all machine models")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successfully retrieved")
+            @ApiResponse(responseCode = "200", description = "Machine models retrieved successfully")
     })
     @GetMapping()
     public ResponseEntity<Models> getAllModels() {

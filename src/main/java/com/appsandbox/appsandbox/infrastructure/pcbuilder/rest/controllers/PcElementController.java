@@ -29,7 +29,7 @@ public class PcElementController {
 
         @Operation(method = "GET", summary = "Get all pc elements", description = "Return the list of all pc elements")
         @ApiResponses(value = {
-                        @ApiResponse(responseCode = "200", description = "Successfully retrieved")
+                        @ApiResponse(responseCode = "200", description = "PC elements retrieved successfully")
         })
         @GetMapping()
         public ResponseEntity<PcElements> getAllPcElements() {
@@ -38,11 +38,11 @@ public class PcElementController {
 
         @Operation(method = "GET", summary = "Get pc elements regarding constraints", description = "Return the list of all possible pc elements that can be added regarding PC elements from build")
         @ApiResponses(value = {
-                        @ApiResponse(responseCode = "200", description = "Successfully retrieved")
+                        @ApiResponse(responseCode = "200", description = "PC elements retrieved successfully")
         })
         @GetMapping("/constraints/elements")
         public ResponseEntity<PcElements> getPcElementsWithConstraints(
-                        @RequestParam(name = "ids", required = false) @Parameter(description = "Comma-separated list of PC element IDs", example = "0,9") String pcBuildElementIds) {
+                        @RequestParam(name = "ids", required = false) @Parameter(description = "Comma-separated list of PC element IDs", example = "1,10") String pcBuildElementIds) {
                 return new ResponseEntity<>(
                                 new PcElements(pcElementService.getPcElementsWithConstraints(pcBuildElementIds)),
                                 HttpStatus.OK);
@@ -50,10 +50,10 @@ public class PcElementController {
 
         @Operation(method = "GET", summary = "Get PC element by id", description = "Return PC element by its id")
         @ApiResponses(value = {
-                        @ApiResponse(responseCode = "200", description = "Successfully retrieved"),
+                        @ApiResponse(responseCode = "200", description = "PC element retrieved successfully"),
                         @ApiResponse(responseCode = "404", description = "PC element was not found", content = @Content)
         })
-        @GetMapping(path = "/{id}")
+        @GetMapping("/{id}")
         public ResponseEntity<PcElement> getPcElement(
                         @PathVariable @Parameter(name = "id", description = "PC element id", example = "1") int id) {
                 PcElement pcElement = pcElementService.getPcElement(id);

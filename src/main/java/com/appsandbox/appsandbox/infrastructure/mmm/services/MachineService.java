@@ -41,7 +41,7 @@ public class MachineService {
          */
         return machineRepository.findById(id)
                 .map(machineMapper::entityToDto)
-                .orElseThrow(() -> new NoDataFoundException("Machine with id=" + id + " not found!"));
+                .orElseThrow(() -> new NoDataFoundException("Machine not found for id:" + id));
     }
 
 }

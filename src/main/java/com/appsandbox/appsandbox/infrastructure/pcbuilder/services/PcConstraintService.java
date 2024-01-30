@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.appsandbox.appsandbox.domain.pcbuilder.entities.PcConstraintWithoutValue;
+import com.appsandbox.appsandbox.infrastructure.exceptions.NoDataFoundException;
 import com.appsandbox.appsandbox.infrastructure.pcbuilder.database.entities.PcConstraintEntity;
 import com.appsandbox.appsandbox.infrastructure.pcbuilder.database.repositories.PcConstraintRepository;
 
@@ -23,13 +24,37 @@ public class PcConstraintService {
                 .collect(Collectors.toList());
     }
 
+    public PcConstraintWithoutValue getPcConstraint(int constraintId) {
+        return pcConstraintRepository.findById(constraintId)
+                .map(entity -> entity.toDto())
+                .orElseThrow(() -> new NoDataFoundException("PC constraint not found for id: " + constraintId));
+    }
+
     public PcConstraintWithoutValue save(PcConstraintWithoutValue newPcConstraint) {
         PcConstraintEntity pcConstraintEntity = newPcConstraint.toEntity();
         if (pcConstraintEntity != null) {
             return pcConstraintRepository.save(pcConstraintEntity).toDto();
         } else {
-            throw new IllegalArgumentException("The PC constraint entity is null");
+            throw new IllegalArgumentException("Impossible error! The PC constraint entity is null");
         }
+    }
+
+    public PcConstraintWithoutValue update(PcConstraintWithoutValue pcConstraint) {
+        int pcConstraintId = pcConstraint.getId();
+        pcConstraintRepository.findById(pcConstraintId)
+                .orElseThrow(() -> new NoDataFoundException("PC constraint not found for id: " + pcConstraintId));
+        return save(pcConstraint);
+    }
+
+    public String delete(int pcConstraintId) {
+        PcConstraintEntity pcConstraintEntity = pcConstraintRepository.findById(pcConstraintId)
+                .orElseThrow(() -> new NoDataFoundException("PC constraint not found for id: " + pcConstraintId));
+        // if (pcConstraintEntity != null) {
+            pcConstraintRepository.delete(pcConstraintEntity);
+            return pcConstraintEntity.getName();
+        // } else {
+        //     throw new IllegalArgumentException("Impossible error! The PC constraint entity is null");
+        // }
     }
 
 }

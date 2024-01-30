@@ -89,13 +89,13 @@ INSERT INTO pc_constraints (name, code, type) VALUES ('Chipset', 'CHIPSET', 'SAM
 INSERT INTO pc_constraints (name, code, type) VALUES ('Motherboard Size', 'MOBO_SIZE', 'SAME');
 INSERT INTO pc_constraints (name, code, type) VALUES ('Cooling fan max length', 'COOLING_FAN_MAX_LENGTH', 'MAX');
 INSERT INTO pc_constraints (name, code, type) VALUES ('AIO fan size', 'AIO_FAN_SIZE', 'SAME');
-INSERT INTO pc_constraints (name, code, type) VALUES ('3.5" capacity', '3.5_CAPACITY', 'CAPACITY');
-INSERT INTO pc_constraints (name, code, type) VALUES ('2.5" capacity', '2.5_CAPACITY', 'CAPACITY');
+INSERT INTO pc_constraints (name, code, type) VALUES ('3.5" capacity', '3_5_CAPACITY', 'CAPACITY');
+INSERT INTO pc_constraints (name, code, type) VALUES ('2.5" capacity', '2_5_CAPACITY', 'CAPACITY');
 INSERT INTO pc_constraints (name, code, type) VALUES ('GPU max length', 'GPU_MAX_LENGTH', 'MAX');
 INSERT INTO pc_constraints (name, code, type) VALUES ('GPU length', 'GPU_MAX_LENGTH', 'LIMIT');
 INSERT INTO pc_constraints (name, code, type) VALUES ('GPU power', 'POWER', 'LIMIT');
 INSERT INTO pc_constraints (name, code, type) VALUES ('RAM frequency', 'RAM_FREQUENCY', 'SAME');
-INSERT INTO pc_constraints (name, code, type) VALUES ('SSD M.2 capacity', 'SSD_M.2_CAPACITY', 'CAPACITY');
+INSERT INTO pc_constraints (name, code, type) VALUES ('SSD M.2 capacity', 'SSD_M_2_CAPACITY', 'CAPACITY');
 INSERT INTO pc_constraints (name, code, type) VALUES ('Power', 'POWER', 'MAX');
 
 INSERT INTO pc_specifications (name, code) VALUES ('CPU frequency', 'CPU_FREQUENCY');

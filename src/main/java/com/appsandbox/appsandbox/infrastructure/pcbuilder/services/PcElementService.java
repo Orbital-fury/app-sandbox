@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import com.appsandbox.appsandbox.domain.pcbuilder.entities.PcConstraint;
 import com.appsandbox.appsandbox.domain.pcbuilder.entities.PcElement;
+import com.appsandbox.appsandbox.domain.pcbuilder.entities.PcElementWithoutSpec;
 import com.appsandbox.appsandbox.domain.pcbuilder.entities.PcSpecification;
 import com.appsandbox.appsandbox.infrastructure.exceptions.NoDataFoundException;
 import com.appsandbox.appsandbox.infrastructure.pcbuilder.database.entities.PcElementEntity;
@@ -42,7 +44,7 @@ public class PcElementService {
 
     public List<PcElement> getPcElementsWithConstraints(String strPcBuildElementIds) {
         if (strPcBuildElementIds == null || strPcBuildElementIds == "") {
-            log.info("No PC elements in current build");
+            log.info("No PC element in current build");
             return getAllPcElement();
         }
 
@@ -80,7 +82,6 @@ public class PcElementService {
     }
 
     public PcElement getPcElement(int elementId) {
-        
         // Optional<PcElementEntity> optPcElementEntity = pcElementRepository.findById(elementId);
         // if (optPcElementEntity.isPresent()) {
         //     PcElementEntity pcElementEntity = optPcElementEntity.get();
@@ -91,7 +92,7 @@ public class PcElementService {
         // }
         return pcElementRepository.findById(elementId)
                 .map(this::pcElementDtoFromEntity)
-                .orElseThrow(() -> new NoDataFoundException("PC element with id=" + elementId + " not found!"));
+                .orElseThrow(() -> new NoDataFoundException("PC element not found for id: " + elementId));
     }
 
     private List<PcConstraint> getPcConstraintsfromPcElements(List<PcElement> pcElements) {
