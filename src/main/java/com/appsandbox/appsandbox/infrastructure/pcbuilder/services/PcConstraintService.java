@@ -46,15 +46,11 @@ public class PcConstraintService {
         return save(pcConstraint);
     }
 
-    public String delete(int pcConstraintId) {
+    public PcConstraintWithoutValue delete(int pcConstraintId) {
         PcConstraintEntity pcConstraintEntity = pcConstraintRepository.findById(pcConstraintId)
                 .orElseThrow(() -> new NoDataFoundException("PC constraint not found for id: " + pcConstraintId));
-        // if (pcConstraintEntity != null) {
-            pcConstraintRepository.delete(pcConstraintEntity);
-            return pcConstraintEntity.getName();
-        // } else {
-        //     throw new IllegalArgumentException("Impossible error! The PC constraint entity is null");
-        // }
+        pcConstraintRepository.delete(pcConstraintEntity);
+        return pcConstraintEntity.toDto();
     }
 
 }

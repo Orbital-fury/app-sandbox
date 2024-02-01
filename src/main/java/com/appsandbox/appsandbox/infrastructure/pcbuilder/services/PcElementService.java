@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
@@ -14,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import com.appsandbox.appsandbox.domain.pcbuilder.entities.PcConstraint;
 import com.appsandbox.appsandbox.domain.pcbuilder.entities.PcElement;
-import com.appsandbox.appsandbox.domain.pcbuilder.entities.PcElementWithoutSpec;
 import com.appsandbox.appsandbox.domain.pcbuilder.entities.PcSpecification;
 import com.appsandbox.appsandbox.infrastructure.exceptions.NoDataFoundException;
 import com.appsandbox.appsandbox.infrastructure.pcbuilder.database.entities.PcElementEntity;

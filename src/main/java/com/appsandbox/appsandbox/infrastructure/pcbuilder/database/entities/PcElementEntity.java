@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.appsandbox.appsandbox.domain.pcbuilder.entities.PcConstraint;
 import com.appsandbox.appsandbox.domain.pcbuilder.entities.PcElement;
-import com.appsandbox.appsandbox.domain.pcbuilder.entities.PcElementWithoutSpec;
+import com.appsandbox.appsandbox.domain.pcbuilder.entities.PcElementBasis;
 import com.appsandbox.appsandbox.domain.pcbuilder.entities.PcSpecification;
 import com.appsandbox.appsandbox.domain.pcbuilder.enums.PcElementType;
 
@@ -38,8 +38,8 @@ public class PcElementEntity {
         return new PcElement(id, brand, model, price, img, type, pcConstraints, pcSpecifications);
     }
 
-    public PcElementWithoutSpec toDtoWithoutSpec() {
-        return new PcElementWithoutSpec(id, brand, model, price, img, type);
+    public PcElementBasis toDtoWithoutSpec() {
+        return new PcElementBasis(id, brand, model, price, img, type);
     }
 
 }

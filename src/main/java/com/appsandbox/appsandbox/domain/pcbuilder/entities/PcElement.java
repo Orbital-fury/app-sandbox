@@ -4,20 +4,21 @@ import java.util.List;
 
 import com.appsandbox.appsandbox.domain.pcbuilder.enums.PcElementType;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
-@AllArgsConstructor
-public class PcElement {
+@EqualsAndHashCode(callSuper = true)
+public class PcElement extends PcElementBasis {
 
-    private int id;
-    private String brand;
-    private String model;
-    private float price;
-    private String img;
-    private PcElementType type;
-    private List<PcConstraint> constraints;
-    private List<PcSpecification> specifications;
+    private final List<PcConstraint> constraints;
+    private final List<PcSpecification> specifications;
+
+    public PcElement(int id, String brand, String model, float price, String img, PcElementType type,
+            List<PcConstraint> constraints, List<PcSpecification> specifications) {
+        super(id, brand, model, price, img, type);
+        this.constraints = constraints;
+        this.specifications = specifications;
+    }
 
 }
