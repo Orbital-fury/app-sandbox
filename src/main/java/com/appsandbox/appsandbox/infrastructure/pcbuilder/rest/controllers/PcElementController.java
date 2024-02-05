@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.appsandbox.appsandbox.domain.pcbuilder.entities.PcElement;
+import com.appsandbox.appsandbox.domain.pcbuilder.entities.PcElementBasis;
 import com.appsandbox.appsandbox.infrastructure.pcbuilder.rest.requests.PcElements;
 import com.appsandbox.appsandbox.infrastructure.pcbuilder.services.PcElementService;
 
@@ -58,6 +60,17 @@ public class PcElementController {
                         @PathVariable @Parameter(name = "id", description = "PC element id", example = "1") int id) {
                 PcElement pcElement = pcElementService.getPcElement(id);
                 return new ResponseEntity<>(pcElement, HttpStatus.OK);
+        }
+
+        @Operation(method = "DELETE", summary = "Delete a PC element", description = "Delete a PC element using its id. Return the deleted element.")
+        @ApiResponses(value = {
+                        @ApiResponse(responseCode = "200", description = "PC element deleted successfully"),
+                        @ApiResponse(responseCode = "400", description = "Invalid input or request format"),
+        })
+        @DeleteMapping(path = "/{id}")
+        public ResponseEntity<PcElementBasis> delete(
+                        @PathVariable @Parameter(name = "id", description = "PC element id", example = "1") int id) {
+                return new ResponseEntity<>(pcElementService.delete(id), HttpStatus.OK);
         }
 
 }

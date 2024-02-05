@@ -4,6 +4,8 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 
@@ -19,5 +21,11 @@ public class PcElementSpecificationEntity {
     private int specificationId;
     @Column(name = "s_value")
     private String value;
+    @ManyToOne
+    @JoinColumn(name = "element_id", nullable = false)
+    private PcElementEntity pcElement;
+    @ManyToOne
+    @JoinColumn(name = "specification_id", nullable = false)
+    private PcSpecificationEntity pcSpecification;
 
 }

@@ -1,5 +1,7 @@
 package com.appsandbox.appsandbox.domain.pcbuilder.entities;
 
+import java.util.ArrayList;
+
 import com.appsandbox.appsandbox.domain.pcbuilder.enums.PcConstraintType;
 import com.appsandbox.appsandbox.infrastructure.pcbuilder.database.entities.PcConstraintEntity;
 
@@ -16,7 +18,7 @@ public class PcConstraintWithoutValue {
     private PcConstraintType type;
 
     public PcConstraintEntity toEntity() {
-        return new PcConstraintEntity(this.id, this.name, this.code, this.type);
+        return new PcConstraintEntity(this.id, this.name, this.code, this.type, new ArrayList<>());
     }
 
 }

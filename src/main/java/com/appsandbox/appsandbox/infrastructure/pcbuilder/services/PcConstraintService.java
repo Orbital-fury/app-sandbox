@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.appsandbox.appsandbox.domain.pcbuilder.entities.PcConstraintWithoutValue;
 import com.appsandbox.appsandbox.infrastructure.exceptions.NoDataFoundException;
@@ -46,6 +47,7 @@ public class PcConstraintService {
         return save(pcConstraint);
     }
 
+    @Transactional
     public PcConstraintWithoutValue delete(int pcConstraintId) {
         PcConstraintEntity pcConstraintEntity = pcConstraintRepository.findById(pcConstraintId)
                 .orElseThrow(() -> new NoDataFoundException("PC constraint not found for id: " + pcConstraintId));

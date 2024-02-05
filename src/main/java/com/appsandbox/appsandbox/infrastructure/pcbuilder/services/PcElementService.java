@@ -10,9 +10,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.appsandbox.appsandbox.domain.pcbuilder.entities.PcConstraint;
 import com.appsandbox.appsandbox.domain.pcbuilder.entities.PcElement;
+import com.appsandbox.appsandbox.domain.pcbuilder.entities.PcElementBasis;
 import com.appsandbox.appsandbox.domain.pcbuilder.entities.PcSpecification;
 import com.appsandbox.appsandbox.infrastructure.exceptions.NoDataFoundException;
 import com.appsandbox.appsandbox.infrastructure.pcbuilder.database.entities.PcElementEntity;
@@ -121,6 +123,7 @@ public class PcElementService {
         int elementId = pcElementEntity.getId();
         List<PcConstraint> pcConstraints = pcElementConstraintService.getElementConstraints(elementId);
         List<PcSpecification> pcSpecifications = pcElementSpecificationService.getElementSpecifications(elementId);
+        // return pcElementMapper.entityToDto(pcElementEntity);
         return pcElementEntity.toDto(pcConstraints, pcSpecifications);
     }
 
@@ -223,6 +226,14 @@ public class PcElementService {
         log.info("PC element is {}retrieved", canBeAdded ? "" : "not ");
         log.info("***************");
         return canBeAdded;
+    }
+
+    @Transactional
+    public PcElementBasis delete(int pcElementId) {
+        PcElementEntity pcElementEntity = pcElementRepository.findById(pcElementId)
+                .orElseThrow(() -> new NoDataFoundException("PC element not found for id: " + pcElementId));
+        pcElementRepository.delete(pcElementEntity);
+        return pcElementEntity.toDtoWithoutSpec();
     }
 
 }
