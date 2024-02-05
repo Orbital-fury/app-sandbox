@@ -7,6 +7,9 @@ http://localhost:8080/api/v1/h2-console<br>
 DB created and populated with sql script, not with JPA Entity<br>
 Original is: http://localhost:8080/h2-console
 
+# Explanations
+- Spring @Transactional example [here](https://stackoverflow.com/questions/8490852/spring-transactional-isolation-propagation)
+
 # Questions
 - Is it ok to do this ? (to map with a function 'fromDto' // is it okay to have function in dto classes?)
 ```@Data
