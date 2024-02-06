@@ -3,7 +3,6 @@ package com.appsandbox.appsandbox.infrastructure.pcbuilder.database.entities;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.appsandbox.appsandbox.domain.pcbuilder.entities.PcConstraintWithoutValue;
 import com.appsandbox.appsandbox.domain.pcbuilder.enums.PcConstraintType;
 
 import jakarta.persistence.CascadeType;
@@ -35,9 +34,5 @@ public class PcConstraintEntity {
     private PcConstraintType type;
     @OneToMany(mappedBy = "pcConstraint", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PcElementConstraintEntity> pcElementConstraints = new ArrayList<>();
-
-    public PcConstraintWithoutValue toDto() {
-        return new PcConstraintWithoutValue(this.id, this.name, this.code, this.type);
-    }
 
 }

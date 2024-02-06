@@ -3,10 +3,6 @@ package com.appsandbox.appsandbox.infrastructure.pcbuilder.database.entities;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.appsandbox.appsandbox.domain.pcbuilder.entities.PcConstraint;
-import com.appsandbox.appsandbox.domain.pcbuilder.entities.PcElement;
-import com.appsandbox.appsandbox.domain.pcbuilder.entities.PcElementBasis;
-import com.appsandbox.appsandbox.domain.pcbuilder.entities.PcSpecification;
 import com.appsandbox.appsandbox.domain.pcbuilder.enums.PcElementType;
 
 import jakarta.persistence.CascadeType;
@@ -45,12 +41,8 @@ public class PcElementEntity {
     @OneToMany(mappedBy = "pcElement", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PcElementSpecificationEntity> pcElementSpecifications = new ArrayList<>();
 
-    public PcElement toDto(List<PcConstraint> pcConstraints, List<PcSpecification> pcSpecifications) {
-        return new PcElement(id, brand, model, price, img, type, pcConstraints, pcSpecifications);
-    }
-
-    public PcElementBasis toDtoWithoutSpec() {
-        return new PcElementBasis(id, brand, model, price, img, type);
-    }
+    // public PcElement toDto(List<PcConstraint> pcConstraints, List<PcSpecification> pcSpecifications) {
+    //     return new PcElement(id, brand, model, price, img, type, pcConstraints, pcSpecifications);
+    // }
 
 }

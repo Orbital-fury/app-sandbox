@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,74 +31,79 @@ import jakarta.validation.Valid;
 @RestController
 public class PcConstraintController {
 
-    @Autowired
-    private PcConstraintService pcConstraintService;
-    @Autowired
-    private PcElementConstraintService pcElementConstraintService;
+        @Autowired
+        private PcConstraintService pcConstraintService;
+        @Autowired
+        private PcElementConstraintService pcElementConstraintService;
 
-    @Operation(method = "GET", summary = "Get all pc constraints", description = "Return the list of all pc constraints")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "PC constraints retrieved successfully")
-    })
-    @GetMapping()
-    public ResponseEntity<PcConstraintsWithoutValue> getAllPcConstraints() {
-        return new ResponseEntity<>(new PcConstraintsWithoutValue(pcConstraintService.getAllPcConstraintWithoutValue()),
-                HttpStatus.OK);
-    }
+        @Operation(method = "GET", summary = "Get all pc constraints", description = "Return the list of all pc constraints")
+        @ApiResponses(value = {
+                        @ApiResponse(responseCode = "200", description = "PC constraints retrieved successfully")
+        })
+        @GetMapping()
+        public ResponseEntity<PcConstraintsWithoutValue> getAllPcConstraints() {
+                return new ResponseEntity<>(
+                                new PcConstraintsWithoutValue(pcConstraintService.getAllPcConstraintWithoutValue()),
+                                HttpStatus.OK);
+        }
 
-    @Operation(method = "GET", summary = "Get PC constraint by id", description = "Return PC constraint by its id")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "PC constraint retrieved successfully"),
-            @ApiResponse(responseCode = "404", description = "PC constraint was not found", content = @Content)
-    })
-    @GetMapping("/{id}")
-    public ResponseEntity<PcConstraintWithoutValue> getPcConstraint(
-            @PathVariable @Parameter(name = "id", description = "PC constraint id", example = "1") int id) {
-        PcConstraintWithoutValue pcConstraint = pcConstraintService.getPcConstraint(id);
-        return new ResponseEntity<>(pcConstraint, HttpStatus.OK);
-    }
+        @Operation(method = "GET", summary = "Get PC constraint by id", description = "Return PC constraint by its id")
+        @ApiResponses(value = {
+                        @ApiResponse(responseCode = "200", description = "PC constraint retrieved successfully"),
+                        @ApiResponse(responseCode = "404", description = "PC constraint was not found", content = @Content)
+        })
+        @GetMapping("/{id}")
+        public ResponseEntity<PcConstraintWithoutValue> getPcConstraint(
+                        @PathVariable @Parameter(name = "id", description = "PC constraint id", example = "1") int id) {
+                PcConstraintWithoutValue pcConstraint = pcConstraintService.getPcConstraint(id);
+                return new ResponseEntity<>(pcConstraint, HttpStatus.OK);
+        }
 
-    @Operation(method = "GET", summary = "Get PC elements and constraint value", description = "Return PC elements and constraint values linked to a specific constraint")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "PC elements and values retrieved successfully"),
-            @ApiResponse(responseCode = "404", description = "PC elements was not found", content = @Content)
-    })
-    @GetMapping("/{id}/pc-elements")
-    public ResponseEntity<PcElementsConstraintValues> getPcElementsAndConstraintValues(
-            @PathVariable @Parameter(name = "id", description = "PC constraint id", example = "3") int id) {
-        return new ResponseEntity<>(new PcElementsConstraintValues(pcElementConstraintService.getPcElementAndConstraintValues(id)), HttpStatus.OK);
-    }
+        @Operation(method = "GET", summary = "Get PC elements and constraint value", description = "Return PC elements and constraint values linked to a specific constraint")
+        @ApiResponses(value = {
+                        @ApiResponse(responseCode = "200", description = "PC elements and values retrieved successfully"),
+                        @ApiResponse(responseCode = "404", description = "PC elements was not found", content = @Content)
+        })
+        @GetMapping("/{id}/pc-elements")
+        public ResponseEntity<PcElementsConstraintValues> getPcElementsAndConstraintValues(
+                        @PathVariable @Parameter(name = "id", description = "PC constraint id", example = "3") int id) {
+                return new ResponseEntity<>(
+                                new PcElementsConstraintValues(
+                                                pcElementConstraintService.getPcElementAndConstraintValues(id)),
+                                HttpStatus.OK);
+        }
 
-    @Operation(method = "POST", summary = "Create new PC constraint", description = "Create a new PC constraint with name, code, type")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "PC constraint created successfully"),
-            @ApiResponse(responseCode = "400", description = "Invalid input or request format"),
-    })
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<PcConstraintWithoutValue> create(
-            @Valid @RequestBody PcConstraintWithoutValue newPcConstraint) {
-        return new ResponseEntity<>(pcConstraintService.save(newPcConstraint), HttpStatus.CREATED);
-    }
+        @Operation(method = "POST", summary = "Create new PC constraint", description = "Create a new PC constraint with name, code, type")
+        @ApiResponses(value = {
+                        @ApiResponse(responseCode = "201", description = "PC constraint created successfully"),
+                        @ApiResponse(responseCode = "400", description = "Invalid input or request format"),
+        })
+        @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+        public ResponseEntity<PcConstraintWithoutValue> create(
+                        @NonNull @Valid @RequestBody PcConstraintWithoutValue newPcConstraint) {
+                return new ResponseEntity<>(pcConstraintService.save(newPcConstraint), HttpStatus.CREATED);
+        }
 
-    @Operation(method = "PUT", summary = "Update a PC constraint", description = "Update a PC constraint using its id")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "PC constraint updated successfully"),
-            @ApiResponse(responseCode = "400", description = "Invalid input or request format"),
-    })
-    @PutMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<PcConstraintWithoutValue> update(@Valid @RequestBody PcConstraintWithoutValue pcConstraint) {
-        return new ResponseEntity<>(pcConstraintService.update(pcConstraint), HttpStatus.OK);
-    }
+        @Operation(method = "PUT", summary = "Update a PC constraint", description = "Update a PC constraint using its id")
+        @ApiResponses(value = {
+                        @ApiResponse(responseCode = "200", description = "PC constraint updated successfully"),
+                        @ApiResponse(responseCode = "400", description = "Invalid input or request format"),
+        })
+        @PutMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+        public ResponseEntity<PcConstraintWithoutValue> update(
+                        @NonNull @Valid @RequestBody PcConstraintWithoutValue pcConstraint) {
+                return new ResponseEntity<>(pcConstraintService.update(pcConstraint), HttpStatus.OK);
+        }
 
-    @Operation(method = "DELETE", summary = "Delete a PC constraint", description = "Delete a PC constraint using its id. Return the deleted constraint.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "PC constraint deleted successfully"),
-            @ApiResponse(responseCode = "400", description = "Invalid input or request format"),
-    })
-    @DeleteMapping(path = "/{id}")
-    public ResponseEntity<PcConstraintWithoutValue> delete(
-            @PathVariable @Parameter(name = "id", description = "PC constraint id", example = "1") int id) {
-        return new ResponseEntity<>(pcConstraintService.delete(id), HttpStatus.OK);
-    }
+        @Operation(method = "DELETE", summary = "Delete a PC constraint", description = "Delete a PC constraint using its id. Return the deleted constraint.")
+        @ApiResponses(value = {
+                        @ApiResponse(responseCode = "200", description = "PC constraint deleted successfully"),
+                        @ApiResponse(responseCode = "400", description = "Invalid input or request format"),
+        })
+        @DeleteMapping(path = "/{id}")
+        public ResponseEntity<PcConstraintWithoutValue> delete(
+                        @PathVariable @Parameter(name = "id", description = "PC constraint id", example = "1") int id) {
+                return new ResponseEntity<>(pcConstraintService.delete(id), HttpStatus.OK);
+        }
 
 }

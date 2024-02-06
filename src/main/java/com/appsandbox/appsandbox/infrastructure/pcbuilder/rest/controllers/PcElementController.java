@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -72,8 +73,7 @@ public class PcElementController {
                         @ApiResponse(responseCode = "400", description = "Invalid input or request format"),
         })
         @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-        public ResponseEntity<PcElementBasis> create(
-                        @Valid @RequestBody PcElementBasis newPcElement) {
+        public ResponseEntity<PcElementBasis> create(@NonNull @Valid @RequestBody PcElementBasis newPcElement) {
                 return new ResponseEntity<>(pcElementService.save(newPcElement), HttpStatus.CREATED);
         }
 
@@ -83,8 +83,7 @@ public class PcElementController {
                         @ApiResponse(responseCode = "400", description = "Invalid input or request format"),
         })
         @PutMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-        public ResponseEntity<PcElementBasis> update(
-                        @Valid @RequestBody PcElementBasis pcElement) {
+        public ResponseEntity<PcElementBasis> update(@NonNull @Valid @RequestBody PcElementBasis pcElement) {
                 return new ResponseEntity<>(pcElementService.update(pcElement), HttpStatus.OK);
         }
 

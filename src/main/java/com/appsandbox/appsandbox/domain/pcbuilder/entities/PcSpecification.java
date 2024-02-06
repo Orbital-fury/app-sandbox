@@ -12,6 +12,6 @@ public class PcSpecification {
     private int id;
     private String name;
     private String code;
-    private List<String> value;
+    private List<String> values;
 
 }

@@ -20,6 +20,7 @@ import com.appsandbox.appsandbox.infrastructure.pcbuilder.database.entities.PcEl
 import com.appsandbox.appsandbox.infrastructure.pcbuilder.database.repositories.PcConstraintRepository;
 import com.appsandbox.appsandbox.infrastructure.pcbuilder.database.repositories.PcElementConstraintRepository;
 import com.appsandbox.appsandbox.infrastructure.pcbuilder.database.repositories.PcElementRepository;
+import com.appsandbox.appsandbox.infrastructure.pcbuilder.mapper.PcElementMapper;
 
 @Service
 public class PcElementConstraintService {
@@ -30,6 +31,8 @@ public class PcElementConstraintService {
     private PcElementConstraintRepository pcElementConstraintRepository;
     @Autowired
     private PcElementRepository pcElementRepository;
+    @Autowired
+    private PcElementMapper pcElementMapper;
 
     public List<PcConstraint> getElementConstraints(int elementId) {
         List<PcElementConstraintEntity> elementConstraints = pcElementConstraintRepository.findByElementId(elementId);
@@ -80,7 +83,7 @@ public class PcElementConstraintService {
                 PcElementEntity pcElementEntity = pcElementRepository.findById(elementId)
                         .orElseThrow(() -> new NoDataFoundException(
                                 "PC element not found for id: " + elementId));
-                PcElementBasis pcElement = pcElementEntity.toDtoWithoutSpec();
+                PcElementBasis pcElement = pcElementMapper.entityToDto(pcElementEntity);
 
                 resultMap.computeIfAbsent(pcElement, k -> new ArrayList<>())
                         .add(pcElementConstraintEntity.getValue());
