@@ -21,7 +21,7 @@ spring:
         hibernate:
                 ddl-auto: update
                 # import_files: '[classpath:database/data/brands.sql]' # pour Hibernate
-        show-sql: true
+        show-sql: false
     sql:
         init:
             # mode: always
@@ -39,7 +39,6 @@ springdoc:
         # doc-expansion: none # how controllers are expanded: list, full, none. Default value: list 
         # disable-swagger-default-url: true
 
-# logging.level.org.hibernate.SQL: '[debug]'
 logging.level:
     org:
         hibernate:

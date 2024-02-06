@@ -95,6 +95,30 @@ public class PcElementService {
                 .orElseThrow(() -> new NoDataFoundException("PC element not found for id: " + elementId));
     }
 
+    public PcElementBasis save(PcElementBasis newPcElement) {
+        PcElementEntity pcElementEntity = newPcElement.toEntity();
+        if (pcElementEntity != null) {
+            return pcElementRepository.save(pcElementEntity).toDtoWithoutSpec();
+        } else {
+            throw new IllegalArgumentException("Impossible error! The PC element entity is null");
+        }
+    }
+
+    public PcElementBasis update(PcElementBasis pcElement) {
+        int pcElementId = pcElement.getId();
+        pcElementRepository.findById(pcElementId)
+                .orElseThrow(() -> new NoDataFoundException("PC element not found for id: " + pcElementId));
+        return save(pcElement);
+    }
+
+    @Transactional
+    public PcElementBasis delete(int pcElementId) {
+        PcElementEntity pcElementEntity = pcElementRepository.findById(pcElementId)
+                .orElseThrow(() -> new NoDataFoundException("PC element not found for id: " + pcElementId));
+        pcElementRepository.delete(pcElementEntity);
+        return pcElementEntity.toDtoWithoutSpec();
+    }
+
     private List<PcConstraint> getPcConstraintsfromPcElements(List<PcElement> pcElements) {
         return pcElements.stream()
                 // applatit le stream de liste de contraintes de liste d'éléments en une seule
@@ -226,14 +250,6 @@ public class PcElementService {
         log.info("PC element is {}retrieved", canBeAdded ? "" : "not ");
         log.info("***************");
         return canBeAdded;
-    }
-
-    @Transactional
-    public PcElementBasis delete(int pcElementId) {
-        PcElementEntity pcElementEntity = pcElementRepository.findById(pcElementId)
-                .orElseThrow(() -> new NoDataFoundException("PC element not found for id: " + pcElementId));
-        pcElementRepository.delete(pcElementEntity);
-        return pcElementEntity.toDtoWithoutSpec();
     }
 
 }
