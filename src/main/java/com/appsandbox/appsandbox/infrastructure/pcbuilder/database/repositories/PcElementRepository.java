@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import com.appsandbox.appsandbox.infrastructure.pcbuilder.database.entities.PcElementEntity;
 
+
 @Repository
 public interface PcElementRepository extends JpaRepository<PcElementEntity, Integer> {
 

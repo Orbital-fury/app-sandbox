@@ -83,7 +83,7 @@ public class PcElementConstraintService {
                 PcElementEntity pcElementEntity = pcElementRepository.findById(elementId)
                         .orElseThrow(() -> new NoDataFoundException(
                                 "PC element not found for id: " + elementId));
-                PcElementBasis pcElement = pcElementMapper.entityToDto(pcElementEntity);
+                PcElementBasis pcElement = pcElementMapper.entityToDtoBasis(pcElementEntity);
 
                 resultMap.computeIfAbsent(pcElement, k -> new ArrayList<>())
                         .add(pcElementConstraintEntity.getValue());
@@ -93,5 +93,7 @@ public class PcElementConstraintService {
                 .map(entry -> new PcElementConstraintValues(entry.getKey(), entry.getValue()))
                 .collect(Collectors.toList());
     }
+
+    
 
 }
