@@ -22,6 +22,10 @@ public class PcElementSpecificationService {
         @Autowired
         private PcElementSpecificationRepository pcElementSpecificationRepository;
 
+        public List<PcElementSpecificationEntity> getElementSpecificationEntities(int pcElementId) {
+                return pcElementSpecificationRepository.findByElementId(pcElementId);
+        }
+
         public List<PcElementSpecification> getElementSpecifications(int elementId) {
                 List<PcElementSpecificationEntity> elementSpecifications = pcElementSpecificationRepository
                                 .findByElementId(elementId);
@@ -30,11 +34,11 @@ public class PcElementSpecificationService {
 
                 elementSpecifications.forEach(elementSpecification -> {
                         // List<String> values = valuesBySpecifications.getOrDefault(
-                        // elementSpecification.getSpecificationId(),
-                        // new ArrayList<>());
+                        //                 elementSpecification.getSpecificationId(),
+                        //                 new ArrayList<>());
                         // values.add(elementSpecification.getValue());
                         // valuesBySpecifications.put(elementSpecification.getSpecificationId(),
-                        // values);
+                        //                 values);
                         valuesBySpecifications
                                         .computeIfAbsent(elementSpecification.getSpecificationId(),
                                                         k -> new ArrayList<>())
@@ -43,14 +47,13 @@ public class PcElementSpecificationService {
 
                 // List<PcSpecification> pcSpecifications = new ArrayList<>();
                 // for (int key : valuesBySpecifications.keySet()) {
-                // PcSpecificationEntity pcSpecification =
-                // pcSpecificationRepository.findById(key)
-                // .orElseThrow(() -> new RuntimeException(
-                // "PcSpecificationEntity not found for key: " + key));
-                // pcSpecifications.add(
-                // new PcSpecification(pcSpecification.getId(), pcSpecification.getName(),
-                // pcSpecification.getCode(),
-                // valuesBySpecifications.get(pcSpecification.getId())));
+                //         PcSpecificationEntity pcSpecification = pcSpecificationRepository.findById(key)
+                //                         .orElseThrow(() -> new RuntimeException(
+                //                                         "PcSpecificationEntity not found for key: " + key));
+                //         pcSpecifications.add(
+                //                         new PcSpecification(pcSpecification.getId(), pcSpecification.getName(),
+                //                                         pcSpecification.getCode(),
+                //                                         valuesBySpecifications.get(pcSpecification.getId())));
                 // }
                 // return pcSpecifications;
                 return valuesBySpecifications.keySet().stream()
@@ -63,7 +66,8 @@ public class PcElementSpecificationService {
                                                         .orElseThrow(() -> new RuntimeException(
                                                                         "PcSpecificationEntity not found for key: "
                                                                                         + key));
-                                        return new PcElementSpecification(pcSpecification.getId(), pcSpecification.getName(),
+                                        return new PcElementSpecification(pcSpecification.getId(),
+                                                        pcSpecification.getName(),
                                                         pcSpecification.getCode(), valuesBySpecifications.get(key));
                                 })
                                 .collect(Collectors.toList());
