@@ -11,11 +11,11 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 public class PcElement extends PcElementBasis {
 
-    private final List<PcConstraint> constraints;
-    private final List<PcSpecification> specifications;
+    private final List<PcElementConstraint> constraints;
+    private final List<PcElementSpecification> specifications;
 
     public PcElement(int id, String brand, String model, float price, String img, PcElementType type,
-            List<PcConstraint> constraints, List<PcSpecification> specifications) {
+            List<PcElementConstraint> constraints, List<PcElementSpecification> specifications) {
         super(id, brand, model, price, img, type);
         this.constraints = constraints;
         this.specifications = specifications;

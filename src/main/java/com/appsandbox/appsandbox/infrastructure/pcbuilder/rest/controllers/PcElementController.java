@@ -48,10 +48,10 @@ public class PcElementController {
                         @ApiResponse(responseCode = "200", description = "PC elements retrieved successfully")
         })
         @GetMapping("/constraints/elements")
-        public ResponseEntity<PcElements> getPcElementsWithConstraints(
+        public ResponseEntity<PcElements> getPcElementsRegardingConstraints(
                         @RequestParam(name = "ids", required = false) @Parameter(description = "Comma-separated list of PC element IDs", example = "1,10") String pcBuildElementIds) {
                 return new ResponseEntity<>(
-                                new PcElements(pcElementService.getPcElementsWithConstraints(pcBuildElementIds)),
+                                new PcElements(pcElementService.getPcElementsRegardingConstraints(pcBuildElementIds)),
                                 HttpStatus.OK);
         }
 
@@ -73,8 +73,8 @@ public class PcElementController {
                         @ApiResponse(responseCode = "400", description = "Invalid input or request format"),
         })
         @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-        public ResponseEntity<PcElementBasis> create(@NonNull @Valid @RequestBody PcElementBasis newPcElement) {
-                return new ResponseEntity<>(pcElementService.save(newPcElement), HttpStatus.CREATED);
+        public ResponseEntity<PcElementBasis> createPcElement(@NonNull @Valid @RequestBody PcElementBasis newPcElement) {
+                return new ResponseEntity<>(pcElementService.savePcElement(newPcElement), HttpStatus.CREATED);
         }
 
         @Operation(method = "PUT", summary = "Update a PC element", description = "Update a PC element using its id")
@@ -83,8 +83,8 @@ public class PcElementController {
                         @ApiResponse(responseCode = "400", description = "Invalid input or request format"),
         })
         @PutMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-        public ResponseEntity<PcElementBasis> update(@NonNull @Valid @RequestBody PcElementBasis pcElement) {
-                return new ResponseEntity<>(pcElementService.update(pcElement), HttpStatus.OK);
+        public ResponseEntity<PcElementBasis> updatePcElement(@NonNull @Valid @RequestBody PcElementBasis pcElement) {
+                return new ResponseEntity<>(pcElementService.updatePcElement(pcElement), HttpStatus.OK);
         }
 
         @Operation(method = "DELETE", summary = "Delete a PC element", description = "Delete a PC element using its id. Return the deleted element.")
@@ -93,9 +93,9 @@ public class PcElementController {
                         @ApiResponse(responseCode = "400", description = "Invalid input or request format"),
         })
         @DeleteMapping(path = "/{id}")
-        public ResponseEntity<PcElementBasis> delete(
+        public ResponseEntity<PcElementBasis> deletePcElement(
                         @PathVariable @Parameter(name = "id", description = "PC element id", example = "1") int id) {
-                return new ResponseEntity<>(pcElementService.delete(id), HttpStatus.OK);
+                return new ResponseEntity<>(pcElementService.deletePcElement(id), HttpStatus.OK);
         }
 
 }

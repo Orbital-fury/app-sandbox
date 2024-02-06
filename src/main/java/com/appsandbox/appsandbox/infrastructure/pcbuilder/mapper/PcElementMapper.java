@@ -5,10 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.appsandbox.appsandbox.domain.pcbuilder.entities.PcConstraint;
+import com.appsandbox.appsandbox.domain.pcbuilder.entities.PcElementConstraint;
 import com.appsandbox.appsandbox.domain.pcbuilder.entities.PcElement;
 import com.appsandbox.appsandbox.domain.pcbuilder.entities.PcElementBasis;
-import com.appsandbox.appsandbox.domain.pcbuilder.entities.PcSpecification;
+import com.appsandbox.appsandbox.domain.pcbuilder.entities.PcElementSpecification;
 import com.appsandbox.appsandbox.infrastructure.pcbuilder.database.entities.PcElementConstraintEntity;
 import com.appsandbox.appsandbox.infrastructure.pcbuilder.database.entities.PcElementEntity;
 import com.appsandbox.appsandbox.infrastructure.pcbuilder.database.entities.PcElementSpecificationEntity;
@@ -23,25 +23,25 @@ public class PcElementMapper {
     @Autowired
     private PcElementSpecificationRepository pcElementSpecificationRepository;
 
-    public PcElementEntity dtoToEntity(PcElementBasis pcElement) {
-        int pcElementId = pcElement.getId();
+    public PcElementEntity dtoToEntity(PcElementBasis pcElementBasis) {
+        int pcElementId = pcElementBasis.getId();
         List<PcElementConstraintEntity> elementConstraintEntities = pcElementConstraintRepository
                 .findByElementId(pcElementId);
         List<PcElementSpecificationEntity> elementSpecificationEntities = pcElementSpecificationRepository
                 .findByElementId(pcElementId);
         return new PcElementEntity(
                 pcElementId,
-                pcElement.getBrand(),
-                pcElement.getModel(),
-                pcElement.getPrice(),
-                pcElement.getImg(),
-                pcElement.getType(),
+                pcElementBasis.getBrand(),
+                pcElementBasis.getModel(),
+                pcElementBasis.getPrice(),
+                pcElementBasis.getImg(),
+                pcElementBasis.getType(),
                 elementConstraintEntities,
                 elementSpecificationEntities);
     }
 
-    public PcElement entityToDto(PcElementEntity pcElementEntity, List<PcConstraint> pcConstraints,
-            List<PcSpecification> pcSpecifications) {
+    public PcElement entityToDto(PcElementEntity pcElementEntity, List<PcElementConstraint> pcElementConstraints,
+            List<PcElementSpecification> pcElementSpecifications) {
 
         return new PcElement(pcElementEntity.getId(),
                 pcElementEntity.getBrand(),
@@ -49,8 +49,8 @@ public class PcElementMapper {
                 pcElementEntity.getPrice(),
                 pcElementEntity.getImg(),
                 pcElementEntity.getType(),
-                pcConstraints,
-                pcSpecifications);
+                pcElementConstraints,
+                pcElementSpecifications);
     }
 
     public PcElementBasis entityToDto(PcElementEntity pcElementEntity) {

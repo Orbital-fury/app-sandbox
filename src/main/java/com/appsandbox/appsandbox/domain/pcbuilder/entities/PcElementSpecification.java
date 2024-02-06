@@ -7,7 +7,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class PcSpecification {
+public class PcElementSpecification {
 
     private int id;
     private String name;

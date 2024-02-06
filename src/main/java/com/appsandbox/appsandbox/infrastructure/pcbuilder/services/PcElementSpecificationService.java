@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.appsandbox.appsandbox.domain.pcbuilder.entities.PcSpecification;
+import com.appsandbox.appsandbox.domain.pcbuilder.entities.PcElementSpecification;
 import com.appsandbox.appsandbox.infrastructure.pcbuilder.database.entities.PcElementSpecificationEntity;
 import com.appsandbox.appsandbox.infrastructure.pcbuilder.database.entities.PcSpecificationEntity;
 import com.appsandbox.appsandbox.infrastructure.pcbuilder.database.repositories.PcElementSpecificationRepository;
@@ -22,7 +22,7 @@ public class PcElementSpecificationService {
         @Autowired
         private PcElementSpecificationRepository pcElementSpecificationRepository;
 
-        public List<PcSpecification> getElementSpecifications(int elementId) {
+        public List<PcElementSpecification> getElementSpecifications(int elementId) {
                 List<PcElementSpecificationEntity> elementSpecifications = pcElementSpecificationRepository
                                 .findByElementId(elementId);
 
@@ -63,7 +63,7 @@ public class PcElementSpecificationService {
                                                         .orElseThrow(() -> new RuntimeException(
                                                                         "PcSpecificationEntity not found for key: "
                                                                                         + key));
-                                        return new PcSpecification(pcSpecification.getId(), pcSpecification.getName(),
+                                        return new PcElementSpecification(pcSpecification.getId(), pcSpecification.getName(),
                                                         pcSpecification.getCode(), valuesBySpecifications.get(key));
                                 })
                                 .collect(Collectors.toList());

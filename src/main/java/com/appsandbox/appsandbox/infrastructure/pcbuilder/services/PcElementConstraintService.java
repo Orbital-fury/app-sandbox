@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.appsandbox.appsandbox.domain.pcbuilder.entities.PcConstraint;
+import com.appsandbox.appsandbox.domain.pcbuilder.entities.PcElementConstraint;
 import com.appsandbox.appsandbox.domain.pcbuilder.entities.PcElementBasis;
 import com.appsandbox.appsandbox.domain.pcbuilder.entities.PcElementConstraintValues;
 import com.appsandbox.appsandbox.domain.pcbuilder.enums.PcConstraintType;
@@ -34,20 +34,20 @@ public class PcElementConstraintService {
     @Autowired
     private PcElementMapper pcElementMapper;
 
-    public List<PcConstraint> getElementConstraints(int elementId) {
-        List<PcElementConstraintEntity> elementConstraints = pcElementConstraintRepository.findByElementId(elementId);
+    public List<PcElementConstraint> getElementConstraints(int elementId) {
+        List<PcElementConstraintEntity> elementConstraintEntities = pcElementConstraintRepository.findByElementId(elementId);
 
         HashMap<Integer, List<String>> valuesByConstraints = new HashMap<>();
 
-        elementConstraints.forEach(elementConstraint -> {
+        elementConstraintEntities.forEach(elementConstraintEntity -> {
             // List<String> values = valuesByConstraints.getOrDefault(elementConstraint.getConstraintId(),
             //         new ArrayList<>());
             // values.add(elementConstraint.getValue());
             // valuesByConstraints.put(elementConstraint.getConstraintId(), values);
             valuesByConstraints
-                    .computeIfAbsent(elementConstraint.getConstraintId(),
+                    .computeIfAbsent(elementConstraintEntity.getConstraintId(),
                             k -> new ArrayList<>())
-                    .add(elementConstraint.getValue());
+                    .add(elementConstraintEntity.getValue());
         });
 
         return valuesByConstraints.keySet().stream()
@@ -55,16 +55,16 @@ public class PcElementConstraintService {
                     if (key == null) {
                         throw new RuntimeException("Error ! Not possible to retrieve constraint for id=null");
                     }
-                    PcConstraintEntity pcConstraint = pcConstraintRepository.findById(key)
+                    PcConstraintEntity pcConstraintEntity = pcConstraintRepository.findById(key)
                             .orElseThrow(() -> new RuntimeException("PcConstraintEntity not found for key: " + key));
-                    List<String> constraintValues = valuesByConstraints.get(pcConstraint.getId());
-                    if ((pcConstraint.getType() == PcConstraintType.LIMIT
-                            || pcConstraint.getType() == PcConstraintType.MAX)
+                    List<String> constraintValues = valuesByConstraints.get(pcConstraintEntity.getId());
+                    if ((pcConstraintEntity.getType() == PcConstraintType.LIMIT
+                            || pcConstraintEntity.getType() == PcConstraintType.MAX)
                             && constraintValues.size() != 1) {
                         throw new RuntimeException("A type's constraint: MAX or LIMIT has a size different from 1");
                     }
-                    return new PcConstraint(pcConstraint.getId(), pcConstraint.getName(), pcConstraint.getCode(),
-                            pcConstraint.getType(),
+                    return new PcElementConstraint(pcConstraintEntity.getId(), pcConstraintEntity.getName(), pcConstraintEntity.getCode(),
+                            pcConstraintEntity.getType(),
                             constraintValues);
                 })
                 .collect(Collectors.toList());
