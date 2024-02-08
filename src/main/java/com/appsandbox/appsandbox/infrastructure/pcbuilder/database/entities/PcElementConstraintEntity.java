@@ -8,12 +8,14 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "pc_elements_constraints")
 @IdClass(PcElementConstraintId.class)
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class PcElementConstraintEntity {
 
     @Id
@@ -23,10 +25,10 @@ public class PcElementConstraintEntity {
     @Id
     private String value;
     @ManyToOne
-    @JoinColumn(name = "element_id")
+    @JoinColumn(name = "element_id", updatable = false)
     private PcElementEntity pcElement;
     @ManyToOne
-    @JoinColumn(name = "constraint_id")
+    @JoinColumn(name = "constraint_id", updatable = false)
     private PcConstraintEntity pcConstraint;
 
 }

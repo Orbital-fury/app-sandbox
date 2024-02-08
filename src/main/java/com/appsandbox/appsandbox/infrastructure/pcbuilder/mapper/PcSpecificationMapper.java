@@ -1,18 +1,26 @@
 package com.appsandbox.appsandbox.infrastructure.pcbuilder.mapper;
 
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+import org.springframework.stereotype.Service;
 
 import com.appsandbox.appsandbox.domain.pcbuilder.entities.PcSpecification;
 import com.appsandbox.appsandbox.infrastructure.pcbuilder.database.entities.PcSpecificationEntity;
 
-@Mapper(uses = PcElementSpecificationMapper.class)
-public interface PcSpecificationMapper {
+@Service
+public class PcSpecificationMapper {
 
-    @Mapping(target = "pcElementSpecifications", source = "pcElementSpecifications", qualifiedByName = "toPcElementSpecificationDto")
-    PcSpecification entityToDto(PcSpecificationEntity pcSpecificationEntity);
+    public PcSpecification entityToDto(PcSpecificationEntity pcSpecificationEntity) {
+        return new PcSpecification(
+                pcSpecificationEntity.getId(),
+                pcSpecificationEntity.getName(),
+                pcSpecificationEntity.getCode());
+    }
 
-    @Mapping(target = "pcElementSpecifications", source = "pcElementSpecifications", qualifiedByName = "toPcElementSpecificationEntity")
-    PcSpecificationEntity dtoToEntity(PcSpecification pcSpecification);
+    public PcSpecificationEntity dtoToEntity(PcSpecification pcSpecification) {
+        return new PcSpecificationEntity(
+                pcSpecification.getId(),
+                pcSpecification.getName(),
+                pcSpecification.getCode(),
+                null);
+    }
 
 }

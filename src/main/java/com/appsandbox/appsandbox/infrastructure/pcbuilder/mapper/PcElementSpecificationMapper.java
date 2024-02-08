@@ -1,50 +1,65 @@
 package com.appsandbox.appsandbox.infrastructure.pcbuilder.mapper;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.Named;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import com.appsandbox.appsandbox.domain.pcbuilder.entities.PcElementSpecification;
+import com.appsandbox.appsandbox.domain.pcbuilder.entities.PcSpecificationWithValues;
+import com.appsandbox.appsandbox.domain.pcbuilder.entities.PcSpecification;
 import com.appsandbox.appsandbox.infrastructure.pcbuilder.database.entities.PcElementSpecificationEntity;
 
-@Mapper(uses = { PcElementMapper.class, PcSpecificationMapper.class })
-public interface PcElementSpecificationMapper {
+@Service
+public class PcElementSpecificationMapper {
 
-    @Mapping(target = "pcSpecification.pcElementSpecifications", ignore = true)
-    @Mapping(target = "pcElement.pcElementConstraints", ignore = true)
-    @Mapping(target = "pcElement.pcElementSpecifications", ignore = true)
-    PcElementSpecification entityToDto(PcElementSpecificationEntity pcElementSpecificationEntity);
+    @Autowired
+    private PcSpecificationMapper pcSpecificationMapper;
 
-    @Mapping(target = "pcSpecification.pcElementSpecifications", ignore = true)
-    @Mapping(target = "pcElement.pcElementConstraints", ignore = true)
-    @Mapping(target = "pcElement.pcElementSpecifications", ignore = true)
-    PcElementSpecificationEntity dtoToEntity(PcElementSpecification pcElementSpecification);
-
-    @Named("toPcElementSpecificationDto")
-    default List<PcElementSpecification> toPcElementSpecificationDto(List<PcElementSpecificationEntity> source) {
-        return source
+    public List<PcSpecificationWithValues> entitiesToDtos(
+            List<PcElementSpecificationEntity> pcElementSpecificationEntities) {
+        Map<Integer, Map<Integer, List<PcElementSpecificationEntity>>> groupedBySpecificationIdAndElementId = pcElementSpecificationEntities
                 .stream()
-                .map(this::entityToDto)
-                .peek(dto -> {
-                    dto.setPcElement(null);
-                    dto.setPcSpecification(null);
-                })
+                .collect(Collectors.groupingBy(PcElementSpecificationEntity::getSpecificationId,
+                        Collectors.groupingBy(PcElementSpecificationEntity::getElementId)));
+
+        return groupedBySpecificationIdAndElementId.values().stream()
+                .flatMap(elementGroup -> elementGroup.values().stream())
+                .map(this::mapToPcElementSpecification)
                 .collect(Collectors.toList());
     }
 
-    @Named("toPcElementSpecificationEntity")
-    default List<PcElementSpecificationEntity> toPcElementSpecificationEntity(List<PcElementSpecification> source) {
-        return source
-                .stream()
-                .map(this::dtoToEntity)
-                .peek(entity -> {
-                    entity.setPcElement(null);
-                    entity.setPcSpecification(null);
-                })
+    private PcSpecificationWithValues mapToPcElementSpecification(
+            List<PcElementSpecificationEntity> specificationEntities) {
+        PcSpecification pcSpecification = pcSpecificationMapper
+                .entityToDto(specificationEntities.get(0).getPcSpecification()); // Assuming PcConstraintEntity has a
+                                                                                 // toDto() method
+
+        List<String> values = specificationEntities.stream()
+                .map(PcElementSpecificationEntity::getValue)
                 .collect(Collectors.toList());
+
+        return new PcSpecificationWithValues(pcSpecification, values);
+    }
+
+    public List<PcElementSpecificationEntity> dtoToEntities(int pcElementId,
+            List<PcSpecificationWithValues> pcElementSpecifications) {
+        List<PcElementSpecificationEntity> pcElmentSpecificationEntities = new ArrayList<>();
+
+        pcElementSpecifications.stream()
+                .map(pcElementSpecification -> pcElementSpecification.getValues().stream()
+                        .map(value -> pcElmentSpecificationEntities.add(new PcElementSpecificationEntity(
+                                pcElementId,
+                                pcElementSpecification.getId(),
+                                value,
+                                null,
+                                null))))
+                .distinct()
+                .collect(Collectors.toList());
+
+        return pcElmentSpecificationEntities;
     }
 
 }

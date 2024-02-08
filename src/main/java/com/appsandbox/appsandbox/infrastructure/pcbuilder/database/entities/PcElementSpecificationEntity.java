@@ -7,12 +7,16 @@ import jakarta.persistence.IdClass;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "pc_elements_specifications")
 @IdClass(PcElementSpecificationId.class)
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class PcElementSpecificationEntity {
 
     @Id
@@ -22,10 +26,10 @@ public class PcElementSpecificationEntity {
     @Column(name = "s_value")
     private String value;
     @ManyToOne
-    @JoinColumn(name = "element_id", nullable = false)
+    @JoinColumn(name = "element_id", updatable = false)
     private PcElementEntity pcElement;
     @ManyToOne
-    @JoinColumn(name = "specification_id", nullable = false)
+    @JoinColumn(name = "specification_id", updatable = false)
     private PcSpecificationEntity pcSpecification;
 
 }

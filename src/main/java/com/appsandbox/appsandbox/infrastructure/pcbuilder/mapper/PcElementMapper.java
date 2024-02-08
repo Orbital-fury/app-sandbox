@@ -1,18 +1,20 @@
 package com.appsandbox.appsandbox.infrastructure.pcbuilder.mapper;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.appsandbox.appsandbox.domain.pcbuilder.entities.PcElement;
-import com.appsandbox.appsandbox.domain.pcbuilder.entities.PcElementConstraint;
-import com.appsandbox.appsandbox.domain.pcbuilder.entities.PcElementSpecification;
+import com.appsandbox.appsandbox.domain.pcbuilder.entities.PcConstraintWithValues;
+import com.appsandbox.appsandbox.domain.pcbuilder.entities.PcSpecificationWithValues;
 import com.appsandbox.appsandbox.domain.pcbuilder.entities.PcElementWithoutConstraintsAndSpecs;
+import com.appsandbox.appsandbox.domain.pcbuilder.entities.PcElementWithoutSpecs;
 import com.appsandbox.appsandbox.infrastructure.pcbuilder.database.entities.PcElementConstraintEntity;
 import com.appsandbox.appsandbox.infrastructure.pcbuilder.database.entities.PcElementEntity;
 import com.appsandbox.appsandbox.infrastructure.pcbuilder.database.entities.PcElementSpecificationEntity;
 
+@Service
 public class PcElementMapper {
 
     @Autowired
@@ -30,13 +32,24 @@ public class PcElementMapper {
                 pcElementEntity.getType());
     }
 
+    public PcElementWithoutSpecs entityToDtoWithoutSpecs(PcElementEntity pcElementEntity) {
+        List<PcConstraintWithValues> pcElementConstraints = pcElementConstraintMapper
+                .entitiesToDtos(pcElementEntity.getPcElementConstraints());
+        return new PcElementWithoutSpecs(
+                pcElementEntity.getId(),
+                pcElementEntity.getBrand(),
+                pcElementEntity.getModel(),
+                pcElementEntity.getPrice(),
+                pcElementEntity.getImg(),
+                pcElementEntity.getType(),
+                pcElementConstraints);
+    }
+
     public PcElement entityToDto(PcElementEntity pcElementEntity) {
-        List<PcElementConstraint> pcElementConstraints = pcElementEntity.getPcElementConstraints().stream()
-                .map(entity -> pcElementConstraintMapper.entityToDto(entity))
-                .collect(Collectors.toList());
-        List<PcElementSpecification> pcElementSpecifications = pcElementEntity.getPcElementSpecifications().stream()
-                .map(entity -> pcElementSpecificationMapper.entityToDto(entity))
-                .collect(Collectors.toList());
+        List<PcConstraintWithValues> pcElementConstraints = pcElementConstraintMapper
+                .entitiesToDtos(pcElementEntity.getPcElementConstraints());
+        List<PcSpecificationWithValues> pcElementSpecifications = pcElementSpecificationMapper
+                .entitiesToDtos(pcElementEntity.getPcElementSpecifications());
         return new PcElement(
                 pcElementEntity.getId(),
                 pcElementEntity.getBrand(),
@@ -49,15 +62,13 @@ public class PcElementMapper {
     }
 
     public PcElementEntity dtoToEntity(PcElement pcElement) {
-        List<PcElementConstraintEntity> pcElementConstraintEntities = pcElement.getPcElementConstraints().stream()
-                .map(dto -> pcElementConstraintMapper.dtoToEntity(dto))
-                .collect(Collectors.toList());
-        List<PcElementSpecificationEntity> pcElementSpecificationEntities = pcElement.getPcElementSpecifications()
-                .stream()
-                .map(dto -> pcElementSpecificationMapper.dtoToEntity(dto))
-                .collect(Collectors.toList());
+        int pcElementId = pcElement.getId();
+        List<PcElementConstraintEntity> pcElementConstraintEntities = pcElementConstraintMapper
+                .dtosToEntities(pcElementId, pcElement.getConstraints());
+        List<PcElementSpecificationEntity> pcElementSpecificationEntities = pcElementSpecificationMapper
+                .dtoToEntities(pcElementId, pcElement.getSpecifications());
         return new PcElementEntity(
-                pcElement.getId(),
+                pcElementId,
                 pcElement.getBrand(),
                 pcElement.getModel(),
                 pcElement.getPrice(),

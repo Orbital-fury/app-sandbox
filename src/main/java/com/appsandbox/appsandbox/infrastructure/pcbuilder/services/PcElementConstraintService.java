@@ -6,10 +6,10 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.appsandbox.appsandbox.domain.pcbuilder.entities.PcElementConstraint;
+import com.appsandbox.appsandbox.domain.pcbuilder.entities.PcElementWithoutSpecs;
 import com.appsandbox.appsandbox.infrastructure.pcbuilder.database.entities.PcElementConstraintEntity;
 import com.appsandbox.appsandbox.infrastructure.pcbuilder.database.repositories.PcElementConstraintRepository;
-import com.appsandbox.appsandbox.infrastructure.pcbuilder.mapper.PcElementConstraintMapper;
+import com.appsandbox.appsandbox.infrastructure.pcbuilder.mapper.PcElementMapper;
 
 @Service
 public class PcElementConstraintService {
@@ -17,17 +17,13 @@ public class PcElementConstraintService {
     @Autowired
     private PcElementConstraintRepository pcElementConstraintRepository;
     @Autowired
-    private PcElementConstraintMapper pcElementConstraintMapper;
+    private PcElementMapper pcElementMapper;
 
-    public List<PcElementConstraintEntity> getElementConstraintEntities(int pcElementId) {
-        return pcElementConstraintRepository.findByElementId(pcElementId);
-    }
-
-    public List<PcElementConstraint> getElementConstraints(int elementId) {
-        List<PcElementConstraintEntity> elementConstraintEntities = pcElementConstraintRepository
-                .findByElementId(elementId);
-        return elementConstraintEntities.stream()
-                .map(entity -> pcElementConstraintMapper.entityToDto(entity))
+    public List<PcElementWithoutSpecs> getPcElementAndConstraintValues(int pcConstraintId) {
+        List<PcElementConstraintEntity> pcElementConstraintEntities = pcElementConstraintRepository
+                .findByConstraintId(pcConstraintId);
+        return pcElementConstraintEntities.stream()
+                .map(entity -> pcElementMapper.entityToDtoWithoutSpecs(entity.getPcElement()))
                 .collect(Collectors.toList());
     }
 
