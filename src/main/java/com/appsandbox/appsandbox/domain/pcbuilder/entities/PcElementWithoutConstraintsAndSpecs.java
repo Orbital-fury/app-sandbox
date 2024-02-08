@@ -5,7 +5,7 @@ import com.appsandbox.appsandbox.domain.pcbuilder.enums.PcElementType;
 import lombok.Data;
 
 @Data
-public class PcElementBasis {
+public class PcElementWithoutConstraintsAndSpecs {
 
     private final int id;
     private final String brand;

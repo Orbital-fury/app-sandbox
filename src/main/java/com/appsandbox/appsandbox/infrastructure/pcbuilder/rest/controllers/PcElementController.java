@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.appsandbox.appsandbox.domain.pcbuilder.entities.PcElement;
-import com.appsandbox.appsandbox.domain.pcbuilder.entities.PcElementBasis;
+import com.appsandbox.appsandbox.domain.pcbuilder.entities.PcElementWithoutConstraintsAndSpecs;
 import com.appsandbox.appsandbox.infrastructure.pcbuilder.rest.requests.PcElements;
 import com.appsandbox.appsandbox.infrastructure.pcbuilder.services.PcElementService;
 
@@ -73,7 +73,7 @@ public class PcElementController {
                         @ApiResponse(responseCode = "400", description = "Invalid input or request format"),
         })
         @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-        public ResponseEntity<PcElementBasis> createPcElement(@NonNull @Valid @RequestBody PcElementBasis newPcElement) {
+        public ResponseEntity<PcElementWithoutConstraintsAndSpecs> createPcElement(@NonNull @Valid @RequestBody PcElementWithoutConstraintsAndSpecs newPcElement) {
                 return new ResponseEntity<>(pcElementService.savePcElement(newPcElement), HttpStatus.CREATED);
         }
 
@@ -83,7 +83,7 @@ public class PcElementController {
                         @ApiResponse(responseCode = "400", description = "Invalid input or request format"),
         })
         @PutMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-        public ResponseEntity<PcElementBasis> updatePcElement(@NonNull @Valid @RequestBody PcElementBasis pcElement) {
+        public ResponseEntity<PcElementWithoutConstraintsAndSpecs> updatePcElement(@NonNull @Valid @RequestBody PcElementWithoutConstraintsAndSpecs pcElement) {
                 return new ResponseEntity<>(pcElementService.updatePcElement(pcElement), HttpStatus.OK);
         }
 
@@ -93,7 +93,7 @@ public class PcElementController {
                         @ApiResponse(responseCode = "400", description = "Invalid input or request format"),
         })
         @DeleteMapping(path = "/{id}")
-        public ResponseEntity<PcElementBasis> deletePcElement(
+        public ResponseEntity<PcElementWithoutConstraintsAndSpecs> deletePcElement(
                         @PathVariable @Parameter(name = "id", description = "PC element id", example = "1") int id) {
                 return new ResponseEntity<>(pcElementService.deletePcElement(id), HttpStatus.OK);
         }

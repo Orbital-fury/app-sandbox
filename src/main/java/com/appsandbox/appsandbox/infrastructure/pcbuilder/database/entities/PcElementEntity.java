@@ -36,13 +36,9 @@ public class PcElementEntity {
     @Column(name = "element_type")
     @Enumerated(EnumType.STRING)
     private PcElementType type;
-    @OneToMany(mappedBy = "pcElement", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "pcElement", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<PcElementConstraintEntity> pcElementConstraints = new ArrayList<>();
-    @OneToMany(mappedBy = "pcElement", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "pcElement", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<PcElementSpecificationEntity> pcElementSpecifications = new ArrayList<>();
-
-    // public PcElement toDto(List<PcConstraint> pcConstraints, List<PcSpecification> pcSpecifications) {
-    //     return new PcElement(id, brand, model, price, img, type, pcConstraints, pcSpecifications);
-    // }
 
 }

@@ -1,17 +1,17 @@
 package com.appsandbox.appsandbox.domain.pcbuilder.entities;
 
-import java.util.List;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
 public class PcElementSpecification {
 
-    private int id;
-    private String name;
-    private String code;
-    private List<String> values;
+    private int elementId;
+    private int specificationId;
+    private String value;
+    private PcElement pcElement;
+    private PcSpecification pcSpecification;
 
 }

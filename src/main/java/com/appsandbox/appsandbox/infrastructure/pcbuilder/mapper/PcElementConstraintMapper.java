@@ -1,38 +1,30 @@
 package com.appsandbox.appsandbox.infrastructure.pcbuilder.mapper;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import com.appsandbox.appsandbox.domain.pcbuilder.entities.PcElementConstraint;
-import com.appsandbox.appsandbox.infrastructure.pcbuilder.database.entities.PcConstraintEntity;
 import com.appsandbox.appsandbox.infrastructure.pcbuilder.database.entities.PcElementConstraintEntity;
-import com.appsandbox.appsandbox.infrastructure.pcbuilder.database.repositories.PcElementConstraintRepository;
 
-@Service
 public class PcElementConstraintMapper {
 
     @Autowired
-    private PcElementConstraintRepository pcElementConstraintRepository;
+    private PcConstraintMapper pcConstraintMapper;
 
-    public List<PcElementConstraintEntity> dtoToEntity(PcElementConstraint pcElementConstraint) {
-        return pcElementConstraintRepository.findByConstraintId(pcElementConstraint.getId());
+    public PcElementConstraint entityToDto(PcElementConstraintEntity pcElementConstraintEntity) {
+        return new PcElementConstraint(
+                pcElementConstraintEntity.getElementId(),
+                pcElementConstraintEntity.getConstraintId(),
+                pcElementConstraintEntity.getValue(),
+                pcConstraintMapper.entityToDto(pcElementConstraintEntity.getPcConstraint()));
     }
 
-    public PcElementConstraint entityToDto(List<PcElementConstraintEntity> pcElementConstraintEntities) {
-        if (pcElementConstraintEntities.isEmpty()) {
-            return null;
-        }
-        PcConstraintEntity pcConstraintEntity = pcElementConstraintEntities.get(0).getPcConstraint();
-        int firstConstraintId = pcConstraintEntity.getId();
-        for (PcElementConstraintEntity entity : pcElementConstraintEntities) {
-            if (entity.getConstraintId() != firstConstraintId) {
-                throw new IllegalStateException("Constraint ids are not all identical !!");
-            }
-        }
-        
-        return null;
+    public PcElementConstraintEntity dtoToEntity(PcElementConstraint pcElementConstraint) {
+        return new PcElementConstraintEntity(
+                pcElementConstraint.getElementId(),
+                pcElementConstraint.getConstraintId(),
+                pcElementConstraint.getValue(),
+                null,
+                null);
     }
 
 }

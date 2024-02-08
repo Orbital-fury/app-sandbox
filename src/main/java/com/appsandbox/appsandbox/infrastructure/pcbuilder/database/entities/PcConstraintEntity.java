@@ -32,7 +32,7 @@ public class PcConstraintEntity {
     private String code;
     @Enumerated(EnumType.STRING)
     private PcConstraintType type;
-    @OneToMany(mappedBy = "pcConstraint", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "pcConstraint", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<PcElementConstraintEntity> pcElementConstraints = new ArrayList<>();
 
 }

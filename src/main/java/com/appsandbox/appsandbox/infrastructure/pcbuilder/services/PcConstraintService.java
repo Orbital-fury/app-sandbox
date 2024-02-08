@@ -25,13 +25,13 @@ public class PcConstraintService {
     public List<PcConstraint> getAllPcConstraints() {
         List<PcConstraintEntity> pcConstraintEntities = pcConstraintRepository.findAll();
         return pcConstraintEntities.stream()
-                .map(entity -> pcConstraintMapper.entityToDtoWithoutValue(entity))
+                .map(entity -> pcConstraintMapper.entityToDto(entity))
                 .collect(Collectors.toList());
     }
 
     public PcConstraint getPcConstraint(int constraintId) {
         return pcConstraintRepository.findById(constraintId)
-                .map(entity -> pcConstraintMapper.entityToDtoWithoutValue(entity))
+                .map(entity -> pcConstraintMapper.entityToDto(entity))
                 .orElseThrow(() -> new NoDataFoundException("PC constraint not found for id: " + constraintId));
     }
 
@@ -54,7 +54,7 @@ public class PcConstraintService {
         PcConstraintEntity pcConstraintEntity = pcConstraintRepository.findById(pcConstraintId)
                 .orElseThrow(() -> new NoDataFoundException("PC constraint not found for id: " + pcConstraintId));
         pcConstraintRepository.delete(pcConstraintEntity);
-        return pcConstraintMapper.entityToDtoWithoutValue(pcConstraintEntity);
+        return pcConstraintMapper.entityToDto(pcConstraintEntity);
     }
 
 }

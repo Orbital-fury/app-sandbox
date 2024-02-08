@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 public class PcElementConstraintValues {
 
-    private final PcElementBasis pcElementInfo;
+    private final PcElementWithoutConstraintsAndSpecs pcElementInfo;
     private final List<String> constraintValues;
 
 }

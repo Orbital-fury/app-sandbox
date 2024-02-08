@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.appsandbox.appsandbox.domain.pcbuilder.entities.PcElement;
-import com.appsandbox.appsandbox.domain.pcbuilder.entities.PcElementBasis;
+import com.appsandbox.appsandbox.domain.pcbuilder.entities.PcElementWithoutConstraintsAndSpecs;
 import com.appsandbox.appsandbox.domain.pcbuilder.entities.PcElementConstraint;
 import com.appsandbox.appsandbox.infrastructure.exceptions.NoDataFoundException;
 import com.appsandbox.appsandbox.infrastructure.pcbuilder.database.entities.PcElementEntity;
@@ -33,9 +33,6 @@ public class PcElementService {
 
     public List<PcElement> getAllPcElement() {
         List<PcElementEntity> pcElementEntities = pcElementRepository.findAll();
-        // List<PcElement> pcElements = new ArrayList<>();
-        // pcElementEntities.forEach(pcElementEntity -> pcElements.add(pcElementDtoFromEntity(pcElementEntity)));
-        // return pcElements;
         return pcElementEntities.stream()
                 .map(entity -> pcElementMapper.entityToDto(entity))
                 .collect(Collectors.toList());
@@ -52,10 +49,6 @@ public class PcElementService {
                 .map(Integer::parseInt)
                 .collect(Collectors.toList());
 
-        // List<PcElement> selectedPcElements = new ArrayList<>();
-        // pcElementRepository.findAllByIdIn(selectedPcElementIds).forEach(pcElementEntity -> {
-        //     selectedPcElements.add(pcElementDtoFromEntity(pcElementEntity));
-        // });
         List<PcElement> pcBuildElements = pcElementRepository.findAllByIdIn(pcBuildElementIds)
                 .stream()
                 .map(entity -> pcElementMapper.entityToDto(entity))
@@ -65,15 +58,6 @@ public class PcElementService {
         List<PcElementConstraint> pcBuildConstraints = getPcConstraintsfromPcElements(pcBuildElements);
 
         // Retrieve all PcElement entities
-        // List<PcElementEntity> pcElementEntities = pcElementRepository.findAll();
-        // List<PcElement> pcElements = new ArrayList<>();
-        // pcElementEntities.forEach(pcElementEntity -> {
-        //     PcElement pcElement = pcElementDtoFromEntity(pcElementEntity);
-        //     if (canBeAddedRegardingConstraints(pcElement, pcBuildConstraints)) {
-        //         pcElements.add(pcElement);
-        //     }
-        // });
-        // return pcElements;
         return pcElementRepository.findAll().stream()
                 .map(entity -> pcElementMapper.entityToDto(entity))
                 .filter(pcElement -> canBeAddedRegardingConstraints(pcElement, pcBuildConstraints))
@@ -81,26 +65,18 @@ public class PcElementService {
     }
 
     public PcElement getPcElement(int elementId) {
-        // Optional<PcElementEntity> optPcElementEntity = pcElementRepository.findById(elementId);
-        // if (optPcElementEntity.isPresent()) {
-        //     PcElementEntity pcElementEntity = optPcElementEntity.get();
-        //     return pcElementDtoFromEntity(pcElementEntity);
-        // } else {
-        //     throw new NoDataFoundException("PC element with id=" + elementId +
-        //             " not found!");
-        // }
         PcElementEntity pcElementEntity = pcElementRepository.findById(elementId)
                 .orElseThrow(() -> new NoDataFoundException("PC element not found for id: " + elementId));
         return pcElementMapper.entityToDto(pcElementEntity);
     }
 
-    public PcElementBasis savePcElement(@NonNull PcElementBasis newPcElement) {
+    public PcElementWithoutConstraintsAndSpecs savePcElement(@NonNull PcElementWithoutConstraintsAndSpecs newPcElement) {
         PcElementEntity pcElementEntity = pcElementMapper.dtoToEntity(newPcElement);
         pcElementRepository.save(pcElementEntity);
         return newPcElement;
     }
 
-    public PcElementBasis updatePcElement(@NonNull PcElementBasis pcElement) {
+    public PcElementWithoutConstraintsAndSpecs updatePcElement(@NonNull PcElementWithoutConstraintsAndSpecs pcElement) {
         int pcElementId = pcElement.getId();
         pcElementRepository.findById(pcElementId)
                 .orElseThrow(() -> new NoDataFoundException("PC element not found for id: " + pcElementId));
@@ -108,21 +84,21 @@ public class PcElementService {
     }
 
     @Transactional
-    public PcElementBasis deletePcElement(int pcElementId) {
+    public PcElementWithoutConstraintsAndSpecs deletePcElement(int pcElementId) {
         PcElementEntity pcElementEntity = pcElementRepository.findById(pcElementId)
                 .orElseThrow(() -> new NoDataFoundException("PC element not found for id: " + pcElementId));
         pcElementRepository.delete(pcElementEntity);
-        return pcElementMapper.entityToDtoBasis(pcElementEntity);
+        return pcElementMapper.entityToDto(pcElementEntity);
     }
 
     private List<PcElementConstraint> getPcConstraintsfromPcElements(List<PcElement> pcElements) {
         return pcElements.stream()
                 // applatit le stream de liste de contraintes de liste d'éléments en une seule
                 // liste de contraintes
-                .flatMap(pcElement -> pcElement.getConstraints().stream())
+                .flatMap(pcElement -> pcElement.getPcElementConstraints().stream())
                 // applique un groupBy (ici le code de la PcConstraint) pour créer Map<String,
                 // List<PcConstraint>>
-                .collect(Collectors.groupingBy(PcElementConstraint::getCode))
+                .collect(Collectors.groupingBy(PcElementConstraint::getPcConstraint::getCode))
                 // créer Stream<List<PcConstraint>>
                 .values().stream()
                 // re-map le stream d'une liste par le stream d'une autre liste
@@ -132,20 +108,13 @@ public class PcElementService {
                             .flatMap(constraint -> constraint.getValues().stream())
                             .collect(Collectors.toCollection(LinkedHashSet::new));
                     // Création d'une nouvelle PcConstraint avec les valeurs fusionnées
-                    PcElementConstraint mergedConstraint = constraintGroup.get(0); // Prend n'importe quel élément du groupe
+                    PcElementConstraint mergedConstraint = constraintGroup.get(0); // Prend n'importe quel élément du
+                                                                                   // groupe
                     mergedConstraint.setValues(new ArrayList<>(mergedValues));
                     return mergedConstraint;
                 })
                 .collect(Collectors.toList());
     }
-
-    // private PcElement pcElementDtoFromEntity(PcElementEntity pcElementEntity) {
-    //     int elementId = pcElementEntity.getId();
-    //     List<PcElementConstraint> pcElementConstraints = pcElementConstraintService.getElementConstraints(elementId);
-    //     List<PcElementSpecification> pcElementSpecifications = pcElementSpecificationService.getElementSpecifications(elementId);
-    //     // return pcElementMapper.entityToDto(pcElementEntity);
-    //     return pcElementMapper.entityToDto(pcElementEntity, pcElementConstraints, pcElementSpecifications);
-    // }
 
     // public boolean canBeAddedRegardingConstraints(PcElement pcElement,
     //         List<PcConstraint> pcBuildConstraints) {
@@ -211,7 +180,7 @@ public class PcElementService {
         log.info("***************");
         log.info("Test if {} {} can be added to PC build", pcElement.getBrand(), pcElement.getModel());
 
-        boolean canBeAdded = pcElement.getConstraints().stream().allMatch(constraint -> {
+        boolean canBeAdded = pcElement.getPcElementConstraints().stream().allMatch(constraint -> {
             PcElementConstraint pcBuildConstraintToManage = pcBuildConstraints.stream()
                     .filter(buildConstraint -> buildConstraint.getCode().equals(constraint.getCode()))
                     .findFirst()
