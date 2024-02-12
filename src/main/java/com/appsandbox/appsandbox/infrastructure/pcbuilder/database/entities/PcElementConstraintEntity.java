@@ -25,10 +25,10 @@ public class PcElementConstraintEntity {
     @Id
     private String value;
     @ManyToOne
-    @JoinColumn(name = "element_id", updatable = false)
+    @JoinColumn(name = "element_id")
     private PcElementEntity pcElement;
     @ManyToOne
-    @JoinColumn(name = "constraint_id", updatable = false)
+    @JoinColumn(name = "constraint_id")
     private PcConstraintEntity pcConstraint;
 
 }

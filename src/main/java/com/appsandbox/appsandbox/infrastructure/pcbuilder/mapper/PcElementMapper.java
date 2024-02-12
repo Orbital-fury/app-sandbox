@@ -2,20 +2,24 @@ package com.appsandbox.appsandbox.infrastructure.pcbuilder.mapper;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.appsandbox.appsandbox.domain.pcbuilder.entities.PcElement;
 import com.appsandbox.appsandbox.domain.pcbuilder.entities.PcConstraintWithValues;
-import com.appsandbox.appsandbox.domain.pcbuilder.entities.PcSpecificationWithValues;
+import com.appsandbox.appsandbox.domain.pcbuilder.entities.PcElement;
 import com.appsandbox.appsandbox.domain.pcbuilder.entities.PcElementWithoutConstraintsAndSpecs;
 import com.appsandbox.appsandbox.domain.pcbuilder.entities.PcElementWithoutSpecs;
+import com.appsandbox.appsandbox.domain.pcbuilder.entities.PcSpecificationWithValues;
 import com.appsandbox.appsandbox.infrastructure.pcbuilder.database.entities.PcElementConstraintEntity;
 import com.appsandbox.appsandbox.infrastructure.pcbuilder.database.entities.PcElementEntity;
 import com.appsandbox.appsandbox.infrastructure.pcbuilder.database.entities.PcElementSpecificationEntity;
 
 @Service
 public class PcElementMapper {
+
+    Logger log = LoggerFactory.getLogger(PcElementMapper.class);
 
     @Autowired
     private PcElementConstraintMapper pcElementConstraintMapper;
@@ -46,6 +50,7 @@ public class PcElementMapper {
     }
 
     public PcElement entityToDto(PcElementEntity pcElementEntity) {
+        log.info("ici dans le Mapper ???");
         List<PcConstraintWithValues> pcElementConstraints = pcElementConstraintMapper
                 .entitiesToDtos(pcElementEntity.getPcElementConstraints());
         List<PcSpecificationWithValues> pcElementSpecifications = pcElementSpecificationMapper
@@ -62,6 +67,7 @@ public class PcElementMapper {
     }
 
     public PcElementEntity dtoToEntity(PcElement pcElement) {
+
         int pcElementId = pcElement.getId();
         List<PcElementConstraintEntity> pcElementConstraintEntities = pcElementConstraintMapper
                 .dtosToEntities(pcElementId, pcElement.getConstraints());

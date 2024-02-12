@@ -26,7 +26,7 @@ public class PcSpecificationEntity {
     private int id;
     private String name;
     private String code;
-    @OneToMany(mappedBy = "pcSpecification", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "pcSpecification", cascade = CascadeType.REMOVE)
     private List<PcElementSpecificationEntity> pcElementSpecifications = new ArrayList<>();
 
 }

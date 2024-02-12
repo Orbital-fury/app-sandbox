@@ -36,9 +36,9 @@ public class PcElementEntity {
     @Column(name = "element_type")
     @Enumerated(EnumType.STRING)
     private PcElementType type;
-    @OneToMany(mappedBy = "pcElement", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(mappedBy = "pcElement", cascade = CascadeType.REMOVE)
     private List<PcElementConstraintEntity> pcElementConstraints = new ArrayList<>();
-    @OneToMany(mappedBy = "pcElement", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(mappedBy = "pcElement", cascade = CascadeType.REMOVE)
     private List<PcElementSpecificationEntity> pcElementSpecifications = new ArrayList<>();
 
 }

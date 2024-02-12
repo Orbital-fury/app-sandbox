@@ -42,4 +42,4 @@ springdoc:
 logging.level:
     org:
         hibernate:
-            sql: debug
+            sql: off

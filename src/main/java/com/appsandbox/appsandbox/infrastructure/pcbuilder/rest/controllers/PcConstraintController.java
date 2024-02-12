@@ -1,7 +1,5 @@
 package com.appsandbox.appsandbox.infrastructure.pcbuilder.rest.controllers;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -17,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.appsandbox.appsandbox.domain.pcbuilder.entities.PcConstraint;
-import com.appsandbox.appsandbox.domain.pcbuilder.entities.PcElementWithoutSpecs;
 import com.appsandbox.appsandbox.infrastructure.pcbuilder.rest.requests.PcConstraints;
+import com.appsandbox.appsandbox.infrastructure.pcbuilder.rest.requests.PcElementsConstraintValues;
 import com.appsandbox.appsandbox.infrastructure.pcbuilder.services.PcConstraintService;
 import com.appsandbox.appsandbox.infrastructure.pcbuilder.services.PcElementConstraintService;
 
@@ -67,9 +65,9 @@ public class PcConstraintController {
             @ApiResponse(responseCode = "404", description = "PC elements was not found", content = @Content)
     })
     @GetMapping("/{id}/pc-elements")
-    public ResponseEntity<List<PcElementWithoutSpecs>> getPcElementsAndConstraintValues(
+    public ResponseEntity<PcElementsConstraintValues> getPcElementsAndConstraintValues(
             @PathVariable @Parameter(name = "id", description = "PC constraint id", example = "3") int id) {
-        return new ResponseEntity<>(pcElementConstraintService.getPcElementAndConstraintValues(id),
+        return new ResponseEntity<>(new PcElementsConstraintValues(pcElementConstraintService.getPcElementAndConstraintValues(id)),
                 HttpStatus.OK);
     }
 
