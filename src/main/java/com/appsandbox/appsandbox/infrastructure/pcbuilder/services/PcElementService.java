@@ -70,18 +70,17 @@ public class PcElementService {
         return pcElementMapper.entityToDto(pcElementEntity);
     }
 
-    public PcElementWithoutConstraintsAndSpecs savePcElement(
-            @NonNull PcElementWithoutConstraintsAndSpecs newPcElement) {
+    @Transactional
+    public PcElement savePcElement(
+            @NonNull PcElement newPcElement) {
         PcElementEntity pcElementEntity = pcElementMapper.dtoToEntity(newPcElement);
-        log.info("trying to save: " + pcElementEntity.getBrand() + " " + pcElementEntity.getModel() + " (id: "
-                + pcElementEntity.getId() + ")");
         pcElementRepository.save(pcElementEntity);
         return newPcElement;
     }
 
-    public PcElementWithoutConstraintsAndSpecs updatePcElement(@NonNull PcElementWithoutConstraintsAndSpecs pcElement) {
+    @Transactional
+    public PcElement updatePcElement(@NonNull PcElement pcElement) {
         int pcElementId = pcElement.getId();
-        log.info("allo ??????????????????????????????");
         pcElementRepository.findById(pcElementId)
                 .orElseThrow(() -> new NoDataFoundException("PC element not found for id: " + pcElementId));
         return savePcElement(pcElement);

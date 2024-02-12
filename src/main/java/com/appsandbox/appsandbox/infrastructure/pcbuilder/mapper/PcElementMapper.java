@@ -2,8 +2,6 @@ package com.appsandbox.appsandbox.infrastructure.pcbuilder.mapper;
 
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,8 +16,6 @@ import com.appsandbox.appsandbox.infrastructure.pcbuilder.database.entities.PcEl
 
 @Service
 public class PcElementMapper {
-
-    Logger log = LoggerFactory.getLogger(PcElementMapper.class);
 
     @Autowired
     private PcElementConstraintMapper pcElementConstraintMapper;
@@ -50,7 +46,6 @@ public class PcElementMapper {
     }
 
     public PcElement entityToDto(PcElementEntity pcElementEntity) {
-        log.info("ici dans le Mapper ???");
         List<PcConstraintWithValues> pcElementConstraints = pcElementConstraintMapper
                 .entitiesToDtos(pcElementEntity.getPcElementConstraints());
         List<PcSpecificationWithValues> pcElementSpecifications = pcElementSpecificationMapper
