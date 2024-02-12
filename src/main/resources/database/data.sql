@@ -105,21 +105,48 @@ INSERT INTO pc_specifications (name, code) VALUES ('Norme 80 PLUS', 'NORME_80_PL
 INSERT INTO pc_specifications (name, code) VALUES ('Number of RAM', 'NUMBER_OF_RAM');
 INSERT INTO pc_specifications (name, code) VALUES ('RAM memory', 'RAM_MEMORY');
 
-INSERT INTO pc_elements (brand, model, price, img, element_type) VALUES ('Intel', 'i5-12400F', 184.96, 'https://media.ldlc.com/r374/ld/products/00/05/91/49/LD0005914928_1.jpg', 'CPU');
-INSERT INTO pc_elements (brand, model, price, img, element_type) VALUES ('Intel', 'i7-12700KF', 379.96, null, 'CPU');
-INSERT INTO pc_elements (brand, model, price, img, element_type) VALUES ('AMD', 'Ryzen 5 3600', 77.95, null, 'CPU');
-INSERT INTO pc_elements (brand, model, price, img, element_type) VALUES ('AMD', 'Ryzen 5 7600X', 279.95, null, 'CPU');
-INSERT INTO pc_elements (brand, model, price, img, element_type) VALUES ('AMD', 'Ryzen 7 5800X', 224.95, null, 'CPU');
-INSERT INTO pc_elements (brand, model, price, img, element_type) VALUES ('Corsair', '4000D AIRFLOW TG', 109.96, null, 'CASE');
-INSERT INTO pc_elements (brand, model, price, img, element_type) VALUES ('be quiet!', 'Pure Base 500DX', 119.95, null, 'CASE');
-INSERT INTO pc_elements (brand, model, price, img, element_type) VALUES ('Nvidia', 'MSI GeForce RTX 4060', 349.96, null, 'GPU');
-INSERT INTO pc_elements (brand, model, price, img, element_type) VALUES ('Nvidia', 'Gainward GeForce RTX 4070', 649.94, null, 'GPU');
-INSERT INTO pc_elements (brand, model, price, img, element_type) VALUES ('MSI', 'PRO Z790-P', 249.95, null, 'MOBO');
-INSERT INTO pc_elements (brand, model, price, img, element_type) VALUES ('Gigabyte', 'B550M AORUS ELITE', 123.95, null, 'MOBO');
-INSERT INTO pc_elements (brand, model, price, img, element_type) VALUES ('be quiet!', 'Pure Power 12 M 650W 80PLUS Gold', 116.95, null, 'POWER');
-INSERT INTO pc_elements (brand, model, price, img, element_type) VALUES ('MSI', 'MAG A850GL PCIE5', 129.95, null, 'POWER');
-INSERT INTO pc_elements (brand, model, price, img, element_type) VALUES ('G.Skill', 'Aegis 16 Go (2 x 8 Go) DDR4 3200 MHz CL16', 56.95, null, 'RAM');
-INSERT INTO pc_elements (brand, model, price, img, element_type) VALUES ('Corsair', 'Vengeance DDR5 32 Go (2 x 16 Go) 4800 MHz CL40', 134.95, null, 'RAM');
+INSERT INTO pc_element_types (name, code) VALUES ('CPU', 'CPU');
+INSERT INTO pc_element_types (name, code) VALUES ('Case', 'CASE');
+INSERT INTO pc_element_types (name, code) VALUES ('GPU', 'GPU');
+INSERT INTO pc_element_types (name, code) VALUES ('Motherboard', 'MOBO');
+INSERT INTO pc_element_types (name, code) VALUES ('RAM', 'RAM');
+INSERT INTO pc_element_types (name, code) VALUES ('Power supply', 'POWER');
+INSERT INTO pc_element_types (name, code) VALUES ('Storage', 'STORAGE');
+INSERT INTO pc_element_types (name, code) VALUES ('Cooling system', 'COOLING');
+
+INSERT INTO pc_elements (brand, model, price, img, element_type_id) VALUES ('Intel', 'i5-12400F', 184.96, 'https://media.ldlc.com/r374/ld/products/00/05/91/49/LD0005914928_1.jpg', 1);
+INSERT INTO pc_elements (brand, model, price, img, element_type_id) VALUES ('Intel', 'i7-12700KF', 379.96, null, 1);
+INSERT INTO pc_elements (brand, model, price, img, element_type_id) VALUES ('AMD', 'Ryzen 5 3600', 77.95, null, 1);
+INSERT INTO pc_elements (brand, model, price, img, element_type_id) VALUES ('AMD', 'Ryzen 5 7600X', 279.95, null, 1);
+INSERT INTO pc_elements (brand, model, price, img, element_type_id) VALUES ('AMD', 'Ryzen 7 5800X', 224.95, null, 1);
+INSERT INTO pc_elements (brand, model, price, img, element_type_id) VALUES ('Corsair', '4000D AIRFLOW TG', 109.96, null, 2);
+INSERT INTO pc_elements (brand, model, price, img, element_type_id) VALUES ('be quiet!', 'Pure Base 500DX', 119.95, null, 2);
+INSERT INTO pc_elements (brand, model, price, img, element_type_id) VALUES ('Nvidia', 'MSI GeForce RTX 4060', 349.96, null, 3);
+INSERT INTO pc_elements (brand, model, price, img, element_type_id) VALUES ('Nvidia', 'Gainward GeForce RTX 4070', 649.94, null, 3);
+INSERT INTO pc_elements (brand, model, price, img, element_type_id) VALUES ('MSI', 'PRO Z790-P', 249.95, null, 4);
+INSERT INTO pc_elements (brand, model, price, img, element_type_id) VALUES ('Gigabyte', 'B550M AORUS ELITE', 123.95, null, 4);
+INSERT INTO pc_elements (brand, model, price, img, element_type_id) VALUES ('be quiet!', 'Pure Power 12 M 650W 80PLUS Gold', 116.95, null, 6);
+INSERT INTO pc_elements (brand, model, price, img, element_type_id) VALUES ('MSI', 'MAG A850GL PCIE5', 129.95, null, 6);
+INSERT INTO pc_elements (brand, model, price, img, element_type_id) VALUES ('G.Skill', 'Aegis 16 Go (2 x 8 Go) DDR4 3200 MHz CL16', 56.95, null, 5);
+INSERT INTO pc_elements (brand, model, price, img, element_type_id) VALUES ('Corsair', 'Vengeance DDR5 32 Go (2 x 16 Go) 4800 MHz CL40', 134.95, null, 5);
+
+INSERT INTO pc_element_types_constraints (element_type_id, constraint_id) VALUES (1, 1); -- CPU/Socket
+INSERT INTO pc_element_types_constraints (element_type_id, constraint_id) VALUES (1, 2); -- CPU/Chipset
+INSERT INTO pc_element_types_constraints (element_type_id, constraint_id) VALUES (2, 3); -- Case/Motherboard Size
+INSERT INTO pc_element_types_constraints (element_type_id, constraint_id) VALUES (2, 4); -- Case/Cooling fan max length
+INSERT INTO pc_element_types_constraints (element_type_id, constraint_id) VALUES (2, 5); -- Case/AIO fan size
+INSERT INTO pc_element_types_constraints (element_type_id, constraint_id) VALUES (2, 6); -- Case/3.5" capacity
+INSERT INTO pc_element_types_constraints (element_type_id, constraint_id) VALUES (2, 7); -- Case/2.5" capacity
+INSERT INTO pc_element_types_constraints (element_type_id, constraint_id) VALUES (2, 8); -- Case/GPU max length
+INSERT INTO pc_element_types_constraints (element_type_id, constraint_id) VALUES (3, 9); -- GPU/GPU length
+INSERT INTO pc_element_types_constraints (element_type_id, constraint_id) VALUES (3, 10); -- GPU/GPU power
+INSERT INTO pc_element_types_constraints (element_type_id, constraint_id) VALUES (4, 1); -- MOBO/Socket
+INSERT INTO pc_element_types_constraints (element_type_id, constraint_id) VALUES (4, 2); -- MOBO/Chipset
+INSERT INTO pc_element_types_constraints (element_type_id, constraint_id) VALUES (4, 3); -- MOBO/Motherboard Size
+INSERT INTO pc_element_types_constraints (element_type_id, constraint_id) VALUES (4, 11); -- MOBO/RAM frequency
+INSERT INTO pc_element_types_constraints (element_type_id, constraint_id) VALUES (4, 12); -- MOBO/SSD M.2 capacity
+INSERT INTO pc_element_types_constraints (element_type_id, constraint_id) VALUES (6, 13); -- POWER/Power
+INSERT INTO pc_element_types_constraints (element_type_id, constraint_id) VALUES (5, 11); -- RAM/RAM frequency
 
 INSERT INTO pc_elements_constraints (element_id, constraint_id, c_value) VALUES (1, 1, '1700');
 INSERT INTO pc_elements_constraints (element_id, constraint_id, c_value) VALUES (1, 2, 'B660');

@@ -7,13 +7,10 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PcElementWithoutConstraintsAndSpecs {
+public class PcElementType {
 
     private int id;
-    private String brand;
-    private String model;
-    private float price;
-    private String img;
-    private PcElementType type;
+    private String name;
+    private String code;
 
 }

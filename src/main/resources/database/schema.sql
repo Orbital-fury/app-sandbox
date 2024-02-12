@@ -33,13 +33,19 @@ CREATE TABLE machines (
     state varchar(64) NOT NULL
 );
 
+CREATE TABLE pc_element_types (
+    id int PRIMARY KEY AUTO_INCREMENT,
+    name varchar(128) NOT NULL,
+    code varchar(128) NOT NULL UNIQUE
+);
+
 CREATE TABLE pc_elements (
     id int PRIMARY KEY AUTO_INCREMENT,
     brand varchar(128) NOT NULL,
     model varchar(128) NOT NULL,
     price float NOT NULL,
     img varchar(255),
-    element_type varchar(128) NOT NULL
+    element_type_id int NOT NULL REFERENCES pc_element_types(id)
 );
 
 CREATE TABLE pc_constraints (
@@ -55,6 +61,12 @@ CREATE TABLE pc_specifications (
     code varchar(128) NOT NULL UNIQUE
 );
 
+CREATE TABLE pc_element_types_constraints (
+    id int PRIMARY KEY AUTO_INCREMENT,
+    element_type_id int NOT NULL REFERENCES pc_element_types(id),
+    constraint_id int NOT NULL REFERENCES pc_constraints(id)
+);
+
 CREATE TABLE pc_elements_constraints (
     element_id int NOT NULL,
     constraint_id int NOT NULL,
@@ -64,9 +76,17 @@ CREATE TABLE pc_elements_constraints (
     FOREIGN KEY (constraint_id) REFERENCES pc_constraints(id)
 );
 
+CREATE TABLE pc_element_types_specifications (
+    id int PRIMARY KEY AUTO_INCREMENT,
+    element_type_id int NOT NULL REFERENCES pc_element_types(id),
+    specification_id int NOT NULL REFERENCES pc_specifications(id)
+);
+
 CREATE TABLE pc_elements_specifications (
-    element_id int NOT NULL REFERENCES pc_elements(id),
-    specification_id int NOT NULL REFERENCES pc_specifications(id),
+    element_id int NOT NULL,
+    specification_id int NOT NULL,
     s_value varchar(64) NOT NULL,
-    PRIMARY KEY (element_id, specification_id)
+    PRIMARY KEY (element_id, specification_id, s_value),
+    FOREIGN KEY (element_id) REFERENCES pc_elements(id),
+    FOREIGN KEY (specification_id) REFERENCES pc_specifications(id)
 );

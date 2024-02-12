@@ -3,8 +3,6 @@ package com.appsandbox.appsandbox.domain.pcbuilder.entities;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.appsandbox.appsandbox.domain.pcbuilder.enums.PcElementType;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

@@ -21,6 +21,8 @@ public class PcElementMapper {
     private PcElementConstraintMapper pcElementConstraintMapper;
     @Autowired
     private PcElementSpecificationMapper pcElementSpecificationMapper;
+    @Autowired
+    private PcElementTypeMapper pcElementTypeMapper;
 
     public PcElementWithoutConstraintsAndSpecs entityToDtoWithoutConstraintsAndSpecs(PcElementEntity pcElementEntity) {
         return new PcElementWithoutConstraintsAndSpecs(
@@ -29,7 +31,7 @@ public class PcElementMapper {
                 pcElementEntity.getModel(),
                 pcElementEntity.getPrice(),
                 pcElementEntity.getImg(),
-                pcElementEntity.getType());
+                pcElementTypeMapper.entityToDto(pcElementEntity.getPcElementType()));
     }
 
     public PcElementWithoutSpecs entityToDtoWithoutSpecs(PcElementEntity pcElementEntity) {
@@ -41,7 +43,7 @@ public class PcElementMapper {
                 pcElementEntity.getModel(),
                 pcElementEntity.getPrice(),
                 pcElementEntity.getImg(),
-                pcElementEntity.getType(),
+                pcElementTypeMapper.entityToDto(pcElementEntity.getPcElementType()),
                 pcElementConstraints);
     }
 
@@ -56,7 +58,7 @@ public class PcElementMapper {
                 pcElementEntity.getModel(),
                 pcElementEntity.getPrice(),
                 pcElementEntity.getImg(),
-                pcElementEntity.getType(),
+                pcElementTypeMapper.entityToDto(pcElementEntity.getPcElementType()),
                 pcElementConstraints,
                 pcElementSpecifications);
     }
@@ -74,7 +76,7 @@ public class PcElementMapper {
                 pcElement.getModel(),
                 pcElement.getPrice(),
                 pcElement.getImg(),
-                pcElement.getType(),
+                pcElementTypeMapper.dtoToEntity(pcElement.getType()),
                 pcElementConstraintEntities,
                 pcElementSpecificationEntities);
     }
@@ -86,7 +88,7 @@ public class PcElementMapper {
                 pcElement.getModel(),
                 pcElement.getPrice(),
                 pcElement.getImg(),
-                pcElement.getType(),
+                pcElementTypeMapper.dtoToEntity(pcElement.getType()),
                 null,
                 null);
     }

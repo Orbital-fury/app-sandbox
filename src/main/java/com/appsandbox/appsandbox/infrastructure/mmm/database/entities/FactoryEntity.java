@@ -2,7 +2,7 @@ package com.appsandbox.appsandbox.infrastructure.mmm.database.entities;
 
 import java.util.List;
 
-import com.appsandbox.appsandbox.domain.mmm.enums.FactoryType;
+import com.appsandbox.appsandbox.domain.mmm.enums.MmmFactoryType;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -29,7 +29,7 @@ public class FactoryEntity {
     private int id;
     private String name;
     @Enumerated(EnumType.STRING)
-    private FactoryType type;
+    private MmmFactoryType type;
     private String address;
     @OneToMany(mappedBy = "factory", fetch = FetchType.LAZY)
     private List<MachineEntity> machines;

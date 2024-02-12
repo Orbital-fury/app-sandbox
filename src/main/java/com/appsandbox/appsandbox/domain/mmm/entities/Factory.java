@@ -2,7 +2,7 @@ package com.appsandbox.appsandbox.domain.mmm.entities;
 
 import java.util.List;
 
-import com.appsandbox.appsandbox.domain.mmm.enums.FactoryType;
+import com.appsandbox.appsandbox.domain.mmm.enums.MmmFactoryType;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,7 +13,7 @@ public class Factory {
 
   private int id;
   private String name;
-  private FactoryType type;
+  private MmmFactoryType type;
   private String address;
   private List<MachineWithoutFactory> machines;
 
