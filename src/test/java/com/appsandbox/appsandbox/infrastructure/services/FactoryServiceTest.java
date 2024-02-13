@@ -16,7 +16,7 @@ import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.appsandbox.appsandbox.domain.mmm.entities.Factory;
-import com.appsandbox.appsandbox.domain.mmm.enums.FactoryType;
+import com.appsandbox.appsandbox.domain.mmm.enums.MmmFactoryType;
 import com.appsandbox.appsandbox.infrastructure.mmm.database.entities.FactoryEntity;
 import com.appsandbox.appsandbox.infrastructure.mmm.database.entities.MachineEntity;
 import com.appsandbox.appsandbox.infrastructure.mmm.database.repositories.FactoryRepository;
@@ -39,7 +39,7 @@ public class FactoryServiceTest {
     void should_retrieve_factory() {
         // Given
         int factoryId = 0;
-        FactoryEntity factoryEntity = new FactoryEntity(factoryId, "name", FactoryType.FACTORY, "address",
+        FactoryEntity factoryEntity = new FactoryEntity(factoryId, "name", MmmFactoryType.FACTORY, "address",
                 new ArrayList<MachineEntity>());
         when(factoryRepository.findById(anyInt()).get()).thenReturn(factoryEntity);
 

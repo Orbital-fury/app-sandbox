@@ -15,20 +15,20 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "pc_specifications")
+@Table(name = "pc_element_types")
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class PcSpecificationEntity {
+@AllArgsConstructor
+public class PcElementTypeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
     private String name;
     private String code;
-    @OneToMany(mappedBy = "pcSpecification", cascade = CascadeType.REMOVE)
-    private List<PcElementSpecificationEntity> pcElementSpecifications = new ArrayList<>();
-    @OneToMany(mappedBy = "pcSpecification", cascade = CascadeType.REMOVE)
-    private List<PcElementTypeSpecificationEntity> pcElementTypeSpecifications = new ArrayList<>();
+    @OneToMany(mappedBy = "pcElementType", cascade = CascadeType.REMOVE)
+    private List<PcElementTypeConstraintEntity> pcElementTypeConstraints = new ArrayList<>();
+    @OneToMany(mappedBy = "pcElementType")
+    private List<PcElementEntity> pcElements = new ArrayList<>();
 
 }

@@ -1,5 +1,5 @@
 package com.appsandbox.appsandbox.domain.mmm.enums;
 
-public enum FactoryType {
+public enum MmmFactoryType {
     FACTORY, SITE, WORKSHOP // To replace with a DB table
 }

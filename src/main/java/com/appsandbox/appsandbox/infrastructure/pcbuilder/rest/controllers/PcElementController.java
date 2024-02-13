@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.appsandbox.appsandbox.domain.pcbuilder.entities.PcElement;
-import com.appsandbox.appsandbox.domain.pcbuilder.entities.PcElementBasis;
+import com.appsandbox.appsandbox.domain.pcbuilder.entities.PcElementWithoutConstraintsAndSpecs;
 import com.appsandbox.appsandbox.infrastructure.pcbuilder.rest.requests.PcElements;
 import com.appsandbox.appsandbox.infrastructure.pcbuilder.services.PcElementService;
 
@@ -31,71 +31,71 @@ import jakarta.validation.Valid;
 @RestController
 public class PcElementController {
 
-        @Autowired
-        private PcElementService pcElementService;
+    @Autowired
+    private PcElementService pcElementService;
 
-        @Operation(method = "GET", summary = "Get all pc elements", description = "Return the list of all pc elements")
-        @ApiResponses(value = {
-                        @ApiResponse(responseCode = "200", description = "PC elements retrieved successfully")
-        })
-        @GetMapping()
-        public ResponseEntity<PcElements> getAllPcElements() {
-                return new ResponseEntity<>(new PcElements(pcElementService.getAllPcElement()), HttpStatus.OK);
-        }
+    @Operation(method = "GET", summary = "Get all pc elements", description = "Return the list of all pc elements")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "PC elements retrieved successfully")
+    })
+    @GetMapping()
+    public ResponseEntity<PcElements> getAllPcElements() {
+        return new ResponseEntity<>(new PcElements(pcElementService.getAllPcElement()), HttpStatus.OK);
+    }
 
-        @Operation(method = "GET", summary = "Get pc elements regarding constraints", description = "Return the list of all possible pc elements that can be added regarding PC elements from build")
-        @ApiResponses(value = {
-                        @ApiResponse(responseCode = "200", description = "PC elements retrieved successfully")
-        })
-        @GetMapping("/constraints/elements")
-        public ResponseEntity<PcElements> getPcElementsRegardingConstraints(
-                        @RequestParam(name = "ids", required = false) @Parameter(description = "Comma-separated list of PC element IDs", example = "1,10") String pcBuildElementIds) {
-                return new ResponseEntity<>(
-                                new PcElements(pcElementService.getPcElementsRegardingConstraints(pcBuildElementIds)),
-                                HttpStatus.OK);
-        }
+    @Operation(method = "GET", summary = "Get pc elements regarding constraints", description = "Return the list of all possible pc elements that can be added regarding PC elements from build")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "PC elements retrieved successfully")
+    })
+    @GetMapping("/constraints/elements")
+    public ResponseEntity<PcElements> getPcElementsRegardingConstraints(
+            @RequestParam(name = "ids", required = false) @Parameter(description = "Comma-separated list of PC element IDs", example = "1,10") String pcBuildElementIds) {
+        return new ResponseEntity<>(
+                new PcElements(pcElementService.getPcElementsRegardingConstraints(pcBuildElementIds)),
+                HttpStatus.OK);
+    }
 
-        @Operation(method = "GET", summary = "Get PC element by id", description = "Return PC element by its id")
-        @ApiResponses(value = {
-                        @ApiResponse(responseCode = "200", description = "PC element retrieved successfully"),
-                        @ApiResponse(responseCode = "404", description = "PC element was not found", content = @Content)
-        })
-        @GetMapping("/{id}")
-        public ResponseEntity<PcElement> getPcElement(
-                        @PathVariable @Parameter(name = "id", description = "PC element id", example = "1") int id) {
-                PcElement pcElement = pcElementService.getPcElement(id);
-                return new ResponseEntity<>(pcElement, HttpStatus.OK);
-        }
+    @Operation(method = "GET", summary = "Get PC element by id", description = "Return PC element by its id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "PC element retrieved successfully"),
+            @ApiResponse(responseCode = "404", description = "PC element was not found", content = @Content)
+    })
+    @GetMapping("/{id}")
+    public ResponseEntity<PcElement> getPcElement(
+            @PathVariable @Parameter(name = "id", description = "PC element id", example = "1") int id) {
+        PcElement pcElement = pcElementService.getPcElement(id);
+        return new ResponseEntity<>(pcElement, HttpStatus.OK);
+    }
 
-        @Operation(method = "POST", summary = "Create new PC element", description = "Create a new PC element")
-        @ApiResponses(value = {
-                        @ApiResponse(responseCode = "201", description = "PC element created successfully"),
-                        @ApiResponse(responseCode = "400", description = "Invalid input or request format"),
-        })
-        @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-        public ResponseEntity<PcElementBasis> createPcElement(@NonNull @Valid @RequestBody PcElementBasis newPcElement) {
-                return new ResponseEntity<>(pcElementService.savePcElement(newPcElement), HttpStatus.CREATED);
-        }
+    @Operation(method = "POST", summary = "Create new PC element", description = "Create a new PC element")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "PC element created successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid input or request format"),
+    })
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<PcElement> createPcElement(@NonNull @Valid @RequestBody PcElement newPcElement) {
+        return new ResponseEntity<>(pcElementService.savePcElement(newPcElement), HttpStatus.CREATED);
+    }
 
-        @Operation(method = "PUT", summary = "Update a PC element", description = "Update a PC element using its id")
-        @ApiResponses(value = {
-                        @ApiResponse(responseCode = "200", description = "PC element updated successfully"),
-                        @ApiResponse(responseCode = "400", description = "Invalid input or request format"),
-        })
-        @PutMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-        public ResponseEntity<PcElementBasis> updatePcElement(@NonNull @Valid @RequestBody PcElementBasis pcElement) {
-                return new ResponseEntity<>(pcElementService.updatePcElement(pcElement), HttpStatus.OK);
-        }
+    @Operation(method = "PUT", summary = "Update a PC element", description = "Update a PC element using its id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "PC element updated successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid input or request format"),
+    })
+    @PutMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<PcElement> updatePcElement(@NonNull @Valid @RequestBody PcElement pcElement) {
+        return new ResponseEntity<>(pcElementService.updatePcElement(pcElement), HttpStatus.OK);
+    }
 
-        @Operation(method = "DELETE", summary = "Delete a PC element", description = "Delete a PC element using its id. Return the deleted element.")
-        @ApiResponses(value = {
-                        @ApiResponse(responseCode = "200", description = "PC element deleted successfully"),
-                        @ApiResponse(responseCode = "400", description = "Invalid input or request format"),
-        })
-        @DeleteMapping(path = "/{id}")
-        public ResponseEntity<PcElementBasis> deletePcElement(
-                        @PathVariable @Parameter(name = "id", description = "PC element id", example = "1") int id) {
-                return new ResponseEntity<>(pcElementService.deletePcElement(id), HttpStatus.OK);
-        }
+    @Operation(method = "DELETE", summary = "Delete a PC element", description = "Delete a PC element using its id. Return the deleted element.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "PC element deleted successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid input or request format"),
+    })
+    @DeleteMapping(path = "/{id}")
+    public ResponseEntity<PcElementWithoutConstraintsAndSpecs> deletePcElement(
+            @PathVariable @Parameter(name = "id", description = "PC element id", example = "1") int id) {
+        return new ResponseEntity<>(pcElementService.deletePcElement(id), HttpStatus.OK);
+    }
 
 }

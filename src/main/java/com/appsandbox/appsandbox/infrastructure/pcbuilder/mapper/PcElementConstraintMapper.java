@@ -1,38 +1,58 @@
 package com.appsandbox.appsandbox.infrastructure.pcbuilder.mapper;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.appsandbox.appsandbox.domain.pcbuilder.entities.PcElementConstraint;
-import com.appsandbox.appsandbox.infrastructure.pcbuilder.database.entities.PcConstraintEntity;
+import com.appsandbox.appsandbox.domain.pcbuilder.entities.PcConstraint;
+import com.appsandbox.appsandbox.domain.pcbuilder.entities.PcConstraintWithValues;
 import com.appsandbox.appsandbox.infrastructure.pcbuilder.database.entities.PcElementConstraintEntity;
-import com.appsandbox.appsandbox.infrastructure.pcbuilder.database.repositories.PcElementConstraintRepository;
 
 @Service
 public class PcElementConstraintMapper {
 
     @Autowired
-    private PcElementConstraintRepository pcElementConstraintRepository;
+    private PcConstraintMapper pcConstraintMapper;
 
-    public List<PcElementConstraintEntity> dtoToEntity(PcElementConstraint pcElementConstraint) {
-        return pcElementConstraintRepository.findByConstraintId(pcElementConstraint.getId());
+    public List<PcConstraintWithValues> entitiesToDtos(List<PcElementConstraintEntity> pcElementConstraintEntities) {
+        Map<Integer, Map<Integer, List<PcElementConstraintEntity>>> groupedByConstraintIdAndElementId = pcElementConstraintEntities.stream()
+                .collect(Collectors.groupingBy(PcElementConstraintEntity::getConstraintId,
+                        Collectors.groupingBy(PcElementConstraintEntity::getElementId)));
+
+        return groupedByConstraintIdAndElementId.values().stream()
+                .flatMap(elementGroup -> elementGroup.values().stream())
+                .map(this::mapToPcElementConstraint)
+                .collect(Collectors.toList());
     }
 
-    public PcElementConstraint entityToDto(List<PcElementConstraintEntity> pcElementConstraintEntities) {
-        if (pcElementConstraintEntities.isEmpty()) {
-            return null;
-        }
-        PcConstraintEntity pcConstraintEntity = pcElementConstraintEntities.get(0).getPcConstraint();
-        int firstConstraintId = pcConstraintEntity.getId();
-        for (PcElementConstraintEntity entity : pcElementConstraintEntities) {
-            if (entity.getConstraintId() != firstConstraintId) {
-                throw new IllegalStateException("Constraint ids are not all identical !!");
-            }
-        }
-        
-        return null;
+    private PcConstraintWithValues mapToPcElementConstraint(List<PcElementConstraintEntity> constraintEntities) {
+        PcConstraint pcConstraint = pcConstraintMapper.entityToDto(constraintEntities.get(0).getPcConstraint()); // Assuming PcConstraintEntity has a toDto() method
+
+        List<String> values = constraintEntities.stream()
+                .map(PcElementConstraintEntity::getValue)
+                .collect(Collectors.toList());
+
+        return new PcConstraintWithValues(pcConstraint, values);
+    }
+
+    public List<PcElementConstraintEntity> dtosToEntities(int pcElementId, List<PcConstraintWithValues> pcElementConstraints) {
+        List<PcElementConstraintEntity> pcElmentConstraintEntities = new ArrayList<>();
+        pcElementConstraints.stream()
+                .map(pcElementConstraint -> pcElementConstraint.getValues().stream()
+                        .map(value -> pcElmentConstraintEntities.add(new PcElementConstraintEntity(
+                                pcElementId,
+                                pcElementConstraint.getId(),
+                                value,
+                                null,
+                                null))))
+                .distinct()
+                .collect(Collectors.toList());
+
+        return pcElmentConstraintEntities;
     }
 
 }

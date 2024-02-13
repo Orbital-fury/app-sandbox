@@ -1,24 +1,24 @@
 package com.appsandbox.appsandbox.domain.pcbuilder.entities;
 
+import java.util.ArrayList;
 import java.util.List;
-
-import com.appsandbox.appsandbox.domain.pcbuilder.enums.PcElementType;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class PcElement extends PcElementBasis {
+@NoArgsConstructor
+public class PcElement extends PcElementWithoutSpecs {
 
-    private final List<PcElementConstraint> constraints;
-    private final List<PcElementSpecification> specifications;
+    private List<PcSpecificationWithValues> specifications = new ArrayList<>();
 
     public PcElement(int id, String brand, String model, float price, String img, PcElementType type,
-            List<PcElementConstraint> constraints, List<PcElementSpecification> specifications) {
-        super(id, brand, model, price, img, type);
-        this.constraints = constraints;
-        this.specifications = specifications;
+            List<PcConstraintWithValues> pcElementConstraints,
+            List<PcSpecificationWithValues> pcElementSpecifications) {
+        super(id, brand, model, price, img, type, pcElementConstraints);
+        this.specifications = pcElementSpecifications;
     }
 
 }
