@@ -19,6 +19,7 @@ import com.appsandbox.appsandbox.infrastructure.pcbuilder.rest.requests.PcConstr
 import com.appsandbox.appsandbox.infrastructure.pcbuilder.rest.requests.PcElementsConstraintValues;
 import com.appsandbox.appsandbox.infrastructure.pcbuilder.services.PcConstraintService;
 import com.appsandbox.appsandbox.infrastructure.pcbuilder.services.PcElementConstraintService;
+import com.appsandbox.appsandbox.infrastructure.pcbuilder.services.PcElementTypeConstraintService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -35,6 +36,8 @@ public class PcConstraintController {
     private PcConstraintService pcConstraintService;
     @Autowired
     private PcElementConstraintService pcElementConstraintService;
+    @Autowired
+    private PcElementTypeConstraintService pcElementTypeConstraintService;
 
     @Operation(method = "GET", summary = "Get all pc constraints", description = "Return the list of all pc constraints")
     @ApiResponses(value = {
@@ -102,6 +105,18 @@ public class PcConstraintController {
     public ResponseEntity<PcConstraint> deletePcConstraint(
             @PathVariable @Parameter(name = "id", description = "PC constraint id", example = "1") int id) {
         return new ResponseEntity<>(pcConstraintService.deletePcConstraint(id), HttpStatus.OK);
+    }
+
+    @Operation(method = "GET", summary = "Get PC constraints linked to PC element type", description = "Return PC constraints linked to a specific PC element type")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "PC constraints retrieved successfully"),
+            @ApiResponse(responseCode = "404", description = "PC constraints was not found", content = @Content)
+    })
+    @GetMapping("/pc-element-type/{id}")
+    public ResponseEntity<PcConstraints> getPcElementTypeConstraints(
+            @PathVariable @Parameter(name = "id", description = "PC element type id", example = "3") int id) {
+        return new ResponseEntity<>(new PcConstraints(pcElementTypeConstraintService.getPcElementTypeConstraints(id)),
+                HttpStatus.OK);
     }
 
 }

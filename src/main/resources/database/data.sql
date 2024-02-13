@@ -198,6 +198,13 @@ INSERT INTO pc_elements_constraints (element_id, constraint_id, c_value) VALUES 
 INSERT INTO pc_elements_constraints (element_id, constraint_id, c_value) VALUES (14, 11, '3200');
 INSERT INTO pc_elements_constraints (element_id, constraint_id, c_value) VALUES (15, 11, '4800');
 
+INSERT INTO pc_element_types_specifications (element_type_id, specification_id) VALUES (1, 1); -- CPU/CPU frequency
+INSERT INTO pc_element_types_specifications (element_type_id, specification_id) VALUES (1, 2); -- CPU/Number of cores
+INSERT INTO pc_element_types_specifications (element_type_id, specification_id) VALUES (3, 3); -- GPU/GPU memory
+INSERT INTO pc_element_types_specifications (element_type_id, specification_id) VALUES (6, 4); -- POWER/Norme 80 PLUS
+INSERT INTO pc_element_types_specifications (element_type_id, specification_id) VALUES (5, 5); -- RAM/Number of RAM
+INSERT INTO pc_element_types_specifications (element_type_id, specification_id) VALUES (5, 6); -- RAM/RAM memory
+
 INSERT INTO pc_elements_specifications (element_id, specification_id, s_value) VALUES (1, 1, '2.5');
 INSERT INTO pc_elements_specifications (element_id, specification_id, s_value) VALUES (1, 2, '6');
 INSERT INTO pc_elements_specifications (element_id, specification_id, s_value) VALUES (2, 1, '3.6');

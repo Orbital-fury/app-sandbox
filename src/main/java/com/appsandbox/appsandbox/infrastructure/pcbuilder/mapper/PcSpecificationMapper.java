@@ -20,6 +20,7 @@ public class PcSpecificationMapper {
                 pcSpecification.getId(),
                 pcSpecification.getName(),
                 pcSpecification.getCode(),
+                null,
                 null);
     }
 

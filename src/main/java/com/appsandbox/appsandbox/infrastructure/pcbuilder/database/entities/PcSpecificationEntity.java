@@ -28,5 +28,7 @@ public class PcSpecificationEntity {
     private String code;
     @OneToMany(mappedBy = "pcSpecification", cascade = CascadeType.REMOVE)
     private List<PcElementSpecificationEntity> pcElementSpecifications = new ArrayList<>();
+    @OneToMany(mappedBy = "pcSpecification", cascade = CascadeType.REMOVE)
+    private List<PcElementTypeSpecificationEntity> pcElementTypeSpecifications = new ArrayList<>();
 
 }
