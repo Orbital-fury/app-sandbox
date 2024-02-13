@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.appsandbox.appsandbox.domain.pcbuilder.entities.PcConstraint;
 import com.appsandbox.appsandbox.infrastructure.pcbuilder.rest.requests.PcConstraints;
+import com.appsandbox.appsandbox.infrastructure.pcbuilder.rest.requests.PcElementTypesConstraints;
 import com.appsandbox.appsandbox.infrastructure.pcbuilder.rest.requests.PcElementsConstraintValues;
 import com.appsandbox.appsandbox.infrastructure.pcbuilder.services.PcConstraintService;
 import com.appsandbox.appsandbox.infrastructure.pcbuilder.services.PcElementConstraintService;
@@ -116,6 +117,18 @@ public class PcConstraintController {
     public ResponseEntity<PcConstraints> getPcElementTypeConstraints(
             @PathVariable @Parameter(name = "id", description = "PC element type id", example = "3") int id) {
         return new ResponseEntity<>(new PcConstraints(pcElementTypeConstraintService.getPcElementTypeConstraints(id)),
+                HttpStatus.OK);
+    }
+
+    @Operation(method = "GET", summary = "Get PC constraints for PC element type", description = "Return PC constraints linked to their PC element type")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "PC constraints retrieved successfully"),
+            @ApiResponse(responseCode = "404", description = "PC constraints was not found", content = @Content)
+    })
+    @GetMapping("/pc-element-type")
+    public ResponseEntity<PcElementTypesConstraints> getAllPcElementTypeConstraints() {
+        return new ResponseEntity<>(
+                new PcElementTypesConstraints(pcElementTypeConstraintService.getAllPcElementTypeConstraints()),
                 HttpStatus.OK);
     }
 
